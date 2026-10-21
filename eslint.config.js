@@ -23,7 +23,10 @@ module.exports = tseslint.config(
       ...angular.configs.tsRecommended,
     ],
     languageOptions: {
-      parserOptions: { projectService: true, tsconfigRootDir: __dirname },
+      parserOptions: {
+        project: ['./tsconfig.app.json', './tsconfig.spec.json'],
+        tsconfigRootDir: __dirname,
+      },
     },
     processor: angular.processInlineTemplates,
     rules: {

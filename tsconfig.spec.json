@@ -1,12 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "node10",
-    "ignoreDeprecations": "6.0",
     "esModuleInterop": true,
-    "isolatedModules": true,
+    "resolveJsonModule": true,
     "types": ["jest", "node"]
   },
-  "include": ["src/**/*.d.ts", "src/**/*.spec.ts", "setup-jest.ts"]
+  "include": ["src/**/*.d.ts", "src/**/*.spec.ts", "src/testing/**/*.ts", "setup-jest.ts"]
 }
