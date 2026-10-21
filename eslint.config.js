@@ -24,7 +24,7 @@ module.exports = tseslint.config(
     ],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.app.json', './tsconfig.spec.json'],
+        project: ['./tsconfig.app.json', './tsconfig.spec.json', './tsconfig.e2e.json'],
         tsconfigRootDir: __dirname,
       },
     },
@@ -75,6 +75,7 @@ module.exports = tseslint.config(
         __dirname: 'readonly',
         process: 'readonly',
         console: 'readonly',
+        URL: 'readonly',
       },
     },
   },

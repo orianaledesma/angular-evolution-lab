@@ -2,9 +2,18 @@
   {
     "id": "modernAngular",
     "demos": [
-      { "path": "/v16", "label": "v16.cart.title" },
-      { "path": "/v17", "label": "v17.for.title" },
-      { "path": "/v22", "label": "v22.cd.title" }
+      {
+        "path": "/v16",
+        "label": "v16.cart.title"
+      },
+      {
+        "path": "/v17",
+        "label": "v17.for.title"
+      },
+      {
+        "path": "/v22",
+        "label": "v22.cd.title"
+      }
     ],
     "tests": [
       "src/app/features/v16-signals/cart-demo.spec.ts",
@@ -15,8 +24,14 @@
   {
     "id": "typescript",
     "demos": [
-      { "path": "/v16", "label": "v16.binding.title" },
-      { "path": "/v22", "label": "v22.switch.title" }
+      {
+        "path": "/v16",
+        "label": "v16.binding.title"
+      },
+      {
+        "path": "/v22",
+        "label": "v22.switch.title"
+      }
     ],
     "tests": [
       "src/app/features/v16-signals/input-binding-demo.spec.ts",
@@ -26,9 +41,18 @@
   {
     "id": "rxjs",
     "demos": [
-      { "path": "/v16", "label": "v16.search.title" },
-      { "path": "/v16", "label": "v16.destroy.title" },
-      { "path": "/v19", "label": "v19.rx.title" }
+      {
+        "path": "/v16",
+        "label": "v16.search.title"
+      },
+      {
+        "path": "/v16",
+        "label": "v16.destroy.title"
+      },
+      {
+        "path": "/v19",
+        "label": "v19.rx.title"
+      }
     ],
     "tests": [
       "src/app/features/v16-signals/search-demo.spec.ts",
@@ -39,9 +63,18 @@
   {
     "id": "state",
     "demos": [
-      { "path": "/v19", "label": "v19.linked.title" },
-      { "path": "/v19", "label": "v19.resource.title" },
-      { "path": "/v22", "label": "v22.resources.title" }
+      {
+        "path": "/v19",
+        "label": "v19.linked.title"
+      },
+      {
+        "path": "/v19",
+        "label": "v19.resource.title"
+      },
+      {
+        "path": "/v22",
+        "label": "v22.resources.title"
+      }
     ],
     "tests": [
       "src/app/features/v19-linked-resource/v19-linked-resource.spec.ts",
@@ -51,9 +84,18 @@
   {
     "id": "forms",
     "demos": [
-      { "path": "/v18", "label": "v18.events.title" },
-      { "path": "/v21", "label": "v21.forms.title" },
-      { "path": "/v22", "label": "v22.forms.title" }
+      {
+        "path": "/v18",
+        "label": "v18.events.title"
+      },
+      {
+        "path": "/v21",
+        "label": "v21.forms.title"
+      },
+      {
+        "path": "/v22",
+        "label": "v22.forms.title"
+      }
     ],
     "tests": [
       "src/app/features/v18-zoneless/form-events-demo.spec.ts",
@@ -64,8 +106,14 @@
   {
     "id": "http",
     "demos": [
-      { "path": "/v20", "label": "v20.http.title" },
-      { "path": "/v16", "label": "v16.binding.title" }
+      {
+        "path": "/v20",
+        "label": "v20.http.title"
+      },
+      {
+        "path": "/v16",
+        "label": "v16.binding.title"
+      }
     ],
     "tests": [
       "src/app/features/v20-stable-signals/http-resource-demo.spec.ts",
@@ -78,25 +126,50 @@
   {
     "id": "performance",
     "demos": [
-      { "path": "/v17", "label": "v17.defer.title" },
-      { "path": "/v18", "label": "v18.zoneless.title" },
-      { "path": "/v22", "label": "v22.lazy.title" },
-      { "path": "/v22", "label": "v22.idle.title" }
+      {
+        "path": "/v17",
+        "label": "v17.defer.title"
+      },
+      {
+        "path": "/v18",
+        "label": "v18.zoneless.title"
+      },
+      {
+        "path": "/v22",
+        "label": "v22.lazy.title"
+      },
+      {
+        "path": "/v22",
+        "label": "v22.idle.title"
+      }
     ],
     "tests": [
       "src/app/features/v17-control-flow/defer-demo.spec.ts",
       "src/app/features/v18-zoneless/zoneless-demo.spec.ts",
       "src/app/features/v22-maturity/lazy-service-demo.spec.ts",
-      "src/app/features/v22-maturity/defer-idle-demo.spec.ts"
+      "src/app/features/v22-maturity/defer-idle-demo.spec.ts",
+      "e2e/demos.spec.ts"
     ]
   },
   {
     "id": "routing",
     "demos": [
-      { "path": "/v16", "label": "v16.binding.title" },
-      { "path": "/v18", "label": "v18.redirect.title" },
-      { "path": "/v21", "label": "v21.cleanup.title" },
-      { "path": "/v22", "label": "v22.active.title" }
+      {
+        "path": "/v16",
+        "label": "v16.binding.title"
+      },
+      {
+        "path": "/v18",
+        "label": "v18.redirect.title"
+      },
+      {
+        "path": "/v21",
+        "label": "v21.cleanup.title"
+      },
+      {
+        "path": "/v22",
+        "label": "v22.active.title"
+      }
     ],
     "tests": [
       "src/app/features/v18-zoneless/v18.routes.spec.ts",
@@ -108,29 +181,49 @@
   {
     "id": "a11y",
     "demos": [
-      { "path": "/v21", "label": "v21.aria.title" },
-      { "path": "/v17", "label": "v17.io.title" }
+      {
+        "path": "/v21",
+        "label": "v21.aria.title"
+      },
+      {
+        "path": "/v17",
+        "label": "v17.io.title"
+      }
     ],
     "tests": [
       "src/app/features/v21-signal-forms/aria-demo.spec.ts",
       "src/app/core/layout/shell.spec.ts",
-      "src/app/shared/ui/form-field/form-field.spec.ts"
+      "src/app/shared/ui/form-field/form-field.spec.ts",
+      "e2e/a11y.spec.ts",
+      "e2e/keyboard.spec.ts"
     ]
   },
   {
     "id": "i18n",
-    "demos": [{ "path": "/", "label": "home.i18nDemo" }],
+    "demos": [
+      {
+        "path": "/",
+        "label": "home.i18nDemo"
+      }
+    ],
     "tests": [
       "src/app/core/i18n/i18n-keys.spec.ts",
       "src/app/core/i18n/language.service.spec.ts",
-      "src/app/core/i18n/translated-title-strategy.spec.ts"
+      "src/app/core/i18n/translated-title-strategy.spec.ts",
+      "e2e/i18n.spec.ts"
     ]
   },
   {
     "id": "designSystem",
     "demos": [
-      { "path": "/v21", "label": "v21.aria.title" },
-      { "path": "/v18", "label": "v18.fallback.title" }
+      {
+        "path": "/v21",
+        "label": "v21.aria.title"
+      },
+      {
+        "path": "/v18",
+        "label": "v18.fallback.title"
+      }
     ],
     "tests": [
       "src/app/shared/ui/tabs/tabs.spec.ts",
@@ -141,7 +234,16 @@
   },
   {
     "id": "testing",
-    "demos": [{ "path": "/requirements", "label": "requirements.thisPage" }],
-    "tests": ["src/app/features/requirements/requirements.spec.ts"]
+    "demos": [
+      {
+        "path": "/requirements",
+        "label": "requirements.thisPage"
+      }
+    ],
+    "tests": [
+      "src/app/features/requirements/requirements.spec.ts",
+      "e2e/smoke.spec.ts",
+      "e2e/demos.spec.ts"
+    ]
   }
 ]
