@@ -76,6 +76,7 @@ module.exports = tseslint.config(
         process: 'readonly',
         console: 'readonly',
         URL: 'readonly',
+        setTimeout: 'readonly',
       },
     },
   },

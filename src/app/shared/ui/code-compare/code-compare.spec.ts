@@ -7,13 +7,13 @@ describe('CodeCompare', () => {
     await render(CodeCompare, {
       providers: [provideTranslateTesting()],
       inputs: {
-        before: { label: 'v15 · *ngIf', code: '<div *ngIf="x">' },
+        before: { label: 'v15 · NgIf directive', code: '<div [hidden]="!x">' },
         after: { label: 'v17 · @if', code: '@if (x) {}' },
       },
     });
     const before = screen.getByRole('figure', { name: /Before v15/ });
     const after = screen.getByRole('figure', { name: /Now v17/ });
-    expect(before).toHaveTextContent('<div *ngIf="x">');
+    expect(before).toHaveTextContent('<div [hidden]="!x">');
     expect(after).toHaveTextContent('@if (x) {}');
     expect(before.querySelector('pre')).toHaveAttribute('tabindex', '0');
   });
