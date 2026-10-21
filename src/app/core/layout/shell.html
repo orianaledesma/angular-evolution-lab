@@ -1,0 +1,45 @@
+<a class="skip-link" [href]="skipHref()" (click)="skipToMain($event)">
+  {{ 'layout.skipLink' | translate }}
+</a>
+
+@if (loading.isLoading()) {
+  <div class="loading-bar" role="status">
+    <span class="visually-hidden">{{ 'common.loading' | translate }}</span>
+  </div>
+}
+
+<header class="header">
+  <button
+    type="button"
+    class="nav-toggle"
+    aria-controls="app-sidenav"
+    [attr.aria-expanded]="navOpen()"
+    (click)="toggleNav()"
+  >
+    <span aria-hidden="true">☰</span>
+    <span class="visually-hidden">{{ 'layout.toggleNav' | translate }}</span>
+  </button>
+  <a routerLink="/" class="brand">
+    <span class="logo" aria-hidden="true">Δ</span>
+    <span>{{ 'app.title' | translate }}</span>
+  </a>
+  <!-- The Aria menu is not needed for first paint: keep it out of the initial bundle. -->
+  @defer (on idle) {
+    <app-language-switcher />
+  } @placeholder {
+    <span class="lang-placeholder" aria-hidden="true"></span>
+  }
+</header>
+
+<div class="body">
+  <aside id="app-sidenav" class="aside" [class.open]="navOpen()">
+    <app-sidenav (navigate)="closeNav()" />
+  </aside>
+  <main id="main-content" #main class="main" tabindex="-1">
+    <router-outlet />
+  </main>
+</div>
+
+<footer class="footer">
+  <p>{{ 'layout.footer' | translate }}</p>
+</footer>

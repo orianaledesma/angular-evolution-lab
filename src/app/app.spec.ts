@@ -1,12 +1,11 @@
 import { render, screen } from '@testing-library/angular';
-import { provideRouter } from '@angular/router';
+import { provideTranslateTesting } from '../testing/translate-testing';
 import { App } from './app';
 
 describe('App', () => {
-  it('renders the main heading', async () => {
-    await render(App, { providers: [provideRouter([])] });
-    expect(
-      screen.getByRole('heading', { level: 1, name: 'Angular Evolution Lab' }),
-    ).toBeInTheDocument();
+  it('renders the application shell', async () => {
+    await render(App, { providers: [provideTranslateTesting()], routes: [] });
+    expect(screen.getByRole('link', { name: 'Angular Evolution Lab' })).toBeInTheDocument();
+    expect(screen.getByRole('main')).toBeInTheDocument();
   });
 });
