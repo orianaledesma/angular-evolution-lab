@@ -1,0 +1,13 @@
+<article class="card">
+  <header class="header">
+    <!-- v18: ng-content fallback — shown when no [card-title] is projected. -->
+    <ng-content select="[card-title]">
+      <h2 class="title">{{ heading() }}</h2>
+    </ng-content>
+    <ng-content select="[card-actions]" />
+  </header>
+  <div class="body">
+    <ng-content />
+  </div>
+  <ng-content select="[card-footer]" />
+</article>

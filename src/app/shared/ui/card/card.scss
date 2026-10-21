@@ -1,0 +1,32 @@
+@use 'mixins';
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.card {
+  @include mixins.surface;
+  @include mixins.stack(var(--space-3));
+
+  height: 100%;
+  padding: var(--space-5);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title,
+::ng-deep [card-title] {
+  margin: 0;
+  font-size: var(--font-size-lg);
+}
+
+.body {
+  @include mixins.stack(var(--space-3));
+}

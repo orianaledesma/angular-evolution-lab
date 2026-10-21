@@ -1,0 +1,17 @@
+<div class="field">
+  <label class="label" [for]="fieldId()">
+    {{ label() }}
+    @if (required()) {
+      <span class="required" aria-hidden="true">*</span>
+    }
+  </label>
+  <ng-content />
+  @if (hint()) {
+    <p class="hint" [id]="fieldId() + '-hint'">{{ hint() }}</p>
+  }
+  <div aria-live="polite">
+    @if (error(); as error) {
+      <p class="error" [id]="fieldId() + '-error'">{{ error }}</p>
+    }
+  </div>
+</div>

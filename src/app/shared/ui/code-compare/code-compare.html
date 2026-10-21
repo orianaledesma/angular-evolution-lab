@@ -1,0 +1,22 @@
+<div class="compare">
+  <figure class="pane before" [attr.aria-labelledby]="ids.before">
+    <figcaption [id]="ids.before">
+      <span class="tag">{{ 'common.before' | translate }}</span> {{ before().label }}
+    </figcaption>
+    <pre
+      tabindex="0"
+      role="region"
+      [attr.aria-labelledby]="ids.before"
+    ><code>{{ before().code }}</code></pre>
+  </figure>
+  <figure class="pane after" [attr.aria-labelledby]="ids.after">
+    <figcaption [id]="ids.after">
+      <span class="tag">{{ 'common.now' | translate }}</span> {{ after().label }}
+    </figcaption>
+    <pre
+      tabindex="0"
+      role="region"
+      [attr.aria-labelledby]="ids.after"
+    ><code>{{ after().code }}</code></pre>
+  </figure>
+</div>

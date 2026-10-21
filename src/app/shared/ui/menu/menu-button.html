@@ -1,0 +1,28 @@
+<div class="wrapper">
+  <button
+    type="button"
+    class="trigger"
+    ngMenuTrigger
+    [menu]="menu"
+    [attr.aria-label]="ariaLabel() ?? null"
+  >
+    <span>{{ triggerText() }}</span>
+    <span aria-hidden="true">▾</span>
+  </button>
+  <div
+    ngMenu
+    #menu="ngMenu"
+    class="menu"
+    [class.open]="menu.visible()"
+    (itemSelected)="onSelected($event)"
+  >
+    @for (option of options(); track option.value) {
+      <div ngMenuItem class="item" [value]="option.value" [attr.lang]="option.lang ?? null">
+        <span>{{ option.label }}</span>
+        @if (option.value === current()) {
+          <span aria-hidden="true">✓</span>
+        }
+      </div>
+    }
+  </div>
+</div>

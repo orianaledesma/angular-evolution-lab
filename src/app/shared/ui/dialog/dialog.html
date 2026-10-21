@@ -1,0 +1,11 @@
+<dialog #dialog class="dialog" [attr.aria-labelledby]="headingId" (close)="onClose()">
+  <header class="header">
+    <h2 [id]="headingId">{{ heading() }}</h2>
+    <button type="button" class="close" [attr.aria-label]="closeLabel()" (click)="onClose()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </header>
+  <div class="body">
+    <ng-content />
+  </div>
+</dialog>

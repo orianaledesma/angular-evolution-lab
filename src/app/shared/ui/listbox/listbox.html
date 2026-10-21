@@ -1,0 +1,15 @@
+<ul
+  ngListbox
+  class="listbox"
+  [attr.aria-labelledby]="labelledBy()"
+  [value]="selection()"
+  (valueChange)="onChange($event)"
+>
+  @for (option of options(); track option.value) {
+    <li ngOption class="option" [value]="option.value" [label]="option.label">
+      {{ option.label }}
+    </li>
+  } @empty {
+    <li class="empty" aria-disabled="true">—</li>
+  }
+</ul>

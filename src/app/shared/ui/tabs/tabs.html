@@ -1,0 +1,20 @@
+<div ngTabs class="tabs">
+  <div
+    ngTabList
+    class="tablist"
+    [attr.aria-label]="ariaLabel()"
+    [selectedTab]="active()"
+    (selectedTabChange)="onSelect($event)"
+  >
+    @for (panel of panels(); track panel.value()) {
+      <div ngTab class="tab" [value]="panel.value()">{{ panel.label() }}</div>
+    }
+  </div>
+  @for (panel of panels(); track panel.value()) {
+    <div ngTabPanel class="panel" [value]="panel.value()">
+      <ng-template ngTabContent>
+        <ng-container [ngTemplateOutlet]="panel.template" />
+      </ng-template>
+    </div>
+  }
+</div>
