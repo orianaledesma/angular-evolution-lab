@@ -1,0 +1,38 @@
+@use 'mixins';
+
+.visually-hidden {
+  @include mixins.visually-hidden;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-on-accent);
+  background: var(--color-accent-strong);
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+
+  &:focus {
+    transform: none;
+
+    @include mixins.focus-ring;
+  }
+}
+
+:focus-visible {
+  @include mixins.focus-ring;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

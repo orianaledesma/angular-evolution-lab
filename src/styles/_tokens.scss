@@ -1,0 +1,85 @@
+// Design tokens. Components read only these custom properties — never raw colors.
+@mixin light {
+  --color-bg: #f7f8fa;
+  --color-surface: #fff;
+  --color-surface-muted: #eef1f5;
+  --color-border: #c9d1dc;
+  --color-text: #141a23;
+  --color-text-muted: #4a5566;
+  --color-accent: #0b5cad;
+  --color-accent-strong: #08437f;
+  --color-on-accent: #fff;
+  --color-success: #17663a;
+  --color-success-bg: #e2f3e8;
+  --color-warning: #7a4a00;
+  --color-warning-bg: #fdf0d9;
+  --color-danger: #a4161a;
+  --color-danger-bg: #fbe4e4;
+  --color-focus: #0b5cad;
+  --color-code-bg: #1c2230;
+  --color-code-text: #e6ebf2;
+  --shadow-card: 0 1px 2px rgb(20 26 35 / 8%), 0 2px 8px rgb(20 26 35 / 6%);
+}
+
+@mixin dark {
+  --color-bg: #0f141c;
+  --color-surface: #171e29;
+  --color-surface-muted: #1f2835;
+  --color-border: #3a4657;
+  --color-text: #e8edf4;
+  --color-text-muted: #aab5c4;
+  --color-accent: #7cb7f5;
+  --color-accent-strong: #a8cff8;
+  --color-on-accent: #0b1a2c;
+  --color-success: #7fd8a0;
+  --color-success-bg: #12301f;
+  --color-warning: #f5c26b;
+  --color-warning-bg: #3a2a0c;
+  --color-danger: #ff9b9b;
+  --color-danger-bg: #3d1517;
+  --color-focus: #a8cff8;
+  --color-code-bg: #0a0e14;
+  --color-code-text: #e6ebf2;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 40%);
+}
+
+:root {
+  @include light;
+
+  --font-sans: system-ui, -apple-system, 'Segoe UI', roboto, 'Helvetica Neue', arial, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', menlo, consolas, monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.75rem;
+  --font-size-xxl: 2.25rem;
+  --line-height: 1.5;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --focus-ring: 3px solid var(--color-focus);
+  --sidenav-width: 16rem;
+  --header-height: 3.5rem;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    @include dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  @include dark;
+}
