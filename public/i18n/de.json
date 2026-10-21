@@ -1,0 +1,44 @@
+{
+  "app": {
+    "title": "Angular Evolution Lab",
+    "tagline": "Live-Demos der Entwicklung von Angular von v16 bis v22"
+  },
+  "languages": {
+    "en": "Englisch",
+    "es": "Spanisch",
+    "de": "Deutsch"
+  },
+  "layout": {
+    "skipLink": "Zum Hauptinhalt springen",
+    "mainNav": "Hauptnavigation",
+    "toggleNav": "Navigation ein- oder ausblenden",
+    "changeLanguage": "Sprache ändern (aktuell: {{lang}})",
+    "footer": "Gebaut mit Angular 22 · zoneless · Signals · Angular Aria"
+  },
+  "nav": {
+    "home": "Überblick",
+    "v16": "Signals kommen",
+    "v17": "Control Flow & Defer",
+    "v18": "Zoneless-Vorschau",
+    "v19": "linkedSignal & resource",
+    "v20": "Stabile Signals",
+    "v21": "Signal Forms & Aria",
+    "v22": "OnPush als Standard",
+    "requirements": "Anforderungsübersicht"
+  },
+  "common": {
+    "loading": "Wird geladen…",
+    "before": "Vorher",
+    "now": "Jetzt",
+    "cdChecks": "Change-Detection-Durchläufe",
+    "retry": "Erneut versuchen",
+    "reload": "Neu laden",
+    "empty": "Nichts anzuzeigen.",
+    "error": "Etwas ist schiefgelaufen",
+    "close": "Schließen",
+    "submit": "Absenden",
+    "reset": "Zurücksetzen",
+    "notFound": "Seite nicht gefunden",
+    "backHome": "Zurück zum Überblick"
+  }
+}

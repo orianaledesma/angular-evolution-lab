@@ -1,0 +1,44 @@
+{
+  "app": {
+    "title": "Angular Evolution Lab",
+    "tagline": "Demos en vivo de la evolución de Angular de la v16 a la v22"
+  },
+  "languages": {
+    "en": "Inglés",
+    "es": "Español",
+    "de": "Alemán"
+  },
+  "layout": {
+    "skipLink": "Saltar al contenido principal",
+    "mainNav": "Navegación principal",
+    "toggleNav": "Mostrar u ocultar navegación",
+    "changeLanguage": "Cambiar idioma (actual: {{lang}})",
+    "footer": "Hecho con Angular 22 · zoneless · signals · Angular Aria"
+  },
+  "nav": {
+    "home": "Resumen",
+    "v16": "Llegan los signals",
+    "v17": "Control flow y defer",
+    "v18": "Zoneless en preview",
+    "v19": "linkedSignal y resource",
+    "v20": "Signals estables",
+    "v21": "Signal Forms y Aria",
+    "v22": "OnPush por defecto",
+    "requirements": "Mapa de requisitos"
+  },
+  "common": {
+    "loading": "Cargando…",
+    "before": "Antes",
+    "now": "Ahora",
+    "cdChecks": "ciclos de detección de cambios",
+    "retry": "Reintentar",
+    "reload": "Recargar",
+    "empty": "No hay nada para mostrar.",
+    "error": "Algo salió mal",
+    "close": "Cerrar",
+    "submit": "Enviar",
+    "reset": "Restablecer",
+    "notFound": "Página no encontrada",
+    "backHome": "Volver al resumen"
+  }
+}
