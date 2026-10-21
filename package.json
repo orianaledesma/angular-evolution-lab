@@ -20,7 +20,12 @@
     "e2e:install": "playwright install --with-deps chromium firefox webkit",
     "check:legacy": "node scripts/check-legacy.mjs",
     "check:zone": "node scripts/check-zone.mjs",
-    "prepare": "husky"
+    "prepare": "husky",
+    "readme:requirements": "node scripts/requirements-table.mjs",
+    "check:readme": "node scripts/requirements-table.mjs --check",
+    "docker:build": "docker build -t angular-evolution-lab:local .",
+    "docker:run": "docker run --rm -p 8080:8080 angular-evolution-lab:local",
+    "docker:smoke": "sh scripts/docker-smoke.sh"
   },
   "private": true,
   "packageManager": "npm@11.19.1",
