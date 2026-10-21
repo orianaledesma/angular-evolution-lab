@@ -1,0 +1,43 @@
+.stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  counter-reset: step;
+
+  li {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    counter-increment: step;
+
+    &::before {
+      margin-inline-end: var(--space-1);
+      font-family: var(--font-mono);
+      content: counter(step) '.';
+    }
+
+    &.done {
+      color: var(--color-success);
+      border-color: var(--color-success);
+    }
+
+    &.current {
+      font-weight: 700;
+      color: var(--color-on-accent);
+      background: var(--color-accent-strong);
+      border-color: var(--color-accent-strong);
+    }
+  }
+}
+
+.phase p {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}

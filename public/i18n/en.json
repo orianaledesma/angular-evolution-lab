@@ -338,5 +338,92 @@
       "none": "No route injector created yet — open a bay.",
       "clear": "Clear destroyed"
     }
+  },
+  "v22": {
+    "title": "OnPush by default",
+    "intro": "Angular 22 makes OnPush the default strategy (Default is renamed Eager), stabilises Signal Forms and the Resource API, and adds @Service, injectAsync, debounced and exhaustive @switch.",
+    "cd": {
+      "title": "OnPush by default vs Eager",
+      "description": "Both children receive the same input. Change state that only the parent reads, then change the input, and compare the counters.",
+      "default": "the v22 default",
+      "parent": "Parent",
+      "bumpParent": "Change parent-only state",
+      "changeInput": "Change the children's input",
+      "explain": "The parent re-renders on every click. Only the Eager child is checked along with it; the OnPush child is checked only when its input changes."
+    },
+    "forms": {
+      "title": "Test-drive booking — Reactive Forms vs Signal Forms",
+      "description": "The same form, built twice. Submit with an address ending in @blocked.test to see how each API maps a 422 Problem Details error onto the e-mail field.",
+      "name": "Full name",
+      "email": "E-mail",
+      "emailHint": "Try anna@blocked.test for a server-side error",
+      "vehicle": "Vehicle",
+      "choose": "Choose a vehicle…",
+      "date": "Preferred date",
+      "consent": "I agree to be contacted about this test drive",
+      "book": "Book test drive",
+      "sending": "Booking…",
+      "booked": "Booked! Reference {{ref}}",
+      "errors": {
+        "required": "This field is required.",
+        "email": "Enter a valid e-mail address.",
+        "minDate": "Choose a date from tomorrow on.",
+        "consent": "Please give your consent."
+      }
+    },
+    "resources": {
+      "title": "Resource API (stable) · debounced() · chain()",
+      "description": "The v16 search again, without RxJS: debounced() delays the term, httpResource loads the matches, and a chained httpResource loads the details of the top match.",
+      "label": "Search brand or model",
+      "placeholder": "e.g. Audi, EQE, Enyaq",
+      "top": "Top match",
+      "hint": "The chained resource stays idle until the first resource resolves with a match."
+    },
+    "lazy": {
+      "title": "@Service() + injectAsync() with prefetch",
+      "description": "The CSV export service sits in its own chunk. It is prefetched when the browser is idle; the click awaits it — usually instantly.",
+      "export": "Export stock as CSV",
+      "states": {
+        "idle": "service not requested",
+        "loading": "loading service…",
+        "ready": "service ready"
+      },
+      "downloaded": "CSV generated and downloaded.",
+      "generated": "CSV generated (download not supported here)."
+    },
+    "switch": {
+      "title": "@switch — grouped @case and @default never",
+      "description": "Delivery tracking for an order. Several statuses share one view, and @default never makes the compiler reject any status that is not handled.",
+      "progress": "Delivery progress",
+      "steps": {
+        "ordered": "Ordered",
+        "confirmed": "Confirmed",
+        "in-production": "In production",
+        "quality-check": "Quality check",
+        "in-transit": "In transit",
+        "at-dealer": "At the dealer",
+        "delivered": "Delivered"
+      },
+      "phases": {
+        "processing": "Your order is being processed.",
+        "factory": "Your car is being built at the factory.",
+        "road": "Your car is on its way to the dealer.",
+        "ready": "Your car is ready — time to pick up the keys."
+      },
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "idle": {
+      "title": "@defer (on idle(2000))",
+      "description": "Recommendations are not urgent: they load when the browser is idle, and after 2 seconds at the latest.",
+      "placeholder": "Waiting for an idle moment (2 s at most)…",
+      "forYou": "Recommended for you"
+    },
+    "active": {
+      "title": "isActive() in the side navigation",
+      "description": "The sidenav marks the current section with isActive() signals instead of the RouterLinkActive directive. These are the same signals, live.",
+      "caption": "isActive() result per route",
+      "explain": "Navigate with the sidenav and the values update — they are plain signals derived from router state."
+    }
   }
 }

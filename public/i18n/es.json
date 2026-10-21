@@ -338,5 +338,92 @@
       "none": "Todavía no se creó ningún injector de ruta: abrí un box.",
       "clear": "Limpiar destruidos"
     }
+  },
+  "v22": {
+    "title": "OnPush por defecto",
+    "intro": "Angular 22 hace de OnPush la estrategia por defecto (Default pasa a llamarse Eager), estabiliza Signal Forms y la Resource API, y suma @Service, injectAsync, debounced y @switch exhaustivo.",
+    "cd": {
+      "title": "OnPush por defecto vs Eager",
+      "description": "Los dos hijos reciben el mismo input. Cambiá un estado que solo lee el padre, después cambiá el input, y compará los contadores.",
+      "default": "el default de v22",
+      "parent": "Padre",
+      "bumpParent": "Cambiar estado solo del padre",
+      "changeInput": "Cambiar el input de los hijos",
+      "explain": "El padre se re-renderiza en cada clic. Solo el hijo Eager se chequea junto con él; el hijo OnPush se chequea únicamente cuando cambia su input."
+    },
+    "forms": {
+      "title": "Reserva de test drive: Reactive Forms vs Signal Forms",
+      "description": "El mismo formulario, hecho dos veces. Enviá con un e-mail que termine en @blocked.test para ver cómo cada API mapea un error 422 de Problem Details al campo de e-mail.",
+      "name": "Nombre completo",
+      "email": "E-mail",
+      "emailHint": "Probá anna@blocked.test para ver un error del servidor",
+      "vehicle": "Vehículo",
+      "choose": "Elegí un vehículo…",
+      "date": "Fecha preferida",
+      "consent": "Acepto que me contacten por este test drive",
+      "book": "Reservar test drive",
+      "sending": "Reservando…",
+      "booked": "¡Reservado! Referencia {{ref}}",
+      "errors": {
+        "required": "Este campo es obligatorio.",
+        "email": "Ingresá un e-mail válido.",
+        "minDate": "Elegí una fecha a partir de mañana.",
+        "consent": "Necesitamos tu consentimiento."
+      }
+    },
+    "resources": {
+      "title": "Resource API (estable) · debounced() · chain()",
+      "description": "La búsqueda de la v16 otra vez, sin RxJS: debounced() demora el término, httpResource carga los resultados y un httpResource encadenado carga el detalle del mejor resultado.",
+      "label": "Buscar marca o modelo",
+      "placeholder": "p. ej. Audi, EQE, Enyaq",
+      "top": "Mejor resultado",
+      "hint": "El resource encadenado queda en idle hasta que el primero resuelve con algún resultado."
+    },
+    "lazy": {
+      "title": "@Service() + injectAsync() con prefetch",
+      "description": "El servicio de exportación CSV vive en su propio chunk. Se precarga cuando el navegador está ocioso; el clic lo espera y casi siempre ya está.",
+      "export": "Exportar stock en CSV",
+      "states": {
+        "idle": "servicio no pedido",
+        "loading": "cargando servicio…",
+        "ready": "servicio listo"
+      },
+      "downloaded": "CSV generado y descargado.",
+      "generated": "CSV generado (la descarga no está disponible acá)."
+    },
+    "switch": {
+      "title": "@switch: @case agrupados y @default never",
+      "description": "Seguimiento de entrega de un pedido. Varios estados comparten una vista y @default never hace que el compilador rechace cualquier estado no contemplado.",
+      "progress": "Progreso de la entrega",
+      "steps": {
+        "ordered": "Pedido",
+        "confirmed": "Confirmado",
+        "in-production": "En producción",
+        "quality-check": "Control de calidad",
+        "in-transit": "En tránsito",
+        "at-dealer": "En el concesionario",
+        "delivered": "Entregado"
+      },
+      "phases": {
+        "processing": "Tu pedido se está procesando.",
+        "factory": "Tu auto se está fabricando.",
+        "road": "Tu auto va camino al concesionario.",
+        "ready": "Tu auto está listo: es hora de buscar las llaves."
+      },
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "idle": {
+      "title": "@defer (on idle(2000))",
+      "description": "Las recomendaciones no son urgentes: se cargan cuando el navegador está ocioso, y a más tardar a los 2 segundos.",
+      "placeholder": "Esperando un momento ocioso (2 s como máximo)…",
+      "forYou": "Recomendado para vos"
+    },
+    "active": {
+      "title": "isActive() en la navegación lateral",
+      "description": "El sidenav marca la sección actual con signals de isActive() en lugar de la directiva RouterLinkActive. Estos son los mismos signals, en vivo.",
+      "caption": "Resultado de isActive() por ruta",
+      "explain": "Navegá con el sidenav y los valores se actualizan: son signals derivados del estado del router."
+    }
   }
 }

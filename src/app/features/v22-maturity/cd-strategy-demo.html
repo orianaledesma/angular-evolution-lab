@@ -1,0 +1,25 @@
+<app-card [heading]="'v22.cd.title' | translate">
+  <p class="muted">{{ 'v22.cd.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <app-cd-counter [label]="'v22.cd.parent' | translate" />
+      <span class="status">parentClicks() = {{ parentClicks() }}</span>
+    </div>
+    <div class="toolbar">
+      <button app-button size="sm" type="button" (click)="bumpParent()">
+        {{ 'v22.cd.bumpParent' | translate }}
+      </button>
+      <button app-button variant="secondary" size="sm" type="button" (click)="changePlate()">
+        {{ 'v22.cd.changeInput' | translate }}
+      </button>
+    </div>
+    <div class="demo-grid">
+      <app-onpush-child [plate]="plate()" />
+      <app-eager-child [plate]="plate()" />
+    </div>
+    <p class="explain">{{ 'v22.cd.explain' | translate }}</p>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

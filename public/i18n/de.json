@@ -338,5 +338,92 @@
       "none": "Noch kein Routen-Injector erzeugt – einen Platz öffnen.",
       "clear": "Zerstörte entfernen"
     }
+  },
+  "v22": {
+    "title": "OnPush als Standard",
+    "intro": "Angular 22 macht OnPush zur Standardstrategie (Default heißt jetzt Eager), stabilisiert Signal Forms und die Resource API und ergänzt @Service, injectAsync, debounced und ein vollständiges @switch.",
+    "cd": {
+      "title": "OnPush als Standard vs. Eager",
+      "description": "Beide Kinder erhalten denselben Input. Zuerst einen Zustand ändern, den nur der Parent liest, dann den Input – und die Zähler vergleichen.",
+      "default": "Standard in v22",
+      "parent": "Parent",
+      "bumpParent": "Nur Parent-Zustand ändern",
+      "changeInput": "Input der Kinder ändern",
+      "explain": "Der Parent rendert bei jedem Klick neu. Nur das Eager-Kind wird mitgeprüft; das OnPush-Kind nur, wenn sich sein Input ändert."
+    },
+    "forms": {
+      "title": "Probefahrt buchen – Reactive Forms vs. Signal Forms",
+      "description": "Dasselbe Formular, zweimal gebaut. Mit einer Adresse auf @blocked.test absenden, um zu sehen, wie jede API einen 422-Problem-Details-Fehler dem E-Mail-Feld zuordnet.",
+      "name": "Vollständiger Name",
+      "email": "E-Mail",
+      "emailHint": "anna@blocked.test ausprobieren für einen Serverfehler",
+      "vehicle": "Fahrzeug",
+      "choose": "Fahrzeug wählen…",
+      "date": "Wunschtermin",
+      "consent": "Ich bin einverstanden, zu dieser Probefahrt kontaktiert zu werden",
+      "book": "Probefahrt buchen",
+      "sending": "Wird gebucht…",
+      "booked": "Gebucht! Referenz {{ref}}",
+      "errors": {
+        "required": "Dieses Feld ist erforderlich.",
+        "email": "Bitte eine gültige E-Mail-Adresse eingeben.",
+        "minDate": "Bitte ein Datum ab morgen wählen.",
+        "consent": "Bitte stimmen Sie zu."
+      }
+    },
+    "resources": {
+      "title": "Resource API (stabil) · debounced() · chain()",
+      "description": "Die Suche aus v16 noch einmal, ohne RxJS: debounced() verzögert den Suchbegriff, httpResource lädt die Treffer, und ein verkettetes httpResource lädt die Details des besten Treffers.",
+      "label": "Marke oder Modell suchen",
+      "placeholder": "z. B. Audi, EQE, Enyaq",
+      "top": "Bester Treffer",
+      "hint": "Die verkettete Resource bleibt idle, bis die erste Resource mit einem Treffer aufgelöst ist."
+    },
+    "lazy": {
+      "title": "@Service() + injectAsync() mit Prefetch",
+      "description": "Der CSV-Export-Service liegt in einem eigenen Chunk. Er wird vorgeladen, sobald der Browser untätig ist; der Klick wartet darauf – meist ohne Verzögerung.",
+      "export": "Bestand als CSV exportieren",
+      "states": {
+        "idle": "Service nicht angefordert",
+        "loading": "Service wird geladen…",
+        "ready": "Service bereit"
+      },
+      "downloaded": "CSV erzeugt und heruntergeladen.",
+      "generated": "CSV erzeugt (Download hier nicht unterstützt)."
+    },
+    "switch": {
+      "title": "@switch – gruppierte @case und @default never",
+      "description": "Lieferverfolgung einer Bestellung. Mehrere Status teilen sich eine Ansicht, und @default never lässt den Compiler jeden nicht behandelten Status ablehnen.",
+      "progress": "Lieferfortschritt",
+      "steps": {
+        "ordered": "Bestellt",
+        "confirmed": "Bestätigt",
+        "in-production": "In Produktion",
+        "quality-check": "Qualitätskontrolle",
+        "in-transit": "Unterwegs",
+        "at-dealer": "Beim Händler",
+        "delivered": "Ausgeliefert"
+      },
+      "phases": {
+        "processing": "Ihre Bestellung wird bearbeitet.",
+        "factory": "Ihr Auto wird im Werk gebaut.",
+        "road": "Ihr Auto ist auf dem Weg zum Händler.",
+        "ready": "Ihr Auto ist bereit – Zeit, die Schlüssel abzuholen."
+      },
+      "previous": "Zurück",
+      "next": "Weiter"
+    },
+    "idle": {
+      "title": "@defer (on idle(2000))",
+      "description": "Empfehlungen sind nicht dringend: sie laden, sobald der Browser untätig ist – spätestens nach 2 Sekunden.",
+      "placeholder": "Warten auf einen ruhigen Moment (höchstens 2 s)…",
+      "forYou": "Für Sie empfohlen"
+    },
+    "active": {
+      "title": "isActive() in der Seitennavigation",
+      "description": "Die Seitennavigation markiert den aktuellen Bereich mit isActive()-Signals statt der RouterLinkActive-Direktive. Das hier sind dieselben Signals, live.",
+      "caption": "isActive()-Ergebnis je Route",
+      "explain": "Über die Seitennavigation navigieren – die Werte ändern sich, denn es sind aus dem Router-Zustand abgeleitete Signals."
+    }
   }
 }

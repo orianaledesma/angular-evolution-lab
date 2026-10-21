@@ -1,0 +1,68 @@
+<app-card [heading]="'v22.resources.title' | translate">
+  <p class="muted">{{ 'v22.resources.description' | translate }}</p>
+
+  <div class="demo-live">
+    <label for="v22-search">{{ 'v22.resources.label' | translate }}</label>
+    <input
+      id="v22-search"
+      class="input"
+      type="search"
+      autocomplete="off"
+      [value]="query()"
+      [attr.placeholder]="'v22.resources.placeholder' | translate"
+      (input)="onInput($event)"
+    />
+    <div class="status">
+      <app-badge tone="warning" data-testid="term-status"
+        >debounced · {{ term.status() }}</app-badge
+      >
+      <app-badge tone="info" data-testid="results-status"
+        >results · {{ results.status() }}</app-badge
+      >
+      <app-badge data-testid="top-status">top (chain) · {{ top.status() }}</app-badge>
+    </div>
+
+    <div class="demo-grid" aria-live="polite">
+      <div>
+        @if (problem(); as p) {
+          <div class="problem">
+            <p>{{ p.status }} · {{ p.title }}</p>
+          </div>
+        } @else {
+          @let list = results.value();
+          @if (term.value() && !results.isLoading() && list.length === 0) {
+            <p class="muted">{{ 'common.empty' | translate }}</p>
+          }
+          <ul class="rows" [class.stale]="results.isLoading()">
+            @for (v of list; track v.id) {
+              <li class="row">
+                <strong>{{ v.brand }} {{ v.model }}</strong>
+                <span class="muted">{{ v.year }}</span>
+                <span class="muted">{{ v.powerKw }} kW</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+      <div>
+        @if (top.hasValue()) {
+          @let best = top.value();
+          <dl class="kv" data-testid="top-match">
+            <div class="emphasis">
+              <dt>{{ 'v22.resources.top' | translate }}</dt>
+              <dd>{{ best.brand }} {{ best.model }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'v16.binding.price' | translate }}</dt>
+              <dd>{{ best.priceEur | eur: lang() }}</dd>
+            </div>
+          </dl>
+        } @else {
+          <p class="muted">{{ 'v22.resources.hint' | translate }}</p>
+        }
+      </div>
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

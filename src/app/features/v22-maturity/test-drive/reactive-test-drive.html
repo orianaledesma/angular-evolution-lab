@@ -1,0 +1,107 @@
+<form
+  class="stack"
+  novalidate
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+  aria-labelledby="td-reactive-title"
+>
+  <h3 id="td-reactive-title">Reactive Forms</h3>
+  @let nameError = error('fullName');
+  <app-form-field
+    [label]="'v22.forms.name' | translate"
+    fieldId="tdr-name"
+    [required]="true"
+    [error]="nameError ? (nameError | translate) : null"
+  >
+    <input
+      id="tdr-name"
+      class="input"
+      autocomplete="name"
+      formControlName="fullName"
+      [attr.aria-invalid]="nameError ? 'true' : null"
+      [attr.aria-describedby]="describedBy('tdr-name', false, !!nameError)"
+    />
+  </app-form-field>
+  @let emailError = error('email');
+  <app-form-field
+    [label]="'v22.forms.email' | translate"
+    fieldId="tdr-email"
+    [hint]="'v22.forms.emailHint' | translate"
+    [required]="true"
+    [error]="emailError ? (emailError | translate) : null"
+  >
+    <input
+      id="tdr-email"
+      class="input"
+      type="email"
+      autocomplete="email"
+      formControlName="email"
+      [attr.aria-invalid]="emailError ? 'true' : null"
+      [attr.aria-describedby]="describedBy('tdr-email', true, !!emailError)"
+    />
+  </app-form-field>
+  @let vehicleError = error('vehicleId');
+  <app-form-field
+    [label]="'v22.forms.vehicle' | translate"
+    fieldId="tdr-vehicle"
+    [required]="true"
+    [error]="vehicleError ? (vehicleError | translate) : null"
+  >
+    <select
+      id="tdr-vehicle"
+      class="input"
+      formControlName="vehicleId"
+      [attr.aria-invalid]="vehicleError ? 'true' : null"
+      [attr.aria-describedby]="describedBy('tdr-vehicle', false, !!vehicleError)"
+    >
+      <option value="">{{ 'v22.forms.choose' | translate }}</option>
+      @for (v of vehicles; track v.id) {
+        <option [value]="v.id">{{ v.label }}</option>
+      }
+    </select>
+  </app-form-field>
+  @let dateError = error('date');
+  <app-form-field
+    [label]="'v22.forms.date' | translate"
+    fieldId="tdr-date"
+    [required]="true"
+    [error]="dateError ? (dateError | translate) : null"
+  >
+    <input
+      id="tdr-date"
+      class="input"
+      type="date"
+      [min]="minDate"
+      formControlName="date"
+      [attr.aria-invalid]="dateError ? 'true' : null"
+      [attr.aria-describedby]="describedBy('tdr-date', false, !!dateError)"
+    />
+  </app-form-field>
+  @let consentError = error('consent');
+  <div class="stack">
+    <label class="checkbox">
+      <input
+        type="checkbox"
+        formControlName="consent"
+        [attr.aria-invalid]="consentError ? 'true' : null"
+        [attr.aria-describedby]="consentError ? 'tdr-consent-error' : null"
+      />
+      {{ 'v22.forms.consent' | translate }}
+    </label>
+    <div aria-live="polite">
+      @if (consentError) {
+        <p id="tdr-consent-error" class="field-error">{{ consentError | translate }}</p>
+      }
+    </div>
+  </div>
+  <button app-button type="submit" [disabled]="submitting()">
+    {{ (submitting() ? 'v22.forms.sending' : 'v22.forms.book') | translate }}
+  </button>
+  <div aria-live="polite">
+    @if (confirmation(); as c) {
+      <p class="status" data-testid="reactive-confirmation">
+        ✓ {{ 'v22.forms.booked' | translate: { ref: c.reference } }}
+      </p>
+    }
+  </div>
+</form>

@@ -1,0 +1,101 @@
+<form class="stack" [formRoot]="f" aria-labelledby="td-signal-title">
+  <h3 id="td-signal-title">Signal Forms</h3>
+  @let nameError = error('fullName');
+  <app-form-field
+    [label]="'v22.forms.name' | translate"
+    fieldId="tds-name"
+    [required]="true"
+    [error]="nameError ? (nameError | translate) : null"
+  >
+    <input
+      id="tds-name"
+      class="input"
+      autocomplete="name"
+      [formField]="f.fullName"
+      [attr.aria-invalid]="nameError ? 'true' : null"
+      [attr.aria-describedby]="describedBy('tds-name', false, !!nameError)"
+    />
+  </app-form-field>
+  @let emailError = error('email');
+  <app-form-field
+    [label]="'v22.forms.email' | translate"
+    fieldId="tds-email"
+    [hint]="'v22.forms.emailHint' | translate"
+    [required]="true"
+    [error]="emailError ? (emailError | translate) : null"
+  >
+    <input
+      id="tds-email"
+      class="input"
+      type="email"
+      autocomplete="email"
+      [formField]="f.email"
+      [attr.aria-invalid]="emailError ? 'true' : null"
+      [attr.aria-describedby]="describedBy('tds-email', true, !!emailError)"
+    />
+  </app-form-field>
+  @let vehicleError = error('vehicleId');
+  <app-form-field
+    [label]="'v22.forms.vehicle' | translate"
+    fieldId="tds-vehicle"
+    [required]="true"
+    [error]="vehicleError ? (vehicleError | translate) : null"
+  >
+    <select
+      id="tds-vehicle"
+      class="input"
+      [formField]="f.vehicleId"
+      [attr.aria-invalid]="vehicleError ? 'true' : null"
+      [attr.aria-describedby]="describedBy('tds-vehicle', false, !!vehicleError)"
+    >
+      <option value="">{{ 'v22.forms.choose' | translate }}</option>
+      @for (v of vehicles; track v.id) {
+        <option [value]="v.id">{{ v.label }}</option>
+      }
+    </select>
+  </app-form-field>
+  @let dateError = error('date');
+  <app-form-field
+    [label]="'v22.forms.date' | translate"
+    fieldId="tds-date"
+    [required]="true"
+    [error]="dateError ? (dateError | translate) : null"
+  >
+    <input
+      id="tds-date"
+      class="input"
+      type="date"
+      [min]="minDate"
+      [formField]="f.date"
+      [attr.aria-invalid]="dateError ? 'true' : null"
+      [attr.aria-describedby]="describedBy('tds-date', false, !!dateError)"
+    />
+  </app-form-field>
+  @let consentError = error('consent');
+  <div class="stack">
+    <label class="checkbox">
+      <input
+        type="checkbox"
+        [formField]="f.consent"
+        [attr.aria-invalid]="consentError ? 'true' : null"
+        [attr.aria-describedby]="consentError ? 'tds-consent-error' : null"
+      />
+      {{ 'v22.forms.consent' | translate }}
+    </label>
+    <div aria-live="polite">
+      @if (consentError) {
+        <p id="tds-consent-error" class="field-error">{{ consentError | translate }}</p>
+      }
+    </div>
+  </div>
+  <button app-button type="submit" [disabled]="f().submitting()">
+    {{ (f().submitting() ? 'v22.forms.sending' : 'v22.forms.book') | translate }}
+  </button>
+  <div aria-live="polite">
+    @if (confirmation(); as c) {
+      <p class="status" data-testid="signal-confirmation">
+        ✓ {{ 'v22.forms.booked' | translate: { ref: c.reference } }}
+      </p>
+    }
+  </div>
+</form>

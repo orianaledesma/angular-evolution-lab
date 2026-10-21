@@ -32,5 +32,10 @@ export const routes: Routes = [
     title: 'v21 · Signal Forms & Aria',
     loadChildren: () => import('./features/v21-signal-forms/v21.routes'),
   },
+  {
+    path: 'v22',
+    title: 'v22 · Maturity',
+    loadComponent: () => import('./features/v22-maturity/v22-maturity'),
+  },
   { path: '**', title: 'Not found', loadComponent: () => import('./features/not-found/not-found') },
 ];

@@ -1,0 +1,35 @@
+<app-card [heading]="'v22.lazy.title' | translate">
+  <p class="muted">{{ 'v22.lazy.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <button
+        app-button
+        type="button"
+        [disabled]="state() === 'loading'"
+        (click)="void exportCsv()"
+      >
+        {{ 'v22.lazy.export' | translate }}
+      </button>
+      <app-badge tone="info" data-testid="export-state">{{
+        'v22.lazy.states.' + state() | translate
+      }}</app-badge>
+      @if (resolveMs() !== null) {
+        <app-badge tone="success">await csv() · {{ resolveMs() }} ms</app-badge>
+      }
+    </div>
+    <div aria-live="polite">
+      @if (preview()) {
+        <p class="status">
+          {{ (downloaded() ? 'v22.lazy.downloaded' : 'v22.lazy.generated') | translate }}
+        </p>
+        <div class="log">
+          <h3>vehicle-stock.csv</h3>
+          <pre tabindex="0" data-testid="csv-preview">{{ preview() }}</pre>
+        </div>
+      }
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

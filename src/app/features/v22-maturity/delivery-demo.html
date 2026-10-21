@@ -1,0 +1,62 @@
+<app-card [heading]="'v22.switch.title' | translate">
+  <p class="muted">{{ 'v22.switch.description' | translate }}</p>
+
+  <div class="demo-live">
+    <ol class="stepper" [attr.aria-label]="'v22.switch.progress' | translate">
+      @for (step of steps; track step; let i = $index) {
+        <li
+          [class.done]="i < index()"
+          [class.current]="i === index()"
+          [attr.aria-current]="i === index() ? 'step' : null"
+        >
+          {{ 'v22.switch.steps.' + step | translate }}
+        </li>
+      }
+    </ol>
+    <div class="phase" aria-live="polite" data-testid="delivery-phase">
+      <!-- Narrowing needs a stable reference: a @let, not a signal call. -->
+      @let current = status();
+      @switch (current) {
+        @case ('ordered')
+        @case ('confirmed') {
+          <p><span aria-hidden="true">🧾</span> {{ 'v22.switch.phases.processing' | translate }}</p>
+        }
+        @case ('in-production')
+        @case ('quality-check') {
+          <p><span aria-hidden="true">🏭</span> {{ 'v22.switch.phases.factory' | translate }}</p>
+        }
+        @case ('in-transit') {
+          <p><span aria-hidden="true">🚚</span> {{ 'v22.switch.phases.road' | translate }}</p>
+        }
+        @case ('at-dealer')
+        @case ('delivered') {
+          <p><span aria-hidden="true">🔑</span> {{ 'v22.switch.phases.ready' | translate }}</p>
+        }
+        @default never;
+      }
+    </div>
+    <div class="toolbar">
+      <button
+        app-button
+        variant="secondary"
+        size="sm"
+        type="button"
+        [disabled]="index() === 0"
+        (click)="previous()"
+      >
+        ← {{ 'v22.switch.previous' | translate }}
+      </button>
+      <button
+        app-button
+        size="sm"
+        type="button"
+        [disabled]="index() === steps.length - 1"
+        (click)="next()"
+      >
+        {{ 'v22.switch.next' | translate }} →
+      </button>
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>
