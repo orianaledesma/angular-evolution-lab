@@ -40,5 +40,64 @@
     "reset": "Zurücksetzen",
     "notFound": "Seite nicht gefunden",
     "backHome": "Zurück zum Überblick"
+  },
+  "v16": {
+    "title": "Signals kommen",
+    "intro": "Angular 16 führte Signals als reaktive Primitive ein, dazu DestroyRef, Pflicht-Inputs und Input-Binding über den Router. Jede Karte ist live: ausprobieren und dann den Code von früher und heute vergleichen.",
+    "cart": {
+      "title": "signal · computed · effect",
+      "description": "Zubehör-Warenkorb: Mengen sind ein Signal, Summen sind computed, und ein Effect reagiert auf jede Änderung.",
+      "listLabel": "Zubehör",
+      "items": {
+        "wallbox": "Wallbox 11 kW",
+        "tyres": "Winterreifen-Satz",
+        "roofbox": "Dachbox 420 l"
+      },
+      "add": "Ein {{item}} hinzufügen",
+      "remove": "Ein {{item}} entfernen",
+      "quantity": "Menge",
+      "items_count": "Artikel",
+      "vat": "MwSt. 19 %",
+      "total": "Gesamt",
+      "effectRan": "Effect ausgeführt → {{count}} Artikel"
+    },
+    "search": {
+      "title": "toSignal + debounceTime + switchMap",
+      "description": "Tippen, um Fahrzeuge zu suchen. RxJS entprellt und bricht veraltete Anfragen ab; das Ergebnis wird als Signal gelesen.",
+      "label": "Marke oder Modell suchen",
+      "placeholder": "z. B. BMW, ID.3, Taycan",
+      "requests": "{{count}} Anfragen gesendet",
+      "cancelled": "{{count}} von switchMap abgebrochen",
+      "hint": "Einfach lostippen – Anfragen warten 300 ms nach dem letzten Tastendruck.",
+      "results": "{{count}} Fahrzeuge gefunden"
+    },
+    "destroy": {
+      "title": "DestroyRef · takeUntilDestroyed",
+      "description": "Ein Live-Telemetrie-Feed abonniert ein Interval. Beim Entfernen wird das Abonnement automatisch beendet.",
+      "speed": "Geschwindigkeit",
+      "mount": "Telemetrie einhängen",
+      "unmount": "Telemetrie entfernen",
+      "unmounted": "Telemetrie entfernt – kein Abonnement bleibt zurück.",
+      "active": "Aktive Abonnements",
+      "ticks": "Empfangene Werte"
+    },
+    "required": {
+      "title": "Pflicht-Inputs mit Transform",
+      "description": "Das Preisschild verlangt Betrag und Leistung; Transforms machen aus HTML-Attribut-Strings Zahlen und Booleans.",
+      "static": "Statische Attribute: amount=\"39995\" powerKw=\"150\" discounted",
+      "dynamic": "An Steuerelemente gebunden (Strings rein, Zahlen raus):",
+      "power": "Leistung",
+      "discount": "10 % Rabatt anwenden",
+      "hp": "PS"
+    },
+    "binding": {
+      "title": "withComponentInputBinding",
+      "description": "Der Query-Parameter ?vehicle= wird vom Router direkt in einen Komponenten-Input gebunden. Link anklicken und die URL beobachten.",
+      "navLabel": "Fahrzeug-Query-Parameter",
+      "hint": "Oben ein Fahrzeug wählen – der letzte Link liefert ein 404 als Problem Details.",
+      "model": "Modell",
+      "price": "Preis",
+      "power": "Leistung"
+    }
   }
 }

@@ -1,0 +1,28 @@
+<app-card [heading]="'v16.destroy.title' | translate">
+  <p class="muted">{{ 'v16.destroy.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <button app-button type="button" [attr.aria-pressed]="mounted()" (click)="toggle()">
+        {{ (mounted() ? 'v16.destroy.unmount' : 'v16.destroy.mount') | translate }}
+      </button>
+    </div>
+    @if (mounted()) {
+      <app-telemetry-feed />
+    } @else {
+      <p class="muted">{{ 'v16.destroy.unmounted' | translate }}</p>
+    }
+    <dl class="kv">
+      <div class="emphasis">
+        <dt>{{ 'v16.destroy.active' | translate }}</dt>
+        <dd data-testid="active-subs">{{ tracker.active() }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'v16.destroy.ticks' | translate }}</dt>
+        <dd>{{ tracker.ticks() }}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

@@ -1,0 +1,72 @@
+<app-card [heading]="'v16.cart.title' | translate">
+  <p class="muted">{{ 'v16.cart.description' | translate }}</p>
+
+  <ul class="rows" [attr.aria-label]="'v16.cart.listLabel' | translate">
+    @for (item of accessories; track item.id) {
+      <li class="row">
+        <span class="name">{{ 'v16.cart.items.' + item.id | translate }}</span>
+        <span class="muted">{{ item.priceEur | eur: lang() }}</span>
+        <span class="qty">
+          <button
+            app-button
+            variant="secondary"
+            size="sm"
+            type="button"
+            [disabled]="qty(item.id) === 0"
+            [attr.aria-label]="
+              'v16.cart.remove' | translate: { item: ('v16.cart.items.' + item.id | translate) }
+            "
+            (click)="remove(item.id)"
+          >
+            −
+          </button>
+          <output [attr.aria-label]="'v16.cart.quantity' | translate">{{ qty(item.id) }}</output>
+          <button
+            app-button
+            variant="secondary"
+            size="sm"
+            type="button"
+            [attr.aria-label]="
+              'v16.cart.add' | translate: { item: ('v16.cart.items.' + item.id | translate) }
+            "
+            (click)="add(item.id)"
+          >
+            +
+          </button>
+        </span>
+      </li>
+    }
+  </ul>
+
+  <dl class="kv" aria-live="polite">
+    <div>
+      <dt>computed · {{ 'v16.cart.items_count' | translate }}</dt>
+      <dd data-testid="count">{{ count() }}</dd>
+    </div>
+    <div>
+      <dt>computed · {{ 'v16.cart.vat' | translate }}</dt>
+      <dd>{{ vat() | eur: lang() }}</dd>
+    </div>
+    <div class="emphasis">
+      <dt>computed · {{ 'v16.cart.total' | translate }}</dt>
+      <dd data-testid="total">{{ total() | eur: lang() }}</dd>
+    </div>
+  </dl>
+
+  <div class="log">
+    <h3>effect()</h3>
+    <ol>
+      @for (entry of effectLog(); track $index) {
+        <li>{{ 'v16.cart.effectRan' | translate: { count: entry } }}</li>
+      }
+    </ol>
+  </div>
+
+  <div class="cluster">
+    <button app-button variant="ghost" type="button" (click)="clear()">
+      {{ 'common.reset' | translate }}
+    </button>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

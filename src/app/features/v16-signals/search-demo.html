@@ -1,0 +1,57 @@
+<app-card [heading]="'v16.search.title' | translate">
+  <p class="muted">{{ 'v16.search.description' | translate }}</p>
+
+  <div class="demo-live">
+    <label for="v16-search">{{ 'v16.search.label' | translate }}</label>
+    <input
+      id="v16-search"
+      class="input"
+      type="search"
+      autocomplete="off"
+      [value]="query()"
+      [attr.placeholder]="'v16.search.placeholder' | translate"
+      (input)="onInput($event)"
+    />
+    <div class="status">
+      <app-badge tone="info">{{
+        'v16.search.requests' | translate: { count: requests() }
+      }}</app-badge>
+      <app-badge tone="warning">{{
+        'v16.search.cancelled' | translate: { count: cancelled() }
+      }}</app-badge>
+    </div>
+
+    <div aria-live="polite">
+      @let s = state();
+      @switch (s.status) {
+        @case ('idle') {
+          <p class="muted">{{ 'v16.search.hint' | translate }}</p>
+        }
+        @case ('loading') {
+          <p class="muted">{{ 'common.loading' | translate }}</p>
+        }
+        @case ('error') {
+          <div class="problem">
+            <p>{{ s.error.title }}</p>
+          </div>
+        }
+        @case ('success') {
+          <p>{{ 'v16.search.results' | translate: { count: s.data.length } }}</p>
+          <ul class="rows">
+            @for (v of s.data; track v.id) {
+              <li class="row">
+                <strong>{{ v.brand }} {{ v.model }}</strong>
+                <span class="muted">{{ v.year }}</span>
+                <span class="muted">{{ v.powerKw }} kW</span>
+              </li>
+            } @empty {
+              <li class="muted">{{ 'common.empty' | translate }}</li>
+            }
+          </ul>
+        }
+      }
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

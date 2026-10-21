@@ -1,0 +1,53 @@
+<app-card [heading]="'v16.binding.title' | translate">
+  <p class="muted">{{ 'v16.binding.description' | translate }}</p>
+
+  <div class="demo-live">
+    <nav class="toolbar" [attr.aria-label]="'v16.binding.navLabel' | translate">
+      @for (id of featured; track id) {
+        <a
+          [routerLink]="[]"
+          [queryParams]="{ vehicle: id }"
+          [attr.aria-current]="vehicleId() === id ? 'true' : null"
+          >?vehicle={{ id }}</a
+        >
+      }
+    </nav>
+    <p class="status">
+      <code>vehicle()</code> = <code data-testid="bound-id">{{ vehicleId() ?? 'undefined' }}</code>
+    </p>
+    <div aria-live="polite">
+      @let v = vehicle();
+      @switch (v.status) {
+        @case ('idle') {
+          <p class="muted">{{ 'v16.binding.hint' | translate }}</p>
+        }
+        @case ('loading') {
+          <p class="muted">{{ 'common.loading' | translate }}</p>
+        }
+        @case ('error') {
+          <div class="problem">
+            <p>{{ v.error.status }} · {{ v.error.title }}</p>
+          </div>
+        }
+        @case ('success') {
+          <dl class="kv">
+            <div class="emphasis">
+              <dt>{{ 'v16.binding.model' | translate }}</dt>
+              <dd>{{ v.data.brand }} {{ v.data.model }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'v16.binding.price' | translate }}</dt>
+              <dd>{{ v.data.priceEur | eur: lang() }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'v16.binding.power' | translate }}</dt>
+              <dd>{{ v.data.powerKw }} kW</dd>
+            </div>
+          </dl>
+        }
+      }
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

@@ -40,5 +40,64 @@
     "reset": "Restablecer",
     "notFound": "Página no encontrada",
     "backHome": "Volver al resumen"
+  },
+  "v16": {
+    "title": "Llegan los signals",
+    "intro": "Angular 16 introdujo los signals como primitiva reactiva, además de DestroyRef, inputs requeridos y binding de inputs desde el router. Cada tarjeta es una demo viva: usala y después compará el código de antes y de ahora.",
+    "cart": {
+      "title": "signal · computed · effect",
+      "description": "Carrito de accesorios: las cantidades son un signal, los totales son computed y un effect reacciona a cada cambio.",
+      "listLabel": "Accesorios",
+      "items": {
+        "wallbox": "Wallbox 11 kW",
+        "tyres": "Juego de neumáticos de invierno",
+        "roofbox": "Cofre de techo 420 l"
+      },
+      "add": "Agregar un {{item}}",
+      "remove": "Quitar un {{item}}",
+      "quantity": "Cantidad",
+      "items_count": "artículos",
+      "vat": "IVA 19 %",
+      "total": "Total",
+      "effectRan": "el effect corrió → {{count}} artículos"
+    },
+    "search": {
+      "title": "toSignal + debounceTime + switchMap",
+      "description": "Escribí para buscar vehículos. RxJS aplica el debounce y cancela las peticiones viejas; el resultado se lee como signal.",
+      "label": "Buscar marca o modelo",
+      "placeholder": "p. ej. BMW, ID.3, Taycan",
+      "requests": "{{count}} peticiones enviadas",
+      "cancelled": "{{count}} canceladas por switchMap",
+      "hint": "Empezá a escribir: las peticiones esperan 300 ms después de la última tecla.",
+      "results": "{{count}} vehículos encontrados"
+    },
+    "destroy": {
+      "title": "DestroyRef · takeUntilDestroyed",
+      "description": "Un feed de telemetría se suscribe a un interval. Desmontalo y la suscripción se limpia sola.",
+      "speed": "Velocidad",
+      "mount": "Montar telemetría",
+      "unmount": "Desmontar telemetría",
+      "unmounted": "Telemetría desmontada: no queda ninguna suscripción colgada.",
+      "active": "Suscripciones activas",
+      "ticks": "Valores recibidos"
+    },
+    "required": {
+      "title": "Inputs requeridos con transform",
+      "description": "La etiqueta de precio exige monto y potencia; los transforms convierten los strings de los atributos HTML en números y booleanos.",
+      "static": "Atributos estáticos: amount=\"39995\" powerKw=\"150\" discounted",
+      "dynamic": "Ligado a controles (entran strings, salen números):",
+      "power": "Potencia",
+      "discount": "Aplicar 10 % de descuento",
+      "hp": "CV"
+    },
+    "binding": {
+      "title": "withComponentInputBinding",
+      "description": "El query param ?vehicle= llega directo a un input del componente gracias al router. Hacé clic en un link y mirá la URL.",
+      "navLabel": "Query param del vehículo",
+      "hint": "Elegí un vehículo arriba: el último link devuelve un 404 como Problem Details.",
+      "model": "Modelo",
+      "price": "Precio",
+      "power": "Potencia"
+    }
   }
 }

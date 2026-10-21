@@ -40,5 +40,64 @@
     "reset": "Reset",
     "notFound": "Page not found",
     "backHome": "Back to overview"
+  },
+  "v16": {
+    "title": "Signals arrive",
+    "intro": "Angular 16 introduced signals as a reactive primitive, plus DestroyRef, required inputs and router input binding. Each card below is live: use it, then compare the code before and now.",
+    "cart": {
+      "title": "signal · computed · effect",
+      "description": "Accessory cart: quantities are a signal, totals are computed, and an effect reacts to every change.",
+      "listLabel": "Accessories",
+      "items": {
+        "wallbox": "Wallbox 11 kW",
+        "tyres": "Winter tyres set",
+        "roofbox": "Roof box 420 l"
+      },
+      "add": "Add one {{item}}",
+      "remove": "Remove one {{item}}",
+      "quantity": "Quantity",
+      "items_count": "items",
+      "vat": "VAT 19 %",
+      "total": "Total",
+      "effectRan": "effect ran → {{count}} items"
+    },
+    "search": {
+      "title": "toSignal + debounceTime + switchMap",
+      "description": "Type to search vehicles. RxJS debounces and cancels stale requests; the result is read as a signal.",
+      "label": "Search brand or model",
+      "placeholder": "e.g. BMW, ID.3, Taycan",
+      "requests": "{{count}} requests sent",
+      "cancelled": "{{count}} cancelled by switchMap",
+      "hint": "Start typing — requests wait 300 ms after your last keystroke.",
+      "results": "{{count}} vehicles found"
+    },
+    "destroy": {
+      "title": "DestroyRef · takeUntilDestroyed",
+      "description": "A live telemetry feed subscribes to an interval. Unmount it and the subscription is cleaned up automatically.",
+      "speed": "Speed",
+      "mount": "Mount telemetry",
+      "unmount": "Unmount telemetry",
+      "unmounted": "Telemetry unmounted — no subscription left behind.",
+      "active": "Active subscriptions",
+      "ticks": "Values received"
+    },
+    "required": {
+      "title": "Required inputs with transform",
+      "description": "The price tag requires an amount and power; transforms turn HTML attribute strings into numbers and booleans.",
+      "static": "Static attributes: amount=\"39995\" powerKw=\"150\" discounted",
+      "dynamic": "Bound to controls (strings in, numbers out):",
+      "power": "Power",
+      "discount": "Apply 10 % discount",
+      "hp": "hp"
+    },
+    "binding": {
+      "title": "withComponentInputBinding",
+      "description": "The ?vehicle= query parameter is bound straight into a component input by the router. Click a link and watch the URL.",
+      "navLabel": "Vehicle query parameter",
+      "hint": "Pick a vehicle above — the last link triggers a 404 Problem Details.",
+      "model": "Model",
+      "price": "Price",
+      "power": "Power"
+    }
   }
 }

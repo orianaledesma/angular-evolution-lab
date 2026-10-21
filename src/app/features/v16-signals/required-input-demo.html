@@ -1,0 +1,29 @@
+<app-card [heading]="'v16.required.title' | translate">
+  <p class="muted">{{ 'v16.required.description' | translate }}</p>
+
+  <div class="demo-live">
+    <p class="explain">{{ 'v16.required.static' | translate }}</p>
+    <app-price-tag amount="39995" powerKw="150" discounted />
+
+    <p class="explain">{{ 'v16.required.dynamic' | translate }}</p>
+    <div class="toolbar">
+      <label for="v16-power">{{ 'v16.required.power' | translate }}: {{ power() }} kW</label>
+      <input
+        id="v16-power"
+        type="range"
+        min="60"
+        max="400"
+        step="10"
+        [value]="power()"
+        (input)="onPower($event)"
+      />
+      <label>
+        <input type="checkbox" [checked]="discounted()" (change)="onDiscount($event)" />
+        {{ 'v16.required.discount' | translate }}
+      </label>
+    </div>
+    <app-price-tag amount="59900" [powerKw]="power()" [discounted]="discounted()" />
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>
