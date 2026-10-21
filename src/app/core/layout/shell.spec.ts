@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
 import { LoadingService } from '../http/loading.service';
-import { Shell } from './shell';
+import { Shell, sectionOf } from './shell';
 
 @Component({ selector: 'app-dummy', template: '<h1>Dummy page</h1>' })
 class DummyPage {}
@@ -57,5 +57,13 @@ describe('Shell', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+});
+
+describe('sectionOf', () => {
+  it('returns the first path segment, ignoring query and fragment', () => {
+    expect(sectionOf('/v21/bay-a?x=1')).toBe('v21');
+    expect(sectionOf('/v16?vehicle=bmw-i4#top')).toBe('v16');
+    expect(sectionOf('/')).toBe('');
   });
 });
