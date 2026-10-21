@@ -24,7 +24,10 @@ export default defineConfig({
   ],
   // E2E runs against the production build, exactly what nginx serves in Docker.
   webServer: {
-    command: 'npm run build && node scripts/serve-dist.mjs',
+    // CI downloads the build artifact from the build job; locally we build first.
+    command: process.env['CI']
+      ? 'node scripts/serve-dist.mjs'
+      : 'npm run build && node scripts/serve-dist.mjs',
     url: `http://localhost:${String(PORT)}`,
     reuseExistingServer: !process.env['CI'],
     timeout: 180_000,
