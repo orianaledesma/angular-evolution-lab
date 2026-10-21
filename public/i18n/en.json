@@ -99,5 +99,63 @@
       "price": "Price",
       "power": "Power"
     }
+  },
+  "v17": {
+    "title": "Control flow & defer",
+    "intro": "Angular 17 brought built-in control flow (@if, @for, @switch), deferrable views and — in 17.1/17.2 — signal inputs, model() and signal queries.",
+    "for": {
+      "title": "@for with track and @empty",
+      "description": "{{rows}} stock units. Switch the tracking strategy, then refresh or shuffle and watch how many table rows the browser had to create.",
+      "trackLabel": "Tracking strategy",
+      "likeNgFor": "like *ngFor without trackBy",
+      "refresh": "Refresh data (new objects)",
+      "shuffle": "Shuffle",
+      "filter": "Filter by model, dealer or VIN",
+      "visible": "Visible rows",
+      "created": "<tr> created on last update",
+      "render": "Last render",
+      "tableLabel": "Vehicle stock",
+      "model": "Model",
+      "dealer": "Dealer",
+      "price": "Price",
+      "empty": "No vehicles match this filter (@empty)."
+    },
+    "defer": {
+      "title": "@defer (on viewport)",
+      "description": "The chart below lives in its own lazy chunk. It is only downloaded when you scroll it into view.",
+      "scrollLabel": "Deferred chart area",
+      "scrollHint": "Scroll inside this box",
+      "placeholder": "@placeholder — the chart chunk has not been requested yet.",
+      "loading": "@loading — downloading the chart chunk…",
+      "chartTitle": "Most powerful vehicles in stock (kW)"
+    },
+    "io": {
+      "title": "input() · model() · output()",
+      "description": "Each rating is a child component: label is a required input, the value is a two-way model() and every pick emits an output().",
+      "comfort": "Comfort",
+      "range": "Range",
+      "average": "average",
+      "reset": "Set both to 1 from the parent"
+    },
+    "queries": {
+      "title": "viewChild · viewChildren (signal queries)",
+      "description": "Pre-delivery checklist. The parent queries its children as signals, so the progress is a plain computed.",
+      "progress": "{{done}} of {{total}} checks done",
+      "checks": {
+        "tyrePressure": "Tyre pressure",
+        "chargingCable": "Charging cable in the boot",
+        "software": "Software update installed",
+        "paint": "Paint inspection"
+      },
+      "newLabel": "New check",
+      "add": "Add check"
+    },
+    "vt": {
+      "title": "withViewTransitions",
+      "description": "Switching the layout is a router navigation (?layout=). The browser animates every car to its new position with the View Transitions API.",
+      "navLabel": "Showroom layout",
+      "grid": "Grid",
+      "list": "List"
+    }
   }
 }

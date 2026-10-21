@@ -99,5 +99,63 @@
       "price": "Precio",
       "power": "Potencia"
     }
+  },
+  "v17": {
+    "title": "Control flow y defer",
+    "intro": "Angular 17 trajo el control flow nativo (@if, @for, @switch), las vistas diferibles y, en 17.1/17.2, inputs basados en signals, model() y queries signal.",
+    "for": {
+      "title": "@for con track y @empty",
+      "description": "{{rows}} unidades en stock. Cambiá la estrategia de tracking, después refrescá o mezclá y mirá cuántas filas tuvo que crear el navegador.",
+      "trackLabel": "Estrategia de tracking",
+      "likeNgFor": "como *ngFor sin trackBy",
+      "refresh": "Refrescar datos (objetos nuevos)",
+      "shuffle": "Mezclar",
+      "filter": "Filtrar por modelo, concesionario o VIN",
+      "visible": "Filas visibles",
+      "created": "<tr> creados en la última actualización",
+      "render": "Último render",
+      "tableLabel": "Stock de vehículos",
+      "model": "Modelo",
+      "dealer": "Concesionario",
+      "price": "Precio",
+      "empty": "Ningún vehículo coincide con el filtro (@empty)."
+    },
+    "defer": {
+      "title": "@defer (on viewport)",
+      "description": "El gráfico de abajo vive en su propio chunk lazy. Solo se descarga cuando lo hacés entrar en pantalla.",
+      "scrollLabel": "Zona del gráfico diferido",
+      "scrollHint": "Hacé scroll dentro de esta caja",
+      "placeholder": "@placeholder: todavía no se pidió el chunk del gráfico.",
+      "loading": "@loading: descargando el chunk del gráfico…",
+      "chartTitle": "Vehículos más potentes en stock (kW)"
+    },
+    "io": {
+      "title": "input() · model() · output()",
+      "description": "Cada valoración es un componente hijo: label es un input requerido, el valor es un model() bidireccional y cada elección emite un output().",
+      "comfort": "Confort",
+      "range": "Autonomía",
+      "average": "promedio",
+      "reset": "Poner ambos en 1 desde el padre"
+    },
+    "queries": {
+      "title": "viewChild · viewChildren (queries signal)",
+      "description": "Checklist previo a la entrega. El padre consulta a sus hijos como signals, así que el progreso es un simple computed.",
+      "progress": "{{done}} de {{total}} controles hechos",
+      "checks": {
+        "tyrePressure": "Presión de neumáticos",
+        "chargingCable": "Cable de carga en el baúl",
+        "software": "Actualización de software instalada",
+        "paint": "Inspección de pintura"
+      },
+      "newLabel": "Nuevo control",
+      "add": "Agregar control"
+    },
+    "vt": {
+      "title": "withViewTransitions",
+      "description": "Cambiar la vista es una navegación del router (?layout=). El navegador anima cada auto a su nueva posición con la View Transitions API.",
+      "navLabel": "Vista del showroom",
+      "grid": "Cuadrícula",
+      "list": "Lista"
+    }
   }
 }

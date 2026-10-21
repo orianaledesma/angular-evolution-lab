@@ -1,0 +1,114 @@
+<app-card [heading]="'v17.for.title' | translate">
+  <p class="muted">{{ 'v17.for.description' | translate: { rows: rows() } }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar" role="group" [attr.aria-label]="'v17.for.trackLabel' | translate">
+      <button
+        app-button
+        size="sm"
+        type="button"
+        [variant]="trackMode() === 'id' ? 'primary' : 'secondary'"
+        [attr.aria-pressed]="trackMode() === 'id'"
+        (click)="setTrackMode('id')"
+      >
+        track unit.id
+      </button>
+      <button
+        app-button
+        size="sm"
+        type="button"
+        [variant]="trackMode() === 'identity' ? 'primary' : 'secondary'"
+        [attr.aria-pressed]="trackMode() === 'identity'"
+        (click)="setTrackMode('identity')"
+      >
+        track unit ({{ 'v17.for.likeNgFor' | translate }})
+      </button>
+    </div>
+    <div class="toolbar">
+      <button app-button variant="secondary" size="sm" type="button" (click)="refresh()">
+        {{ 'v17.for.refresh' | translate }}
+      </button>
+      <button app-button variant="secondary" size="sm" type="button" (click)="shuffleRows()">
+        {{ 'v17.for.shuffle' | translate }}
+      </button>
+      <label class="filter">
+        <span class="visually-hidden">{{ 'v17.for.filter' | translate }}</span>
+        <input
+          class="input"
+          type="search"
+          [attr.placeholder]="'v17.for.filter' | translate"
+          [value]="filter()"
+          (input)="onFilter($event)"
+        />
+      </label>
+    </div>
+
+    <dl class="kv" aria-live="polite">
+      <div>
+        <dt>{{ 'v17.for.visible' | translate }}</dt>
+        <dd data-testid="visible">{{ visible().length }}</dd>
+      </div>
+      <div class="emphasis">
+        <dt>{{ 'v17.for.created' | translate }}</dt>
+        <dd data-testid="created">{{ nodesCreated() }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'v17.for.render' | translate }}</dt>
+        <dd>{{ renderMs() === null ? '—' : renderMs() + ' ms' }}</dd>
+      </div>
+    </dl>
+
+    <div
+      class="table-scroll"
+      tabindex="0"
+      role="region"
+      [attr.aria-label]="'v17.for.tableLabel' | translate"
+    >
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th scope="col">VIN</th>
+            <th scope="col">{{ 'v17.for.model' | translate }}</th>
+            <th scope="col">{{ 'v17.for.dealer' | translate }}</th>
+            <th scope="col">{{ 'v17.for.price' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody #tbody>
+          @if (trackMode() === 'id') {
+            @for (unit of visible(); track unit.id) {
+              <tr>
+                <td>
+                  <code>{{ unit.vin }}</code>
+                </td>
+                <td>{{ unit.model }}</td>
+                <td>{{ unit.dealer }}</td>
+                <td>{{ unit.priceEur | eur: lang() }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="muted">{{ 'v17.for.empty' | translate }}</td>
+              </tr>
+            }
+          } @else {
+            @for (unit of visible(); track unit) {
+              <tr>
+                <td>
+                  <code>{{ unit.vin }}</code>
+                </td>
+                <td>{{ unit.model }}</td>
+                <td>{{ unit.dealer }}</td>
+                <td>{{ unit.priceEur | eur: lang() }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="4" class="muted">{{ 'v17.for.empty' | translate }}</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

@@ -1,0 +1,27 @@
+<app-card [heading]="'v17.defer.title' | translate">
+  <p class="muted">{{ 'v17.defer.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div
+      class="scroller"
+      tabindex="0"
+      role="region"
+      [attr.aria-label]="'v17.defer.scrollLabel' | translate"
+    >
+      <div class="spacer" aria-hidden="true">↓ {{ 'v17.defer.scrollHint' | translate }} ↓</div>
+      <div class="slot" aria-live="polite">
+        @defer (on viewport) {
+          <app-power-chart />
+        } @placeholder {
+          <p data-testid="defer-placeholder">{{ 'v17.defer.placeholder' | translate }}</p>
+        } @loading (minimum 600ms) {
+          <p data-testid="defer-loading">{{ 'v17.defer.loading' | translate }}</p>
+        } @error {
+          <p class="problem">{{ 'common.error' | translate }}</p>
+        }
+      </div>
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

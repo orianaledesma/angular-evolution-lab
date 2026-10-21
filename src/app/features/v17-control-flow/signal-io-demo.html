@@ -1,0 +1,47 @@
+<app-card [heading]="'v17.io.title' | translate">
+  <p class="muted">{{ 'v17.io.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <app-rating
+        [label]="'v17.io.comfort' | translate"
+        [(value)]="comfort"
+        (committed)="log('comfort', $event)"
+      />
+      <app-rating
+        [label]="'v17.io.range' | translate"
+        [(value)]="range"
+        (committed)="log('range', $event)"
+      />
+    </div>
+    <dl class="kv">
+      <div>
+        <dt>parent · comfort()</dt>
+        <dd data-testid="comfort">{{ comfort() }}</dd>
+      </div>
+      <div>
+        <dt>parent · range()</dt>
+        <dd>{{ range() }}</dd>
+      </div>
+      <div class="emphasis">
+        <dt>computed · {{ 'v17.io.average' | translate }}</dt>
+        <dd data-testid="average">{{ average() }}</dd>
+      </div>
+    </dl>
+    <div class="toolbar">
+      <button app-button variant="secondary" size="sm" type="button" (click)="resetFromParent()">
+        {{ 'v17.io.reset' | translate }}
+      </button>
+    </div>
+    <div class="log">
+      <h3>output() · committed</h3>
+      <ul>
+        @for (entry of commits(); track $index) {
+          <li>{{ entry }}</li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

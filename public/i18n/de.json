@@ -99,5 +99,63 @@
       "price": "Preis",
       "power": "Leistung"
     }
+  },
+  "v17": {
+    "title": "Control Flow & Defer",
+    "intro": "Angular 17 brachte eingebauten Control Flow (@if, @for, @switch), aufschiebbare Views und – in 17.1/17.2 – Signal-Inputs, model() und Signal-Queries.",
+    "for": {
+      "title": "@for mit track und @empty",
+      "description": "{{rows}} Fahrzeuge im Bestand. Tracking-Strategie wechseln, dann aktualisieren oder mischen und sehen, wie viele Tabellenzeilen der Browser neu erzeugen musste.",
+      "trackLabel": "Tracking-Strategie",
+      "likeNgFor": "wie *ngFor ohne trackBy",
+      "refresh": "Daten aktualisieren (neue Objekte)",
+      "shuffle": "Mischen",
+      "filter": "Nach Modell, Händler oder FIN filtern",
+      "visible": "Sichtbare Zeilen",
+      "created": "<tr> beim letzten Update erzeugt",
+      "render": "Letztes Rendering",
+      "tableLabel": "Fahrzeugbestand",
+      "model": "Modell",
+      "dealer": "Händler",
+      "price": "Preis",
+      "empty": "Kein Fahrzeug passt zum Filter (@empty)."
+    },
+    "defer": {
+      "title": "@defer (on viewport)",
+      "description": "Das Diagramm unten liegt in einem eigenen Lazy-Chunk. Es wird erst geladen, wenn es in den sichtbaren Bereich gescrollt wird.",
+      "scrollLabel": "Bereich des aufgeschobenen Diagramms",
+      "scrollHint": "In dieser Box scrollen",
+      "placeholder": "@placeholder – der Diagramm-Chunk wurde noch nicht angefordert.",
+      "loading": "@loading – Diagramm-Chunk wird geladen…",
+      "chartTitle": "Leistungsstärkste Fahrzeuge im Bestand (kW)"
+    },
+    "io": {
+      "title": "input() · model() · output()",
+      "description": "Jede Bewertung ist eine Kind-Komponente: label ist ein Pflicht-Input, der Wert ein bidirektionales model(), und jede Auswahl löst ein output() aus.",
+      "comfort": "Komfort",
+      "range": "Reichweite",
+      "average": "Durchschnitt",
+      "reset": "Beide vom Parent auf 1 setzen"
+    },
+    "queries": {
+      "title": "viewChild · viewChildren (Signal-Queries)",
+      "description": "Checkliste vor der Auslieferung. Der Parent fragt seine Kinder als Signals ab, daher ist der Fortschritt ein einfaches computed.",
+      "progress": "{{done}} von {{total}} Prüfungen erledigt",
+      "checks": {
+        "tyrePressure": "Reifendruck",
+        "chargingCable": "Ladekabel im Kofferraum",
+        "software": "Software-Update installiert",
+        "paint": "Lackprüfung"
+      },
+      "newLabel": "Neue Prüfung",
+      "add": "Prüfung hinzufügen"
+    },
+    "vt": {
+      "title": "withViewTransitions",
+      "description": "Der Layoutwechsel ist eine Router-Navigation (?layout=). Der Browser animiert jedes Auto mit der View Transitions API an seine neue Position.",
+      "navLabel": "Showroom-Layout",
+      "grid": "Raster",
+      "list": "Liste"
+    }
   }
 }

@@ -1,0 +1,38 @@
+<app-card [heading]="'v17.queries.title' | translate">
+  <p class="muted">{{ 'v17.queries.description' | translate }}</p>
+
+  <div class="demo-live">
+    <p class="status" aria-live="polite">
+      <strong data-testid="done">{{
+        'v17.queries.progress' | translate: { done: done(), total: total() }
+      }}</strong>
+    </p>
+    <div>
+      @for (key of defaultChecks; track key) {
+        <app-checklist-item [label]="'v17.queries.checks.' + key | translate" />
+      }
+      @for (label of labels(); track $index) {
+        <app-checklist-item [label]="label" />
+      }
+    </div>
+    <form class="toolbar" (submit)="add($event)">
+      <label for="v17-new-check" class="visually-hidden">{{
+        'v17.queries.newLabel' | translate
+      }}</label>
+      <input
+        id="v17-new-check"
+        #newItem
+        class="input"
+        [attr.placeholder]="'v17.queries.newLabel' | translate"
+        [value]="draft()"
+        (input)="onDraft($event)"
+      />
+      <button app-button size="sm" type="submit">{{ 'v17.queries.add' | translate }}</button>
+      <button app-button variant="ghost" size="sm" type="button" (click)="focusInput()">
+        viewChild → focus()
+      </button>
+    </form>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

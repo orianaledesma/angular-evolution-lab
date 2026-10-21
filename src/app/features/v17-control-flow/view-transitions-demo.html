@@ -1,0 +1,32 @@
+<app-card [heading]="'v17.vt.title' | translate">
+  <p class="muted">{{ 'v17.vt.description' | translate }}</p>
+
+  <div class="demo-live">
+    <nav class="toolbar" [attr.aria-label]="'v17.vt.navLabel' | translate">
+      <a
+        [routerLink]="[]"
+        [queryParams]="{ layout: 'grid' }"
+        queryParamsHandling="merge"
+        [attr.aria-current]="layout() === 'grid' ? 'true' : null"
+        >{{ 'v17.vt.grid' | translate }}</a
+      >
+      <a
+        [routerLink]="[]"
+        [queryParams]="{ layout: 'list' }"
+        queryParamsHandling="merge"
+        [attr.aria-current]="layout() === 'list' ? 'true' : null"
+        >{{ 'v17.vt.list' | translate }}</a
+      >
+    </nav>
+    <ul class="showroom" [class.list]="layout() === 'list'" data-testid="showroom">
+      @for (car of showroom; track car.id) {
+        <li class="car" [style.view-transition-name]="'vt-' + car.id">
+          <span class="swatch" [style.background]="car.color" aria-hidden="true"></span>
+          <span>{{ car.name }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>
