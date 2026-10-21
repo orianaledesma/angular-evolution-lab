@@ -1,0 +1,90 @@
+{
+  "name": "angular-evolution-lab",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "build:dev": "ng build --configuration development",
+    "watch": "ng build --watch --configuration development",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --ci --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:styles": "stylelint \"src/**/*.scss\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.spec.json",
+    "e2e": "playwright test",
+    "e2e:install": "playwright install --with-deps chromium firefox webkit",
+    "check:legacy": "node scripts/check-legacy.mjs",
+    "check:zone": "node scripts/check-zone.mjs",
+    "prepare": "husky"
+  },
+  "private": true,
+  "packageManager": "npm@11.19.1",
+  "dependencies": {
+    "@angular/aria": "22.2.4",
+    "@angular/cdk": "22.2.4",
+    "@angular/common": "22.2.3",
+    "@angular/compiler": "22.2.3",
+    "@angular/core": "22.2.3",
+    "@angular/forms": "22.2.3",
+    "@angular/platform-browser": "22.2.3",
+    "@angular/router": "22.2.3",
+    "@ngx-translate/core": "18.0.0",
+    "@ngx-translate/http-loader": "18.0.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "22.2.3",
+    "@angular/cli": "22.2.3",
+    "@angular/compiler-cli": "22.2.3",
+    "@axe-core/playwright": "4.14.0",
+    "@commitlint/cli": "21.2.4",
+    "@commitlint/config-conventional": "21.2.4",
+    "@eslint/js": "9.39.5",
+    "@playwright/test": "1.64.1",
+    "@testing-library/angular": "19.6.0",
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/jest-dom": "7.0.1",
+    "@testing-library/user-event": "14.6.8",
+    "@types/jest": "30.0.0",
+    "@types/node": "24.19.2",
+    "angular-eslint": "22.6.0",
+    "eslint": "9.39.5",
+    "husky": "9.1.7",
+    "jest": "30.5.2",
+    "jest-environment-jsdom": "30.5.2",
+    "jest-preset-angular": "17.0.3",
+    "jsdom": "26.1.0",
+    "lint-staged": "17.6.0",
+    "prettier": "^3.8.1",
+    "stylelint": "17.16.0",
+    "stylelint-config-standard-scss": "17.0.0",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "8.72.0"
+  },
+  "engines": {
+    "node": ">=24.15.0"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.html": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.scss": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml,js,mjs,cjs}": [
+      "prettier --write"
+    ]
+  }
+}

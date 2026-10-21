@@ -1,0 +1,12 @@
+{
+  "extends": ["stylelint-config-standard-scss"],
+  "rules": {
+    "selector-pseudo-element-no-unknown": [true, { "ignorePseudoElements": ["ng-deep"] }],
+    "selector-type-no-unknown": [true, { "ignoreTypes": ["/^app-/"] }],
+    "scss/load-no-partial-leading-underscore": true,
+    "at-rule-disallowed-list": ["import"],
+    "color-no-hex": null,
+    "custom-property-pattern": null,
+    "selector-class-pattern": null
+  }
+}
