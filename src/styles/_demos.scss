@@ -1,0 +1,128 @@
+// Shared building blocks for the live demos.
+@use 'mixins';
+
+.demo-list {
+  @include mixins.stack(var(--space-6));
+}
+
+.demo-live {
+  @include mixins.stack(var(--space-3));
+
+  padding: var(--space-4);
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-md);
+}
+
+.rows {
+  @include mixins.stack(var(--space-2));
+
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+
+  .qty {
+    @include mixins.cluster(var(--space-2));
+
+    output {
+      min-width: 1.5rem;
+      font-weight: 700;
+      text-align: center;
+    }
+  }
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+
+  > div {
+    padding: var(--space-3);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+
+  dt {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+  }
+
+  .emphasis dd {
+    color: var(--color-accent-strong);
+  }
+}
+
+.log {
+  h3 {
+    margin: 0 0 var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+  }
+
+  ol,
+  ul {
+    min-height: 2rem;
+    max-height: 10rem;
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-6);
+    margin: 0;
+    overflow-y: auto;
+    font-family: var(--font-mono);
+    font-size: var(--font-size-sm);
+    background: var(--color-code-bg);
+    color: var(--color-code-text);
+    border-radius: var(--radius-sm);
+  }
+}
+
+.status {
+  @include mixins.cluster;
+
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.problem {
+  padding: var(--space-3);
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+
+  p {
+    margin: 0;
+  }
+}
+
+.explain {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.toolbar {
+  @include mixins.cluster(var(--space-2));
+}
+
+.stale {
+  opacity: 0.6;
+}
