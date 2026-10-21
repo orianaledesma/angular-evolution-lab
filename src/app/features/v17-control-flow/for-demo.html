@@ -25,10 +25,27 @@
       </button>
     </div>
     <div class="toolbar">
-      <button app-button variant="secondary" size="sm" type="button" (click)="refresh()">
+      <button app-button size="sm" type="button" (click)="generate()">
+        {{ 'v17.for.generate' | translate: { rows: rows() } }}
+      </button>
+      <button
+        app-button
+        variant="secondary"
+        size="sm"
+        type="button"
+        [disabled]="!stock().length"
+        (click)="refresh()"
+      >
         {{ 'v17.for.refresh' | translate }}
       </button>
-      <button app-button variant="secondary" size="sm" type="button" (click)="shuffleRows()">
+      <button
+        app-button
+        variant="secondary"
+        size="sm"
+        type="button"
+        [disabled]="!stock().length"
+        (click)="shuffleRows()"
+      >
         {{ 'v17.for.shuffle' | translate }}
       </button>
       <label class="filter">
@@ -86,7 +103,9 @@
               </tr>
             } @empty {
               <tr>
-                <td colspan="4" class="muted">{{ 'v17.for.empty' | translate }}</td>
+                <td colspan="4" class="muted">
+                  {{ (stock().length ? 'v17.for.empty' : 'v17.for.notLoaded') | translate }}
+                </td>
               </tr>
             }
           } @else {
@@ -101,7 +120,9 @@
               </tr>
             } @empty {
               <tr>
-                <td colspan="4" class="muted">{{ 'v17.for.empty' | translate }}</td>
+                <td colspan="4" class="muted">
+                  {{ (stock().length ? 'v17.for.empty' : 'v17.for.notLoaded') | translate }}
+                </td>
               </tr>
             }
           }

@@ -11,13 +11,20 @@ describe('ForDemo (@for track + @empty)', () => {
       providers: [provideTranslateTesting()],
       inputs: { rows: 40 },
     });
+    await user.click(screen.getByRole('button', { name: 'Generate 40 units' }));
     await result.fixture.whenStable();
     return { user, ...result };
   }
 
   const created = () => Number(screen.getByTestId('created').textContent);
 
-  it('renders the generated stock', async () => {
+  it('starts empty, with the actions disabled', async () => {
+    await render(ForDemo, { providers: [provideTranslateTesting()], inputs: { rows: 40 } });
+    expect(screen.getByText(/No stock loaded yet/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Shuffle' })).toBeDisabled();
+  });
+
+  it('renders the stock on demand', async () => {
     await setup();
     expect(screen.getByTestId('visible')).toHaveTextContent('40');
     expect(

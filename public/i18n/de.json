@@ -105,7 +105,7 @@
     "intro": "Angular 17 brachte eingebauten Control Flow (@if, @for, @switch), aufschiebbare Views und – in 17.1/17.2 – Signal-Inputs, model() und Signal-Queries.",
     "for": {
       "title": "@for mit track und @empty",
-      "description": "{{rows}} Fahrzeuge im Bestand. Tracking-Strategie wechseln, dann aktualisieren oder mischen und sehen, wie viele Tabellenzeilen der Browser neu erzeugen musste.",
+      "description": "Bis zu {{rows}} Fahrzeuge im Bestand. Erzeugen, Tracking-Strategie wechseln, dann aktualisieren oder mischen und sehen, wie viele Tabellenzeilen der Browser neu erzeugen musste.",
       "trackLabel": "Tracking-Strategie",
       "likeNgFor": "wie *ngFor ohne trackBy",
       "refresh": "Daten aktualisieren (neue Objekte)",
@@ -118,7 +118,9 @@
       "model": "Modell",
       "dealer": "Händler",
       "price": "Preis",
-      "empty": "Kein Fahrzeug passt zum Filter (@empty)."
+      "empty": "Kein Fahrzeug passt zum Filter (@empty).",
+      "generate": "{{rows}} Fahrzeuge erzeugen",
+      "notLoaded": "Noch kein Bestand geladen – Fahrzeuge erzeugen, um zu starten (@empty)."
     },
     "defer": {
       "title": "@defer (on viewport)",

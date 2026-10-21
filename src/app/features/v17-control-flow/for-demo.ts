@@ -73,11 +73,12 @@ export class ForDemo {
     return observer;
   })();
 
-  private readonly initial = afterNextRender(() => {
+  /** Rendering thousands of rows is opt-in: the page stays light until the user asks for it. */
+  generate(): void {
     this.measure(() => {
       this.stock.set(generateStock(this.rows()));
     });
-  });
+  }
 
   /** Same ids, brand-new objects: identity tracking must rebuild every row. */
   refresh(): void {

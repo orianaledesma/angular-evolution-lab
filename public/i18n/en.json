@@ -105,7 +105,7 @@
     "intro": "Angular 17 brought built-in control flow (@if, @for, @switch), deferrable views and — in 17.1/17.2 — signal inputs, model() and signal queries.",
     "for": {
       "title": "@for with track and @empty",
-      "description": "{{rows}} stock units. Switch the tracking strategy, then refresh or shuffle and watch how many table rows the browser had to create.",
+      "description": "Up to {{rows}} stock units. Generate them, switch the tracking strategy, then refresh or shuffle and watch how many table rows the browser had to create.",
       "trackLabel": "Tracking strategy",
       "likeNgFor": "like *ngFor without trackBy",
       "refresh": "Refresh data (new objects)",
@@ -118,7 +118,9 @@
       "model": "Model",
       "dealer": "Dealer",
       "price": "Price",
-      "empty": "No vehicles match this filter (@empty)."
+      "empty": "No vehicles match this filter (@empty).",
+      "generate": "Generate {{rows}} units",
+      "notLoaded": "No stock loaded yet — generate the units to start (@empty)."
     },
     "defer": {
       "title": "@defer (on viewport)",

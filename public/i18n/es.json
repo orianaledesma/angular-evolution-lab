@@ -105,7 +105,7 @@
     "intro": "Angular 17 trajo el control flow nativo (@if, @for, @switch), las vistas diferibles y, en 17.1/17.2, inputs basados en signals, model() y queries signal.",
     "for": {
       "title": "@for con track y @empty",
-      "description": "{{rows}} unidades en stock. Cambiá la estrategia de tracking, después refrescá o mezclá y mirá cuántas filas tuvo que crear el navegador.",
+      "description": "Hasta {{rows}} unidades en stock. Generalas, cambiá la estrategia de tracking, después refrescá o mezclá y mirá cuántas filas tuvo que crear el navegador.",
       "trackLabel": "Estrategia de tracking",
       "likeNgFor": "como *ngFor sin trackBy",
       "refresh": "Refrescar datos (objetos nuevos)",
@@ -118,7 +118,9 @@
       "model": "Modelo",
       "dealer": "Concesionario",
       "price": "Precio",
-      "empty": "Ningún vehículo coincide con el filtro (@empty)."
+      "empty": "Ningún vehículo coincide con el filtro (@empty).",
+      "generate": "Generar {{rows}} unidades",
+      "notLoaded": "Todavía no hay stock cargado: generá las unidades para empezar (@empty)."
     },
     "defer": {
       "title": "@defer (on viewport)",
