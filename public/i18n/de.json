@@ -231,5 +231,46 @@
       "simulateError": "503 simulieren",
       "failed": "Der Fahrzeugdienst lieferte 503 Service unavailable."
     }
+  },
+  "v20": {
+    "title": "Stabile Signals",
+    "intro": "Angular 20 machte effect, linkedSignal, toSignal und Zoneless (20.2) stabil und erweiterte die Template-Ausdrücke. httpResource, eingeführt in 19.2, ist in v22 stabil.",
+    "stability": {
+      "title": "Von Developer Preview zu stabil",
+      "description": "Jede in diesem Lab verwendete API – von der Version, in der sie erschien, bis zur Version, in der sie stabil wurde.",
+      "preview": "Developer Preview / experimentell",
+      "stable": "Stabil",
+      "caption": "API-Stabilität je Angular-Version",
+      "phases": {
+        "none": "nicht verfügbar",
+        "preview": "Developer Preview",
+        "stable": "stabil"
+      },
+      "source": "Die stabilen Versionen stammen aus den @publicApi-Tags der installierten @angular-22.2.3-Typings."
+    },
+    "http": {
+      "title": "httpResource – Laden, Fehler, leer, neu laden",
+      "description": "Eine Deklaration deckt alle vier Zustände ab. Szenario wählen: das Mock-Backend antwortet über die echte Interceptor-Kette.",
+      "scenario": "Backend-Szenario",
+      "scenarios": {
+        "normal": "Normal",
+        "empty": "Leer",
+        "error": "Fehler 503",
+        "slow": "Langsam"
+      },
+      "empty": "Derzeit keine Fahrzeuge im Bestand."
+    },
+    "expr": {
+      "title": "Neue Template-Ausdrücke",
+      "description": "Template-Literals, der Potenzoperator, der in-Operator und void – direkt im Template, ohne Hilfsmethoden.",
+      "years": "Haltedauer in Jahren",
+      "equipment": "Ausstattung",
+      "options": {
+        "heatPump": "Wärmepumpe",
+        "towBar": "Anhängerkupplung",
+        "matrixLed": "Matrix-LED"
+      },
+      "save": "Konfiguration speichern (void save())"
+    }
   }
 }

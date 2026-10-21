@@ -1,0 +1,72 @@
+<app-card [heading]="'v20.http.title' | translate">
+  <p class="muted">{{ 'v20.http.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar" role="group" [attr.aria-label]="'v20.http.scenario' | translate">
+      @for (option of scenarios; track option) {
+        <button
+          app-button
+          size="sm"
+          type="button"
+          [variant]="option === scenario() ? 'primary' : 'secondary'"
+          [attr.aria-pressed]="option === scenario()"
+          (click)="scenario.set(option)"
+        >
+          {{ 'v20.http.scenarios.' + option | translate }}
+        </button>
+      }
+      <button app-button variant="ghost" size="sm" type="button" (click)="vehicles.reload()">
+        reload()
+      </button>
+    </div>
+    <div class="status">
+      <app-badge tone="info" data-testid="http-status"
+        >status() = {{ vehicles.status() }}</app-badge
+      >
+      <app-badge>statusCode() = {{ vehicles.statusCode() ?? '—' }}</app-badge>
+    </div>
+
+    <div aria-live="polite">
+      @switch (vehicles.status()) {
+        @case ('loading') {
+          <ul class="rows" aria-hidden="true">
+            @for (i of [1, 2, 3]; track i) {
+              <li class="row skeleton">&nbsp;</li>
+            }
+          </ul>
+          <p class="visually-hidden">{{ 'common.loading' | translate }}</p>
+        }
+        @case ('error') {
+          @if (problem(); as p) {
+            <div class="problem" role="alert">
+              <p>
+                <strong>{{ p.status }} · {{ p.title }}</strong>
+              </p>
+              <p>{{ p.detail }}</p>
+            </div>
+          }
+        }
+        @default {
+          @let list = vehicles.value();
+          @if (list.length === 0) {
+            <div class="empty-state">
+              <p>{{ 'v20.http.empty' | translate }}</p>
+            </div>
+          } @else {
+            <ul class="rows" [class.stale]="vehicles.isLoading()">
+              @for (v of list; track v.id) {
+                <li class="row">
+                  <strong>{{ v.brand }} {{ v.model }}</strong>
+                  <span class="muted">{{ v.fuel }}</span>
+                  <span>{{ v.priceEur | eur: lang() }}</span>
+                </li>
+              }
+            </ul>
+          }
+        }
+      }
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

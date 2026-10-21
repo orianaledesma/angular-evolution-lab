@@ -1,0 +1,50 @@
+<app-card [heading]="'v20.stability.title' | translate">
+  <p class="muted">{{ 'v20.stability.description' | translate }}</p>
+
+  <ul class="legend" aria-hidden="true">
+    <li><span class="cell preview"></span> {{ 'v20.stability.preview' | translate }}</li>
+    <li><span class="cell stable"></span> {{ 'v20.stability.stable' | translate }}</li>
+  </ul>
+  <div
+    class="table-scroll"
+    tabindex="0"
+    role="region"
+    [attr.aria-label]="'v20.stability.title' | translate"
+  >
+    <table class="data-table timeline">
+      <caption class="visually-hidden">
+        {{
+          'v20.stability.caption' | translate
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">API</th>
+          @for (v of versions; track v) {
+            <th scope="col">v{{ v }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows; track row.api) {
+          <tr>
+            <th scope="row">
+              <code>{{ row.api }}</code>
+            </th>
+            @for (v of versions; track v) {
+              @let phase = phaseAt(row, v);
+              <td>
+                <span [class]="'cell ' + phase">
+                  <span class="visually-hidden">{{
+                    'v20.stability.phases.' + phase | translate
+                  }}</span>
+                </span>
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <p class="explain">{{ 'v20.stability.source' | translate }}</p>
+</app-card>

@@ -22,5 +22,10 @@ export const routes: Routes = [
     title: 'v19 · linkedSignal & resource',
     loadComponent: () => import('./features/v19-linked-resource/v19-linked-resource'),
   },
+  {
+    path: 'v20',
+    title: 'v20 · Stable signals',
+    loadComponent: () => import('./features/v20-stable-signals/v20-stable-signals'),
+  },
   { path: '**', title: 'Not found', loadComponent: () => import('./features/not-found/not-found') },
 ];
