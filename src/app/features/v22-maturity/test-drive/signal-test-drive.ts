@@ -62,6 +62,11 @@ export class SignalTestDrive {
     },
   );
 
+  /** Manual binding for the date input — see the template comment (NG0950 in WebKit). */
+  protected setDate(event: Event): void {
+    this.f.date().value.set((event.target as HTMLInputElement).value);
+  }
+
   error(name: keyof Model): string | null {
     const state = this.f[name]();
     const first = state.errors()[0];

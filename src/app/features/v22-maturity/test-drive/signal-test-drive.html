@@ -54,6 +54,11 @@
       }
     </select>
   </app-form-field>
+  <!--
+    Workaround (Angular 22.2.3, WebKit only): [formField] on <input type="date"> registers an
+    animation-based validity monitor that can fire before the directive's input is set (NG0950).
+    The date is bound by hand; model, validation and touched state still come from Signal Forms.
+  -->
   @let dateError = error('date');
   <app-form-field
     [label]="'v22.forms.date' | translate"
@@ -66,7 +71,9 @@
       class="input"
       type="date"
       [min]="minDate"
-      [formField]="f.date"
+      [value]="model().date"
+      (input)="setDate($event)"
+      (blur)="f.date().markAsTouched()"
       [attr.aria-invalid]="dateError ? 'true' : null"
       [attr.aria-describedby]="describedBy('tds-date', false, !!dateError)"
     />
