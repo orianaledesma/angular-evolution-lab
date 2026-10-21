@@ -1,0 +1,112 @@
+[
+  {
+    "id": "muc-1",
+    "name": "Autohaus München",
+    "cityId": "muc"
+  },
+  {
+    "id": "muc-2",
+    "name": "Mobility Center München",
+    "cityId": "muc"
+  },
+  {
+    "id": "ber-1",
+    "name": "Autohaus Berlin",
+    "cityId": "ber"
+  },
+  {
+    "id": "ber-2",
+    "name": "Mobility Center Berlin",
+    "cityId": "ber"
+  },
+  {
+    "id": "ham-1",
+    "name": "Autohaus Hamburg",
+    "cityId": "ham"
+  },
+  {
+    "id": "ham-2",
+    "name": "Mobility Center Hamburg",
+    "cityId": "ham"
+  },
+  {
+    "id": "stu-1",
+    "name": "Autohaus Stuttgart",
+    "cityId": "stu"
+  },
+  {
+    "id": "stu-2",
+    "name": "Mobility Center Stuttgart",
+    "cityId": "stu"
+  },
+  {
+    "id": "wob-1",
+    "name": "Autohaus Wolfsburg",
+    "cityId": "wob"
+  },
+  {
+    "id": "wob-2",
+    "name": "Mobility Center Wolfsburg",
+    "cityId": "wob"
+  },
+  {
+    "id": "vie-1",
+    "name": "Autohaus Wien",
+    "cityId": "vie"
+  },
+  {
+    "id": "vie-2",
+    "name": "Mobility Center Wien",
+    "cityId": "vie"
+  },
+  {
+    "id": "grz-1",
+    "name": "Autohaus Graz",
+    "cityId": "grz"
+  },
+  {
+    "id": "grz-2",
+    "name": "Mobility Center Graz",
+    "cityId": "grz"
+  },
+  {
+    "id": "szg-1",
+    "name": "Autohaus Salzburg",
+    "cityId": "szg"
+  },
+  {
+    "id": "szg-2",
+    "name": "Mobility Center Salzburg",
+    "cityId": "szg"
+  },
+  {
+    "id": "zrh-1",
+    "name": "Autohaus Zürich",
+    "cityId": "zrh"
+  },
+  {
+    "id": "zrh-2",
+    "name": "Mobility Center Zürich",
+    "cityId": "zrh"
+  },
+  {
+    "id": "gva-1",
+    "name": "Autohaus Genf",
+    "cityId": "gva"
+  },
+  {
+    "id": "gva-2",
+    "name": "Mobility Center Genf",
+    "cityId": "gva"
+  },
+  {
+    "id": "bsl-1",
+    "name": "Autohaus Basel",
+    "cityId": "bsl"
+  },
+  {
+    "id": "bsl-2",
+    "name": "Mobility Center Basel",
+    "cityId": "bsl"
+  }
+]

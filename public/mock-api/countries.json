@@ -1,0 +1,64 @@
+[
+  {
+    "code": "DE",
+    "name": "Deutschland",
+    "cities": [
+      {
+        "id": "muc",
+        "name": "München"
+      },
+      {
+        "id": "ber",
+        "name": "Berlin"
+      },
+      {
+        "id": "ham",
+        "name": "Hamburg"
+      },
+      {
+        "id": "stu",
+        "name": "Stuttgart"
+      },
+      {
+        "id": "wob",
+        "name": "Wolfsburg"
+      }
+    ]
+  },
+  {
+    "code": "AT",
+    "name": "Österreich",
+    "cities": [
+      {
+        "id": "vie",
+        "name": "Wien"
+      },
+      {
+        "id": "grz",
+        "name": "Graz"
+      },
+      {
+        "id": "szg",
+        "name": "Salzburg"
+      }
+    ]
+  },
+  {
+    "code": "CH",
+    "name": "Schweiz",
+    "cities": [
+      {
+        "id": "zrh",
+        "name": "Zürich"
+      },
+      {
+        "id": "gva",
+        "name": "Genf"
+      },
+      {
+        "id": "bsl",
+        "name": "Basel"
+      }
+    ]
+  }
+]

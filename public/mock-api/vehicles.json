@@ -1,0 +1,218 @@
+[
+  {
+    "id": "vw-id3",
+    "brand": "Volkswagen",
+    "model": "ID.3",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 150,
+    "priceEur": 39995
+  },
+  {
+    "id": "vw-golf",
+    "brand": "Volkswagen",
+    "model": "Golf 8",
+    "year": 2023,
+    "fuel": "petrol",
+    "powerKw": 110,
+    "priceEur": 31500
+  },
+  {
+    "id": "vw-tiguan",
+    "brand": "Volkswagen",
+    "model": "Tiguan",
+    "year": 2024,
+    "fuel": "hybrid",
+    "powerKw": 150,
+    "priceEur": 46900
+  },
+  {
+    "id": "vw-passat",
+    "brand": "Volkswagen",
+    "model": "Passat Variant",
+    "year": 2024,
+    "fuel": "diesel",
+    "powerKw": 142,
+    "priceEur": 45200
+  },
+  {
+    "id": "bmw-i4",
+    "brand": "BMW",
+    "model": "i4 eDrive40",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 250,
+    "priceEur": 59900
+  },
+  {
+    "id": "bmw-320d",
+    "brand": "BMW",
+    "model": "320d Touring",
+    "year": 2023,
+    "fuel": "diesel",
+    "powerKw": 140,
+    "priceEur": 52300
+  },
+  {
+    "id": "bmw-x3",
+    "brand": "BMW",
+    "model": "X3 30e",
+    "year": 2024,
+    "fuel": "hybrid",
+    "powerKw": 220,
+    "priceEur": 64800
+  },
+  {
+    "id": "mb-eqe",
+    "brand": "Mercedes-Benz",
+    "model": "EQE 300",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 180,
+    "priceEur": 67700
+  },
+  {
+    "id": "mb-c200",
+    "brand": "Mercedes-Benz",
+    "model": "C 200",
+    "year": 2023,
+    "fuel": "petrol",
+    "powerKw": 150,
+    "priceEur": 49800
+  },
+  {
+    "id": "mb-glc",
+    "brand": "Mercedes-Benz",
+    "model": "GLC 300de",
+    "year": 2024,
+    "fuel": "hybrid",
+    "powerKw": 245,
+    "priceEur": 71400
+  },
+  {
+    "id": "audi-q4",
+    "brand": "Audi",
+    "model": "Q4 e-tron",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 210,
+    "priceEur": 52900
+  },
+  {
+    "id": "audi-a4",
+    "brand": "Audi",
+    "model": "A4 Avant 40 TDI",
+    "year": 2023,
+    "fuel": "diesel",
+    "powerKw": 150,
+    "priceEur": 50500
+  },
+  {
+    "id": "audi-a3",
+    "brand": "Audi",
+    "model": "A3 Sportback",
+    "year": 2023,
+    "fuel": "petrol",
+    "powerKw": 110,
+    "priceEur": 33700
+  },
+  {
+    "id": "porsche-taycan",
+    "brand": "Porsche",
+    "model": "Taycan",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 300,
+    "priceEur": 101500
+  },
+  {
+    "id": "porsche-911",
+    "brand": "Porsche",
+    "model": "911 Carrera",
+    "year": 2024,
+    "fuel": "petrol",
+    "powerKw": 290,
+    "priceEur": 123900
+  },
+  {
+    "id": "opel-corsa",
+    "brand": "Opel",
+    "model": "Corsa Electric",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 115,
+    "priceEur": 34650
+  },
+  {
+    "id": "opel-astra",
+    "brand": "Opel",
+    "model": "Astra",
+    "year": 2023,
+    "fuel": "petrol",
+    "powerKw": 96,
+    "priceEur": 27500
+  },
+  {
+    "id": "skoda-enyaq",
+    "brand": "Škoda",
+    "model": "Enyaq 85",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 210,
+    "priceEur": 48900
+  },
+  {
+    "id": "skoda-octavia",
+    "brand": "Škoda",
+    "model": "Octavia Combi",
+    "year": 2023,
+    "fuel": "diesel",
+    "powerKw": 110,
+    "priceEur": 35400
+  },
+  {
+    "id": "seat-leon",
+    "brand": "Cupra",
+    "model": "Leon e-Hybrid",
+    "year": 2024,
+    "fuel": "hybrid",
+    "powerKw": 150,
+    "priceEur": 41200
+  },
+  {
+    "id": "ford-explorer",
+    "brand": "Ford",
+    "model": "Explorer EV",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 210,
+    "priceEur": 49500
+  },
+  {
+    "id": "mini-cooper",
+    "brand": "MINI",
+    "model": "Cooper SE",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 160,
+    "priceEur": 32900
+  },
+  {
+    "id": "smart-1",
+    "brand": "smart",
+    "model": "#1 Pro+",
+    "year": 2024,
+    "fuel": "electric",
+    "powerKw": 200,
+    "priceEur": 41490
+  },
+  {
+    "id": "vw-touareg",
+    "brand": "Volkswagen",
+    "model": "Touareg R eHybrid",
+    "year": 2023,
+    "fuel": "hybrid",
+    "powerKw": 340,
+    "priceEur": 89900
+  }
+]
