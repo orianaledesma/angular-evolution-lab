@@ -272,5 +272,71 @@
       },
       "save": "Guardar configuración (void save())"
     }
+  },
+  "v21": {
+    "title": "Signal Forms y Aria",
+    "intro": "Angular 21 hizo zoneless el modo por defecto, presentó Signal Forms experimental y el paquete headless Angular Aria, y agregó la limpieza automática de los injectors de rutas.",
+    "forms": {
+      "title": "Signal Forms: contactar a un concesionario",
+      "description": "El modelo es un signal común; form() suma validación y estado de cada campo como signals. Editá un campo y mirá cómo se actualizan el modelo y el estado.",
+      "name": "Nombre completo",
+      "email": "E-mail",
+      "postcode": "Código postal",
+      "postcodeHint": "4 dígitos (AT, CH) o 5 dígitos (DE)",
+      "message": "Mensaje",
+      "messageHint": "{{count}} / {{max}} caracteres",
+      "send": "Enviar solicitud",
+      "sent": "Gracias, {{name}}: un concesionario se va a contactar con vos.",
+      "errors": {
+        "required": "Este campo es obligatorio.",
+        "email": "Ingresá un e-mail válido.",
+        "pattern": "Usá 4 o 5 dígitos.",
+        "maxLength": "El mensaje es demasiado largo."
+      }
+    },
+    "aria": {
+      "title": "Angular Aria: widgets headless accesibles",
+      "description": "Tabs, un listbox y un menú del design system de este lab. Angular Aria aporta roles, manejo de foco y teclado; los estilos son nuestros.",
+      "tabsLabel": "Detalles del vehículo",
+      "tabs": {
+        "overview": "Resumen",
+        "specs": "Ficha técnica",
+        "trim": "Versión"
+      },
+      "panels": {
+        "overview": "Volkswagen ID.7 Tourer: la rural eléctrica para viajes largos."
+      },
+      "range": "Autonomía WLTP",
+      "charging": "Carga DC",
+      "trimLabel": "Elegí una versión",
+      "trims": {
+        "pure": "Pure",
+        "pro": "Pro",
+        "gtx": "GTX"
+      },
+      "export": "Exportar oferta",
+      "formats": {
+        "pdf": "Oferta en PDF",
+        "csv": "Ficha en CSV",
+        "ical": "Invitación de calendario"
+      },
+      "exported": "Exportado: {{format}}",
+      "keysCaption": "Soporte de teclado por widget",
+      "widget": "Widget",
+      "keys": "Teclas",
+      "typeahead": "+ búsqueda al escribir"
+    },
+    "cleanup": {
+      "title": "Limpieza automática de injectors de rutas",
+      "description": "Cada box del taller es una ruta con sus propios providers. Cambiá de box: el EnvironmentInjector de la ruta se destruye y su servicio ejecuta ngOnDestroy.",
+      "navLabel": "Boxes del taller",
+      "bay": "Box {{bay}}",
+      "leave": "Salir del taller",
+      "inBay": "Box {{bay}}: BayTelemetry #{{id}} está corriendo.",
+      "alive": "vivo",
+      "destroyed": "destruido",
+      "none": "Todavía no se creó ningún injector de ruta: abrí un box.",
+      "clear": "Limpiar destruidos"
+    }
   }
 }

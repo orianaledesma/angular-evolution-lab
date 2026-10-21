@@ -1,5 +1,10 @@
 import { type ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
+import {
+  provideRouter,
+  withAutoCleanupInjectors,
+  withComponentInputBinding,
+  withViewTransitions,
+} from '@angular/router';
 import { provideAppHttp } from './core/http/provide-http';
 import { provideI18n } from './core/i18n/provide-i18n';
 import { routes } from './app.routes';
@@ -12,6 +17,8 @@ export const appConfig: ApplicationConfig = {
       routes,
       withComponentInputBinding(),
       withViewTransitions({ skipInitialTransition: true }),
+      // v21 experimental, stable as withAutoCleanupInjectors() in 22.2: see the v21 demo.
+      withAutoCleanupInjectors(),
     ),
     provideAppHttp(),
     provideI18n(),

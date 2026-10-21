@@ -272,5 +272,71 @@
       },
       "save": "Konfiguration speichern (void save())"
     }
+  },
+  "v21": {
+    "title": "Signal Forms & Aria",
+    "intro": "Angular 21 machte Zoneless zum Standard, führte experimentelle Signal Forms und das headless Paket Angular Aria ein und ergänzte das automatische Aufräumen von Routen-Injectors.",
+    "forms": {
+      "title": "Signal Forms – Händler kontaktieren",
+      "description": "Das Modell ist ein einfaches Signal; form() ergänzt Validierung und Feldzustand als Signals. Ein Feld bearbeiten und zusehen, wie Modell und Zustand live aktualisiert werden.",
+      "name": "Vollständiger Name",
+      "email": "E-Mail",
+      "postcode": "Postleitzahl",
+      "postcodeHint": "4 Ziffern (AT, CH) oder 5 Ziffern (DE)",
+      "message": "Nachricht",
+      "messageHint": "{{count}} / {{max}} Zeichen",
+      "send": "Anfrage senden",
+      "sent": "Danke, {{name}} – ein Händler meldet sich bei Ihnen.",
+      "errors": {
+        "required": "Dieses Feld ist erforderlich.",
+        "email": "Bitte eine gültige E-Mail-Adresse eingeben.",
+        "pattern": "Bitte 4 oder 5 Ziffern verwenden.",
+        "maxLength": "Die Nachricht ist zu lang."
+      }
+    },
+    "aria": {
+      "title": "Angular Aria – barrierefreie headless Widgets",
+      "description": "Tabs, eine Listbox und ein Menü aus dem Design System dieses Labs. Angular Aria liefert Rollen, Fokusverwaltung und Tastaturbedienung; die Styles sind unsere.",
+      "tabsLabel": "Fahrzeugdetails",
+      "tabs": {
+        "overview": "Überblick",
+        "specs": "Technische Daten",
+        "trim": "Ausstattungslinie"
+      },
+      "panels": {
+        "overview": "Volkswagen ID.7 Tourer – der elektrische Kombi für die Langstrecke."
+      },
+      "range": "WLTP-Reichweite",
+      "charging": "DC-Laden",
+      "trimLabel": "Ausstattungslinie wählen",
+      "trims": {
+        "pure": "Pure",
+        "pro": "Pro",
+        "gtx": "GTX"
+      },
+      "export": "Angebot exportieren",
+      "formats": {
+        "pdf": "Angebot als PDF",
+        "csv": "Datenblatt als CSV",
+        "ical": "Kalendereinladung"
+      },
+      "exported": "Exportiert: {{format}}",
+      "keysCaption": "Tastaturbedienung je Widget",
+      "widget": "Widget",
+      "keys": "Tasten",
+      "typeahead": "+ Tippsuche"
+    },
+    "cleanup": {
+      "title": "Automatisches Aufräumen von Routen-Injectors",
+      "description": "Jeder Werkstattplatz ist eine Route mit eigenen Providern. Platz wechseln: der EnvironmentInjector der Route wird zerstört und sein Service führt ngOnDestroy aus.",
+      "navLabel": "Werkstattplätze",
+      "bay": "Platz {{bay}}",
+      "leave": "Werkstatt verlassen",
+      "inBay": "Platz {{bay}} – BayTelemetry #{{id}} läuft.",
+      "alive": "aktiv",
+      "destroyed": "zerstört",
+      "none": "Noch kein Routen-Injector erzeugt – einen Platz öffnen.",
+      "clear": "Zerstörte entfernen"
+    }
   }
 }

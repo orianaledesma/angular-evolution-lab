@@ -1,0 +1,79 @@
+<app-card [heading]="'v21.aria.title' | translate">
+  <p class="muted">{{ 'v21.aria.description' | translate }}</p>
+
+  <div class="demo-live">
+    <app-tabs [ariaLabel]="'v21.aria.tabsLabel' | translate" [(selected)]="tab">
+      <ng-template appTabPanel="overview" [label]="'v21.aria.tabs.overview' | translate">
+        <p>{{ 'v21.aria.panels.overview' | translate }}</p>
+      </ng-template>
+      <ng-template appTabPanel="specs" [label]="'v21.aria.tabs.specs' | translate">
+        <dl class="kv">
+          <div>
+            <dt>{{ 'v21.aria.range' | translate }}</dt>
+            <dd>559 km</dd>
+          </div>
+          <div>
+            <dt>{{ 'v21.aria.charging' | translate }}</dt>
+            <dd>175 kW</dd>
+          </div>
+          <div>
+            <dt>0–100 km/h</dt>
+            <dd>7.3 s</dd>
+          </div>
+        </dl>
+      </ng-template>
+      <ng-template appTabPanel="trim" [label]="'v21.aria.tabs.trim' | translate">
+        <div class="stack">
+          <span id="v21-trim-label">{{ 'v21.aria.trimLabel' | translate }}</span>
+          <app-listbox labelledBy="v21-trim-label" [options]="trimOptions()" [(value)]="trim" />
+          <p data-testid="trim-price">{{ trimPrice() | eur: lang() }}</p>
+        </div>
+      </ng-template>
+    </app-tabs>
+
+    <div class="toolbar">
+      <app-menu-button
+        [options]="exportOptions()"
+        [triggerText]="'v21.aria.export' | translate"
+        (selected)="lastExport.set($event)"
+      />
+      <span class="status" aria-live="polite" data-testid="last-export">
+        @if (lastExport(); as format) {
+          {{
+            'v21.aria.exported' | translate: { format: ('v21.aria.formats.' + format | translate) }
+          }}
+        }
+      </span>
+    </div>
+
+    <table class="data-table">
+      <caption class="visually-hidden">
+        {{
+          'v21.aria.keysCaption' | translate
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">{{ 'v21.aria.widget' | translate }}</th>
+          <th scope="col">{{ 'v21.aria.keys' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Tabs</th>
+          <td><kbd>←</kbd> <kbd>→</kbd> <kbd>Home</kbd> <kbd>End</kbd></td>
+        </tr>
+        <tr>
+          <th scope="row">Listbox</th>
+          <td><kbd>↑</kbd> <kbd>↓</kbd> {{ 'v21.aria.typeahead' | translate }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Menu</th>
+          <td><kbd>Enter</kbd> <kbd>↓</kbd> <kbd>Esc</kbd></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

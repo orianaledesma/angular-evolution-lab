@@ -1,0 +1,123 @@
+<app-card [heading]="'v21.forms.title' | translate">
+  <p class="muted">{{ 'v21.forms.description' | translate }}</p>
+
+  <div class="demo-grid">
+    <form class="stack" novalidate (submit)="send($event)">
+      @let nameError = errorKey('name');
+      <app-form-field
+        [label]="'v21.forms.name' | translate"
+        fieldId="v21-name"
+        [required]="true"
+        [error]="nameError ? (nameError | translate) : null"
+      >
+        <input
+          id="v21-name"
+          class="input"
+          autocomplete="name"
+          [formField]="f.name"
+          [attr.aria-invalid]="nameError ? 'true' : null"
+          [attr.aria-describedby]="nameError ? 'v21-name-error' : null"
+        />
+      </app-form-field>
+
+      @let emailError = errorKey('email');
+      <app-form-field
+        [label]="'v21.forms.email' | translate"
+        fieldId="v21-email"
+        [required]="true"
+        [error]="emailError ? (emailError | translate) : null"
+      >
+        <input
+          id="v21-email"
+          class="input"
+          type="email"
+          autocomplete="email"
+          [formField]="f.email"
+          [attr.aria-invalid]="emailError ? 'true' : null"
+          [attr.aria-describedby]="emailError ? 'v21-email-error' : null"
+        />
+      </app-form-field>
+
+      @let postcodeError = errorKey('postcode');
+      <app-form-field
+        [label]="'v21.forms.postcode' | translate"
+        fieldId="v21-postcode"
+        [hint]="'v21.forms.postcodeHint' | translate"
+        [required]="true"
+        [error]="postcodeError ? (postcodeError | translate) : null"
+      >
+        <input
+          id="v21-postcode"
+          class="input"
+          inputmode="numeric"
+          autocomplete="postal-code"
+          [formField]="f.postcode"
+          [attr.aria-invalid]="postcodeError ? 'true' : null"
+          [attr.aria-describedby]="
+            postcodeError ? 'v21-postcode-hint v21-postcode-error' : 'v21-postcode-hint'
+          "
+        />
+      </app-form-field>
+
+      @let messageError = errorKey('message');
+      <app-form-field
+        [label]="'v21.forms.message' | translate"
+        fieldId="v21-message"
+        [hint]="
+          'v21.forms.messageHint' | translate: { count: model().message.length, max: messageMax }
+        "
+        [error]="messageError ? (messageError | translate) : null"
+      >
+        <textarea
+          id="v21-message"
+          class="input"
+          rows="3"
+          [formField]="f.message"
+          [attr.aria-describedby]="
+            messageError ? 'v21-message-hint v21-message-error' : 'v21-message-hint'
+          "
+        ></textarea>
+      </app-form-field>
+
+      <div class="toolbar">
+        <button app-button type="submit">{{ 'v21.forms.send' | translate }}</button>
+      </div>
+      <div aria-live="polite">
+        @if (sent(); as s) {
+          <p class="status" data-testid="sent">
+            ✓ {{ 'v21.forms.sent' | translate: { name: s.name } }}
+          </p>
+        }
+      </div>
+    </form>
+
+    <div class="stack">
+      <dl class="kv">
+        <div>
+          <dt>f().valid()</dt>
+          <dd data-testid="form-valid">{{ f().valid() }}</dd>
+        </div>
+        <div>
+          <dt>f().dirty()</dt>
+          <dd>{{ f().dirty() }}</dd>
+        </div>
+        <div>
+          <dt>f.email().errors()</dt>
+          <dd data-testid="email-errors">
+            @for (e of f.email().errors(); track e.kind) {
+              <code>{{ e.kind }}</code>
+            } @empty {
+              —
+            }
+          </dd>
+        </div>
+      </dl>
+      <div class="log">
+        <h3>model()</h3>
+        <pre tabindex="0" data-testid="model-json">{{ modelJson() }}</pre>
+      </div>
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

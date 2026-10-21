@@ -272,5 +272,71 @@
       },
       "save": "Save configuration (void save())"
     }
+  },
+  "v21": {
+    "title": "Signal Forms & Aria",
+    "intro": "Angular 21 made zoneless the default, introduced experimental Signal Forms and the headless Angular Aria package, and added automatic cleanup of route injectors.",
+    "forms": {
+      "title": "Signal Forms — contact a dealer",
+      "description": "The model is a plain signal; form() adds validation and field state as signals. Edit a field and watch the model and state update live.",
+      "name": "Full name",
+      "email": "E-mail",
+      "postcode": "Postcode",
+      "postcodeHint": "4 digits (AT, CH) or 5 digits (DE)",
+      "message": "Message",
+      "messageHint": "{{count}} / {{max}} characters",
+      "send": "Send request",
+      "sent": "Thanks, {{name}} — a dealer will contact you.",
+      "errors": {
+        "required": "This field is required.",
+        "email": "Enter a valid e-mail address.",
+        "pattern": "Use 4 or 5 digits.",
+        "maxLength": "The message is too long."
+      }
+    },
+    "aria": {
+      "title": "Angular Aria — accessible headless widgets",
+      "description": "Tabs, a listbox and a menu from this lab's design system. Angular Aria provides roles, focus management and keyboard support; the styles are ours.",
+      "tabsLabel": "Vehicle details",
+      "tabs": {
+        "overview": "Overview",
+        "specs": "Specs",
+        "trim": "Trim level"
+      },
+      "panels": {
+        "overview": "Volkswagen ID.7 Tourer — the electric estate for long distances."
+      },
+      "range": "WLTP range",
+      "charging": "DC charging",
+      "trimLabel": "Choose a trim level",
+      "trims": {
+        "pure": "Pure",
+        "pro": "Pro",
+        "gtx": "GTX"
+      },
+      "export": "Export offer",
+      "formats": {
+        "pdf": "PDF offer",
+        "csv": "CSV spec sheet",
+        "ical": "Calendar invite"
+      },
+      "exported": "Exported: {{format}}",
+      "keysCaption": "Keyboard support per widget",
+      "widget": "Widget",
+      "keys": "Keys",
+      "typeahead": "+ type-ahead"
+    },
+    "cleanup": {
+      "title": "Automatic cleanup of route injectors",
+      "description": "Each service bay is a route with its own providers. Switch bays: the route's EnvironmentInjector is destroyed and its service runs ngOnDestroy.",
+      "navLabel": "Service bays",
+      "bay": "Bay {{bay}}",
+      "leave": "Leave the garage",
+      "inBay": "Bay {{bay}} — BayTelemetry #{{id}} is running.",
+      "alive": "alive",
+      "destroyed": "destroyed",
+      "none": "No route injector created yet — open a bay.",
+      "clear": "Clear destroyed"
+    }
   }
 }

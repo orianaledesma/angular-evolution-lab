@@ -1,0 +1,37 @@
+<app-card [heading]="'v21.cleanup.title' | translate">
+  <p class="muted">{{ 'v21.cleanup.description' | translate }}</p>
+
+  <div class="demo-live">
+    <nav class="toolbar" [attr.aria-label]="'v21.cleanup.navLabel' | translate">
+      @for (bay of bays; track bay) {
+        <a [routerLink]="['/v21', 'bay-' + bay]">{{
+          'v21.cleanup.bay' | translate: { bay: bay.toUpperCase() }
+        }}</a>
+      }
+      <a routerLink="/v21">{{ 'v21.cleanup.leave' | translate }}</a>
+    </nav>
+    <router-outlet />
+    <div class="log">
+      <div class="toolbar">
+        <h3>EnvironmentInjector · BayTelemetry</h3>
+        <button app-button variant="ghost" size="sm" type="button" (click)="registry.clear()">
+          {{ 'v21.cleanup.clear' | translate }}
+        </button>
+      </div>
+      <ul data-testid="injector-log">
+        @for (record of registry.records(); track record.id) {
+          <li>
+            #{{ record.id }} · bay {{ record.bay }} ·
+            <app-badge [tone]="record.alive ? 'success' : 'neutral'">
+              {{ (record.alive ? 'v21.cleanup.alive' : 'v21.cleanup.destroyed') | translate }}
+            </app-badge>
+          </li>
+        } @empty {
+          <li>{{ 'v21.cleanup.none' | translate }}</li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

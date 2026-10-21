@@ -27,5 +27,10 @@ export const routes: Routes = [
     title: 'v20 · Stable signals',
     loadComponent: () => import('./features/v20-stable-signals/v20-stable-signals'),
   },
+  {
+    path: 'v21',
+    title: 'v21 · Signal Forms & Aria',
+    loadChildren: () => import('./features/v21-signal-forms/v21.routes'),
+  },
   { path: '**', title: 'Not found', loadComponent: () => import('./features/not-found/not-found') },
 ];
