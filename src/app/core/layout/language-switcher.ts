@@ -13,7 +13,7 @@ const NATIVE_NAMES = { en: 'English', es: 'Español', de: 'Deutsch' } as const;
       [options]="options"
       [current]="language.current()"
       [triggerText]="language.current().toUpperCase()"
-      [ariaLabel]="'layout.changeLanguage' | translate: { lang: currentName() }"
+      [srText]="'layout.changeLanguage' | translate: { lang: currentName() }"
       (selected)="select($event)"
     />
   `,

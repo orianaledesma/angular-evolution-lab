@@ -25,8 +25,8 @@ describe('MenuButton (Angular Aria)', () => {
     expect(selected).toHaveBeenCalledWith('json');
   });
 
-  it('uses an explicit aria-label when given', async () => {
-    await render(MenuButton, { inputs: { options, triggerText: 'EN', ariaLabel: 'Language' } });
-    expect(screen.getByRole('button', { name: 'Language' })).toBeInTheDocument();
+  it('appends screen-reader text after the visible label (label in name)', async () => {
+    await render(MenuButton, { inputs: { options, triggerText: 'EN', srText: 'Change language' } });
+    expect(screen.getByRole('button', { name: 'EN Change language' })).toBeInTheDocument();
   });
 });

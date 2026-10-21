@@ -1,12 +1,10 @@
 <div class="wrapper">
-  <button
-    type="button"
-    class="trigger"
-    ngMenuTrigger
-    [menu]="menu"
-    [attr.aria-label]="ariaLabel() ?? null"
-  >
+  <button type="button" class="trigger" ngMenuTrigger [menu]="menu">
+    <!-- WCAG 2.5.3: the accessible name starts with the visible text. -->
     <span>{{ triggerText() }}</span>
+    @if (srText(); as extra) {
+      <span class="visually-hidden">{{ extra }}</span>
+    }
     <span aria-hidden="true">▾</span>
   </button>
   <div

@@ -17,7 +17,8 @@ export interface MenuOption {
 export class MenuButton {
   readonly options = input.required<readonly MenuOption[]>();
   readonly triggerText = input.required<string>();
-  readonly ariaLabel = input<string>();
+  /** Extra text for screen readers, appended to the visible label (never replacing it). */
+  readonly srText = input<string>();
   readonly current = input<string>();
   readonly selected = output<string>();
 

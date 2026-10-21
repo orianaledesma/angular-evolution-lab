@@ -14,7 +14,7 @@ describe('LanguageSwitcher', () => {
     const user = userEvent.setup();
     await render(LanguageSwitcher, { providers: [provideTranslateTesting()] });
 
-    const trigger = screen.getByRole('button', { name: 'Change language (current: English)' });
+    const trigger = screen.getByRole('button', { name: 'EN Change language (current: English)' });
     await user.click(trigger);
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
@@ -25,7 +25,7 @@ describe('LanguageSwitcher', () => {
     TestBed.tick();
     expect(TestBed.inject(DOCUMENT).documentElement.lang).toBe('de');
     expect(
-      await screen.findByRole('button', { name: 'Sprache ändern (aktuell: Deutsch)' }),
+      await screen.findByRole('button', { name: 'DE Sprache ändern (aktuell: Deutsch)' }),
     ).toBeInTheDocument();
   });
 });
