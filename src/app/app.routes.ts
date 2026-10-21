@@ -17,5 +17,10 @@ export const routes: Routes = [
     title: 'v18 · Zoneless',
     loadChildren: () => import('./features/v18-zoneless/v18.routes'),
   },
+  {
+    path: 'v19',
+    title: 'v19 · linkedSignal & resource',
+    loadComponent: () => import('./features/v19-linked-resource/v19-linked-resource'),
+  },
   { path: '**', title: 'Not found', loadComponent: () => import('./features/not-found/not-found') },
 ];

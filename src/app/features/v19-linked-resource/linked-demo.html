@@ -1,0 +1,42 @@
+<app-card [heading]="'v19.linked.title' | translate">
+  <p class="muted">{{ 'v19.linked.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar" role="group" [attr.aria-label]="'v19.linked.country' | translate">
+      @for (country of state.countries.value(); track country.code) {
+        <button
+          app-button
+          size="sm"
+          type="button"
+          [variant]="state.country() === country.code ? 'primary' : 'secondary'"
+          [attr.aria-pressed]="state.country() === country.code"
+          (click)="state.country.set(country.code)"
+        >
+          {{ country.code }} · {{ country.name }}
+        </button>
+      }
+    </div>
+    @if (state.countries.isLoading()) {
+      <p class="muted">{{ 'common.loading' | translate }}</p>
+    }
+    <span id="v19-city-label" class="label">{{ 'v19.linked.city' | translate }}</span>
+    <app-listbox
+      labelledBy="v19-city-label"
+      [options]="cityOptions()"
+      [value]="state.city()"
+      (valueChange)="state.city.set($event)"
+    />
+    <dl class="kv" aria-live="polite">
+      <div>
+        <dt>country()</dt>
+        <dd data-testid="country">{{ state.country() }}</dd>
+      </div>
+      <div class="emphasis">
+        <dt>linkedSignal · city()</dt>
+        <dd data-testid="city">{{ state.cityName() ?? '—' }}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

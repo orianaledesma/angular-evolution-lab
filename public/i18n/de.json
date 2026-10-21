@@ -203,5 +203,33 @@
       "result": "Vom alten Link \"{{model}}\" durch ein funktionales redirectTo umgeleitet.",
       "hint": "Einen alten Link anklicken, um die Umleitung zu sehen."
     }
+  },
+  "v19": {
+    "title": "linkedSignal & resource",
+    "intro": "Angular 19 ergänzte linkedSignal für beschreibbaren abgeleiteten Zustand und die Resource-APIs für asynchrone Daten als Signals. @let wurde stabil.",
+    "linked": {
+      "title": "linkedSignal – Land → Stadt",
+      "description": "Die Stadt wird vom Land abgeleitet, bleibt aber beschreibbar: eine beliebige Stadt wählen, dann das Land wechseln – sie springt auf die erste Stadt der neuen Liste.",
+      "country": "Land",
+      "city": "Stadt"
+    },
+    "resource": {
+      "title": "resource() – Händler in der gewählten Stadt",
+      "description": "Ein Promise-basierter Loader mit fetch() und AbortSignal. Die Stadt schnell wechseln: die vorherige Anfrage wird abgebrochen, die alte Liste bleibt beim Neuladen (abgedunkelt) sichtbar.",
+      "inCity": "{{count}} Händler in {{city}}"
+    },
+    "rx": {
+      "title": "rxResource() – Fahrzeuge nach Antrieb",
+      "description": "Dieselbe Idee mit einem Observable-Stream über HttpClient, sodass alle vier Interceptors greifen (Basis-URL, Ladebalken, Problem Details, Mock-Backend).",
+      "fuel": "Antriebsart",
+      "fuels": {
+        "electric": "Elektro",
+        "hybrid": "Hybrid",
+        "petrol": "Benzin",
+        "diesel": "Diesel"
+      },
+      "simulateError": "503 simulieren",
+      "failed": "Der Fahrzeugdienst lieferte 503 Service unavailable."
+    }
   }
 }

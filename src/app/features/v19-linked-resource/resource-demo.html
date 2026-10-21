@@ -1,0 +1,48 @@
+<app-card [heading]="'v19.resource.title' | translate">
+  <p class="muted">{{ 'v19.resource.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="status">
+      <app-badge tone="info" data-testid="resource-status"
+        >status() = {{ dealers.status() }}</app-badge
+      >
+      <app-badge [tone]="dealers.isLoading() ? 'warning' : 'neutral'"
+        >isLoading() = {{ dealers.isLoading() }}</app-badge
+      >
+      <button app-button variant="secondary" size="sm" type="button" (click)="dealers.reload()">
+        reload()
+      </button>
+    </div>
+    <div aria-live="polite">
+      <!-- value() throws while the resource is in an error state: check error() first. -->
+      @if (dealers.error(); as error) {
+        <div class="problem">
+          <p>{{ 'common.error' | translate }}: {{ error.message }}</p>
+        </div>
+      } @else if (dealers.hasValue()) {
+        @let list = dealers.value();
+        @if (dealers.isLoading() && !list.length) {
+          <p class="muted">{{ 'common.loading' | translate }}</p>
+        } @else {
+          <p>
+            {{
+              'v19.resource.inCity'
+                | translate: { count: list.length, city: state.cityName() ?? '—' }
+            }}
+          </p>
+          <ul class="rows" [class.stale]="dealers.isLoading()">
+            @for (dealer of list; track dealer.id) {
+              <li class="row">
+                <strong>{{ dealer.name }}</strong>
+                <span class="muted">{{ dealer.id }}</span>
+                <span></span>
+              </li>
+            }
+          </ul>
+        }
+      }
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

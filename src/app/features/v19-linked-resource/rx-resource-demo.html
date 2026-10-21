@@ -1,0 +1,54 @@
+<app-card [heading]="'v19.rx.title' | translate">
+  <p class="muted">{{ 'v19.rx.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar" role="group" [attr.aria-label]="'v19.rx.fuel' | translate">
+      @for (option of fuels; track option) {
+        <button
+          app-button
+          size="sm"
+          type="button"
+          [variant]="option === fuel() ? 'primary' : 'secondary'"
+          [attr.aria-pressed]="option === fuel()"
+          (click)="fuel.set(option)"
+        >
+          {{ 'v19.rx.fuels.' + option | translate }}
+        </button>
+      }
+    </div>
+    <div class="status">
+      <app-badge tone="info" data-testid="rx-status">status() = {{ vehicles.status() }}</app-badge>
+      <label>
+        <input type="checkbox" [checked]="failNext()" (change)="failNext.set(!failNext())" />
+        {{ 'v19.rx.simulateError' | translate }}
+      </label>
+      <button app-button variant="secondary" size="sm" type="button" (click)="vehicles.reload()">
+        reload()
+      </button>
+    </div>
+    <div aria-live="polite">
+      @if (vehicles.error()) {
+        <div class="problem">
+          <p>{{ 'v19.rx.failed' | translate }}</p>
+        </div>
+      } @else if (vehicles.hasValue()) {
+        @let list = vehicles.value();
+        <ul class="rows">
+          @for (v of list; track v.id) {
+            <li class="row">
+              <strong>{{ v.brand }} {{ v.model }}</strong>
+              <span class="muted">{{ v.powerKw }} kW</span>
+              <span>{{ v.priceEur | eur: lang() }}</span>
+            </li>
+          } @empty {
+            <li class="muted">{{ 'common.empty' | translate }}</li>
+          }
+        </ul>
+      } @else {
+        <p class="muted">{{ 'common.loading' | translate }}</p>
+      }
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

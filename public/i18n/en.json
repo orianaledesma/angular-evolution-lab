@@ -203,5 +203,33 @@
       "result": "Redirected from legacy link \"{{model}}\" by a functional redirectTo.",
       "hint": "Click a legacy link to see the redirect."
     }
+  },
+  "v19": {
+    "title": "linkedSignal & resource",
+    "intro": "Angular 19 added linkedSignal for writable derived state and the resource APIs for async data as signals. @let became stable.",
+    "linked": {
+      "title": "linkedSignal — country → city",
+      "description": "The city is derived from the country but stays writable: pick any city, then switch country and it resets to the first city of the new list.",
+      "country": "Country",
+      "city": "City"
+    },
+    "resource": {
+      "title": "resource() — dealers in the selected city",
+      "description": "A Promise-based loader with fetch() and an AbortSignal. Change the city quickly: the previous request is aborted, and the old list stays visible (dimmed) while reloading.",
+      "inCity": "{{count}} dealers in {{city}}"
+    },
+    "rx": {
+      "title": "rxResource() — vehicles by fuel type",
+      "description": "The same idea with an Observable stream through HttpClient, so all four interceptors (base URL, loading bar, Problem Details, mock backend) apply.",
+      "fuel": "Fuel type",
+      "fuels": {
+        "electric": "Electric",
+        "hybrid": "Hybrid",
+        "petrol": "Petrol",
+        "diesel": "Diesel"
+      },
+      "simulateError": "Simulate a 503",
+      "failed": "The vehicle service returned 503 Service unavailable."
+    }
   }
 }
