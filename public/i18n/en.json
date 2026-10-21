@@ -157,5 +157,51 @@
       "grid": "Grid",
       "list": "List"
     }
+  },
+  "v18": {
+    "title": "Zoneless preview",
+    "intro": "Angular 18 shipped experimental zoneless change detection, @let (18.1), ng-content fallbacks, unified form events and functional redirects. This app itself runs without zone.js.",
+    "zoneless": {
+      "title": "Zoneless change detection",
+      "description": "No zone.js here. Each button changes a value inside setTimeout. Only the signal tells Angular to re-render; the plain field stays stale until something else schedules a check.",
+      "counter": "This card",
+      "plain": "Plain field (as rendered)",
+      "signal": "Signal (as rendered)",
+      "plainBtn": "plain field +100 km",
+      "signalBtn": "signal +100 km",
+      "explain": "With zone.js, both timers would trigger a check of the whole app. Zoneless, the click itself schedules one check (counter +1), but the plain-field timer does not — press markForCheck() to reveal its real value."
+    },
+    "let": {
+      "title": "@let — template variables",
+      "description": "Leasing calculator: net amount, monthly rate and total are declared once with @let and reused in the template.",
+      "price": "Vehicle price",
+      "deposit": "Deposit",
+      "months": "Term (months)",
+      "perMonth": "per month"
+    },
+    "fallback": {
+      "title": "ng-content fallback",
+      "description": "Both cards are the same component. The first projects nothing into its title slot, so the fallback content renders.",
+      "defaultTitle": "Title from fallback content",
+      "defaultBody": "No [card-title] projected — the <h2> inside <ng-content> is used.",
+      "customTitle": "Projected title",
+      "customBody": "A [card-title] element was projected, so the fallback is skipped."
+    },
+    "events": {
+      "title": "control.events — unified form events",
+      "description": "Every change in this Reactive Form arrives through one stream: value, status, touched, pristine, submit and reset.",
+      "vin": "VIN",
+      "vinHint": "17 characters, no I, O or Q",
+      "vinError": "Enter a valid 17-character VIN.",
+      "mileage": "Mileage (km)",
+      "clear": "Clear log"
+    },
+    "redirect": {
+      "title": "redirectTo as a function",
+      "description": "Old deep links like /v18/legacy/golf-7 are redirected by a function that keeps the model as a query param.",
+      "navLabel": "Legacy links",
+      "result": "Redirected from legacy link \"{{model}}\" by a functional redirectTo.",
+      "hint": "Click a legacy link to see the redirect."
+    }
   }
 }

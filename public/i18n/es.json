@@ -157,5 +157,51 @@
       "grid": "Cuadrícula",
       "list": "Lista"
     }
+  },
+  "v18": {
+    "title": "Zoneless en preview",
+    "intro": "Angular 18 trajo detección de cambios zoneless experimental, @let (18.1), fallback en ng-content, eventos de formularios unificados y redirecciones funcionales. Esta app corre sin zone.js.",
+    "zoneless": {
+      "title": "Detección de cambios zoneless",
+      "description": "Acá no hay zone.js. Cada botón cambia un valor dentro de un setTimeout. Solo el signal le avisa a Angular que re-renderice; el campo plano queda desactualizado hasta que otra cosa programe un ciclo.",
+      "counter": "Esta tarjeta",
+      "plain": "Campo plano (renderizado)",
+      "signal": "Signal (renderizado)",
+      "plainBtn": "campo plano +100 km",
+      "signalBtn": "signal +100 km",
+      "explain": "Con zone.js, ambos timers dispararían un chequeo de toda la app. Sin zonas, el clic en sí programa un ciclo (contador +1), pero el timer del campo plano no: apretá markForCheck() para ver su valor real."
+    },
+    "let": {
+      "title": "@let: variables en el template",
+      "description": "Calculadora de leasing: el neto, la cuota mensual y el total se declaran una vez con @let y se reutilizan en el template.",
+      "price": "Precio del vehículo",
+      "deposit": "Anticipo",
+      "months": "Plazo (meses)",
+      "perMonth": "por mes"
+    },
+    "fallback": {
+      "title": "Fallback en ng-content",
+      "description": "Las dos tarjetas son el mismo componente. La primera no proyecta nada en el slot del título, así que se muestra el contenido de fallback.",
+      "defaultTitle": "Título desde el fallback",
+      "defaultBody": "No se proyectó [card-title]: se usa el <h2> dentro de <ng-content>.",
+      "customTitle": "Título proyectado",
+      "customBody": "Se proyectó un [card-title], así que el fallback se omite."
+    },
+    "events": {
+      "title": "control.events: eventos de formulario unificados",
+      "description": "Todo cambio de este Reactive Form llega por un único stream: valor, estado, touched, pristine, submit y reset.",
+      "vin": "VIN",
+      "vinHint": "17 caracteres, sin I, O ni Q",
+      "vinError": "Ingresá un VIN válido de 17 caracteres.",
+      "mileage": "Kilometraje (km)",
+      "clear": "Limpiar log"
+    },
+    "redirect": {
+      "title": "redirectTo como función",
+      "description": "Los deep links viejos como /v18/legacy/golf-7 se redirigen con una función que conserva el modelo como query param.",
+      "navLabel": "Links heredados",
+      "result": "Redirigido desde el link heredado \"{{model}}\" por un redirectTo funcional.",
+      "hint": "Hacé clic en un link heredado para ver la redirección."
+    }
   }
 }

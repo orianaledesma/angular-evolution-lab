@@ -157,5 +157,51 @@
       "grid": "Raster",
       "list": "Liste"
     }
+  },
+  "v18": {
+    "title": "Zoneless-Vorschau",
+    "intro": "Angular 18 brachte experimentelle zoneless Change Detection, @let (18.1), ng-content-Fallbacks, vereinheitlichte Formular-Events und funktionale Redirects. Diese App läuft selbst ohne zone.js.",
+    "zoneless": {
+      "title": "Zoneless Change Detection",
+      "description": "Hier gibt es kein zone.js. Jede Schaltfläche ändert einen Wert in einem setTimeout. Nur das Signal sagt Angular, dass neu gerendert werden muss; das einfache Feld bleibt veraltet, bis etwas anderes einen Durchlauf auslöst.",
+      "counter": "Diese Karte",
+      "plain": "Einfaches Feld (gerendert)",
+      "signal": "Signal (gerendert)",
+      "plainBtn": "einfaches Feld +100 km",
+      "signalBtn": "Signal +100 km",
+      "explain": "Mit zone.js würden beide Timer einen Durchlauf der ganzen App auslösen. Zoneless löst der Klick selbst einen Durchlauf aus (Zähler +1), der Timer des einfachen Felds aber nicht – markForCheck() zeigt den echten Wert."
+    },
+    "let": {
+      "title": "@let – Template-Variablen",
+      "description": "Leasingrechner: Nettobetrag, Monatsrate und Gesamtbetrag werden einmal mit @let deklariert und im Template wiederverwendet.",
+      "price": "Fahrzeugpreis",
+      "deposit": "Anzahlung",
+      "months": "Laufzeit (Monate)",
+      "perMonth": "pro Monat"
+    },
+    "fallback": {
+      "title": "ng-content-Fallback",
+      "description": "Beide Karten sind dieselbe Komponente. Die erste projiziert nichts in den Titel-Slot, daher wird der Fallback-Inhalt angezeigt.",
+      "defaultTitle": "Titel aus dem Fallback",
+      "defaultBody": "Kein [card-title] projiziert – das <h2> innerhalb von <ng-content> wird verwendet.",
+      "customTitle": "Projizierter Titel",
+      "customBody": "Ein [card-title] wurde projiziert, daher entfällt der Fallback."
+    },
+    "events": {
+      "title": "control.events – vereinheitlichte Formular-Events",
+      "description": "Jede Änderung in diesem Reactive Form kommt über einen Stream: Wert, Status, touched, pristine, Absenden und Zurücksetzen.",
+      "vin": "FIN",
+      "vinHint": "17 Zeichen, ohne I, O oder Q",
+      "vinError": "Bitte eine gültige 17-stellige FIN eingeben.",
+      "mileage": "Kilometerstand (km)",
+      "clear": "Log leeren"
+    },
+    "redirect": {
+      "title": "redirectTo als Funktion",
+      "description": "Alte Deep Links wie /v18/legacy/golf-7 werden von einer Funktion umgeleitet, die das Modell als Query-Parameter behält.",
+      "navLabel": "Alte Links",
+      "result": "Vom alten Link \"{{model}}\" durch ein funktionales redirectTo umgeleitet.",
+      "hint": "Einen alten Link anklicken, um die Umleitung zu sehen."
+    }
   }
 }

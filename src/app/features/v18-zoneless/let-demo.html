@@ -1,0 +1,58 @@
+<app-card [heading]="'v18.let.title' | translate">
+  <p class="muted">{{ 'v18.let.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <label for="v18-price">{{ 'v18.let.price' | translate }}: {{ price() | eur: lang() }}</label>
+      <input
+        id="v18-price"
+        type="range"
+        min="20000"
+        max="120000"
+        step="500"
+        [value]="price()"
+        (input)="setNumber('price', $event)"
+      />
+    </div>
+    <div class="toolbar">
+      <label for="v18-deposit"
+        >{{ 'v18.let.deposit' | translate }}: {{ deposit() | eur: lang() }}</label
+      >
+      <input
+        id="v18-deposit"
+        type="range"
+        min="0"
+        max="20000"
+        step="500"
+        [value]="deposit()"
+        (input)="setNumber('deposit', $event)"
+      />
+      <label for="v18-months">{{ 'v18.let.months' | translate }}</label>
+      <select id="v18-months" class="input" [value]="months()" (change)="setMonths($event)">
+        @for (term of terms; track term) {
+          <option [value]="term">{{ term }}</option>
+        }
+      </select>
+    </div>
+
+    @let net = price() - deposit();
+    @let total = net * (1 + (apr() / 100) * (months() / 12));
+    @let rate = total / months();
+    <dl class="kv" aria-live="polite">
+      <div>
+        <dt>&#64;let net</dt>
+        <dd>{{ net | eur: lang() }}</dd>
+      </div>
+      <div class="emphasis">
+        <dt>&#64;let rate · {{ 'v18.let.perMonth' | translate }}</dt>
+        <dd data-testid="rate">{{ rate | eur: lang() }}</dd>
+      </div>
+      <div>
+        <dt>&#64;let total · APR {{ apr() }} %</dt>
+        <dd>{{ total | eur: lang() }}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

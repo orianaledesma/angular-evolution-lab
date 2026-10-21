@@ -1,0 +1,52 @@
+<app-card [heading]="'v18.events.title' | translate">
+  <p class="muted">{{ 'v18.events.description' | translate }}</p>
+
+  <div class="demo-grid">
+    <form class="stack" [formGroup]="form" (reset)="form.reset()" novalidate>
+      @let vinError = vinErrorKey();
+      <app-form-field
+        [label]="'v18.events.vin' | translate"
+        fieldId="v18-vin"
+        [hint]="'v18.events.vinHint' | translate"
+        [error]="vinError ? (vinError | translate) : null"
+        [required]="true"
+      >
+        <input
+          id="v18-vin"
+          class="input"
+          formControlName="vin"
+          autocomplete="off"
+          [attr.aria-invalid]="vinError ? 'true' : null"
+          [attr.aria-describedby]="describedBy('v18-vin', true, !!vinError)"
+        />
+      </app-form-field>
+      <app-form-field [label]="'v18.events.mileage' | translate" fieldId="v18-mileage">
+        <input id="v18-mileage" class="input" type="number" min="0" formControlName="mileage" />
+      </app-form-field>
+      <div class="toolbar">
+        <button app-button type="submit">{{ 'common.submit' | translate }}</button>
+        <button app-button variant="secondary" type="reset">
+          {{ 'common.reset' | translate }}
+        </button>
+      </div>
+    </form>
+
+    <div class="log">
+      <div class="toolbar">
+        <h3>form.events</h3>
+        <button app-button variant="ghost" size="sm" type="button" (click)="clearLog()">
+          {{ 'v18.events.clear' | translate }}
+        </button>
+      </div>
+      <ol reversed data-testid="event-log">
+        @for (entry of log(); track entry.id) {
+          <li>
+            <strong>{{ entry.type }}</strong> {{ entry.detail }}
+          </li>
+        }
+      </ol>
+    </div>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

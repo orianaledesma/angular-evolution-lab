@@ -1,0 +1,31 @@
+<app-card [heading]="'v18.zoneless.title' | translate">
+  <p class="muted">{{ 'v18.zoneless.description' | translate }}</p>
+
+  <div class="demo-live">
+    <app-cd-counter [label]="'v18.zoneless.counter' | translate" />
+    <dl class="kv">
+      <div>
+        <dt>{{ 'v18.zoneless.plain' | translate }}</dt>
+        <dd data-testid="plain">{{ plainOdometer }} km</dd>
+      </div>
+      <div class="emphasis">
+        <dt>{{ 'v18.zoneless.signal' | translate }}</dt>
+        <dd data-testid="signal">{{ signalOdometer() }} km</dd>
+      </div>
+    </dl>
+    <div class="toolbar">
+      <button app-button variant="secondary" size="sm" type="button" (click)="plainLater()">
+        setTimeout → {{ 'v18.zoneless.plainBtn' | translate }}
+      </button>
+      <button app-button size="sm" type="button" (click)="signalLater()">
+        setTimeout → {{ 'v18.zoneless.signalBtn' | translate }}
+      </button>
+      <button app-button variant="ghost" size="sm" type="button" (click)="markForCheck()">
+        markForCheck()
+      </button>
+    </div>
+    <p class="explain">{{ 'v18.zoneless.explain' | translate }}</p>
+  </div>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>
