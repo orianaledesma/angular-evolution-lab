@@ -1,0 +1,62 @@
+<section class="page">
+  <header class="page-header">
+    <div class="cluster">
+      <app-badge tone="info">{{ 'requirements.badge' | translate }}</app-badge>
+    </div>
+    <h1>{{ 'requirements.title' | translate }}</h1>
+    <p>{{ 'requirements.intro' | translate }}</p>
+  </header>
+
+  <div
+    class="table-scroll"
+    tabindex="0"
+    role="region"
+    [attr.aria-label]="'requirements.title' | translate"
+  >
+    <table class="data-table requirements">
+      <caption class="visually-hidden">
+        {{
+          'requirements.caption' | translate
+        }}
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">{{ 'requirements.colRequirement' | translate }}</th>
+          <th scope="col">{{ 'requirements.colDemo' | translate }}</th>
+          <th scope="col">{{ 'requirements.colTests' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows; track row.id) {
+          <tr>
+            <th scope="row">
+              <strong>{{ 'requirements.items.' + row.id + '.title' | translate }}</strong>
+              <span class="muted detail">{{
+                'requirements.items.' + row.id + '.detail' | translate
+              }}</span>
+            </th>
+            <td>
+              <ul>
+                @for (demo of row.demos; track $index) {
+                  <li>
+                    <a [routerLink]="demo.path">{{ demo.label | translate }}</a>
+                    <span class="muted"> · {{ demo.path }}</span>
+                  </li>
+                }
+              </ul>
+            </td>
+            <td>
+              <ul>
+                @for (test of row.tests; track test) {
+                  <li>
+                    <code [title]="test">{{ testName(test) }}</code>
+                  </li>
+                }
+              </ul>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

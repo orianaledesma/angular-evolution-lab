@@ -1,0 +1,74 @@
+<section class="page">
+  <header class="hero">
+    <div class="cluster">
+      <app-badge tone="info">Angular 22.2 · zoneless · OnPush</app-badge>
+    </div>
+    <h1>{{ 'app.title' | translate }}</h1>
+    <p class="lead">{{ 'home.lead' | translate }}</p>
+    <div class="cluster">
+      <a app-button routerLink="/v16">{{ 'home.start' | translate }} →</a>
+      <a app-button variant="secondary" routerLink="/requirements">{{
+        'home.requirements' | translate
+      }}</a>
+    </div>
+    <dl class="stats">
+      @for (stat of stats; track stat.key) {
+        <div>
+          <dt>{{ stat.key | translate }}</dt>
+          <dd>{{ stat.value }}</dd>
+        </div>
+      }
+    </dl>
+  </header>
+
+  <section aria-labelledby="timeline-title" class="stack">
+    <h2 id="timeline-title">{{ 'home.timeline' | translate }}</h2>
+    <ol class="timeline">
+      @for (m of timeline; track m.version) {
+        <li>
+          <a class="milestone" [routerLink]="m.path">
+            <span class="version">v{{ m.version }}</span>
+            <span class="year muted">{{ m.year }}</span>
+            <strong class="name">{{ 'nav.v' + m.version | translate }}</strong>
+            <span class="apis">
+              @for (api of m.apis; track api) {
+                <code>{{ api }}</code>
+              }
+            </span>
+          </a>
+        </li>
+      }
+    </ol>
+  </section>
+
+  <div class="demo-grid">
+    <app-card [heading]="'home.howTitle' | translate">
+      <ol class="how">
+        <li>{{ 'home.how.1' | translate }}</li>
+        <li>{{ 'home.how.2' | translate }}</li>
+        <li>{{ 'home.how.3' | translate }}</li>
+      </ol>
+    </app-card>
+    <app-card [heading]="'home.i18nDemo' | translate">
+      <p>{{ 'home.i18nBody' | translate }}</p>
+      <div class="cluster" role="group" [attr.aria-label]="'home.i18nDemo' | translate">
+        @for (lang of language.languages; track lang) {
+          <button
+            app-button
+            size="sm"
+            type="button"
+            [variant]="language.current() === lang ? 'primary' : 'secondary'"
+            [attr.aria-pressed]="language.current() === lang"
+            [attr.lang]="lang"
+            (click)="switchTo(lang)"
+          >
+            {{ lang.toUpperCase() }}
+          </button>
+        }
+      </div>
+      <p class="muted">
+        <code>&lt;html lang="{{ language.current() }}"&gt;</code>
+      </p>
+    </app-card>
+  </div>
+</section>

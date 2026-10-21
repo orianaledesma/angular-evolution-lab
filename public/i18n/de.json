@@ -425,5 +425,85 @@
       "caption": "isActive()-Ergebnis je Route",
       "explain": "Über die Seitennavigation navigieren – die Werte ändern sich, denn es sind aus dem Router-Zustand abgeleitete Signals."
     }
+  },
+  "home": {
+    "lead": "Ein praktischer Rundgang durch die Entwicklung von Angular von v16 bis v22. Jedes Konzept ist eine funktionierende Demo neben dem Code, den es ersetzt hat – zoneless, OnPush, barrierefrei und in drei Sprachen.",
+    "start": "Mit v16 beginnen",
+    "requirements": "Zur Anforderungsübersicht",
+    "stats": {
+      "versions": "Angular-Versionen",
+      "demos": "Live-Demos",
+      "requirements": "Anforderungen der Stelle abgebildet",
+      "zone": "kB zone.js"
+    },
+    "timeline": "Sieben Versionen, eine App",
+    "howTitle": "So liest man dieses Lab",
+    "how": {
+      "1": "Jede Version hat eine eigene, lazy geladene Seite.",
+      "2": "Jede Karte ist interaktiv: erst ausprobieren, dann den Code von früher und heute lesen.",
+      "3": "Jede Demo hat einen Unit-Test, und jede Seite wird end-to-end auf Barrierefreiheit geprüft."
+    },
+    "i18nDemo": "Internationalisierung · EN / ES / DE",
+    "i18nBody": "Alle UI-Texte stammen aus Übersetzungsdateien. Beim Sprachwechsel werden auch die Dokumentsprache und der Tab-Titel aktualisiert."
+  },
+  "requirements": {
+    "badge": "Stelle: Senior Frontend Developer · Automotive · DACH",
+    "title": "Anforderungsübersicht",
+    "intro": "Jede Anforderung der Stelle, die Demo, die sie zeigt, und die Tests, die sie belegen. Die README enthält dieselbe Tabelle, erzeugt aus denselben Daten.",
+    "caption": "Zuordnung von Anforderung, Demo und Test",
+    "colRequirement": "Anforderung",
+    "colDemo": "Demo",
+    "colTests": "Tests",
+    "thisPage": "Diese Anforderungsübersicht",
+    "items": {
+      "modernAngular": {
+        "title": "Modernes Angular",
+        "detail": "Standalone-Komponenten, Signals, eingebauter Control Flow, OnPush als Standard."
+      },
+      "typescript": {
+        "title": "TypeScript im Strict-Modus",
+        "detail": "strict + strictTemplates, Discriminated Unions für Ladezustände, vollständiges @switch."
+      },
+      "rxjs": {
+        "title": "RxJS, wo es Mehrwert bringt",
+        "detail": "Debounce, Abbruch und Streams – mit toSignal/toObservable an Signals angebunden."
+      },
+      "state": {
+        "title": "State Management mit Signals",
+        "detail": "linkedSignal, resource, rxResource, httpResource und verkettete Resources."
+      },
+      "forms": {
+        "title": "Komplexe Formulare und Validierung",
+        "detail": "Reactive-Forms-Events, Signal Forms, serverseitige Fehler an Feldern."
+      },
+      "http": {
+        "title": "REST-Integration und Fehlerbehandlung",
+        "detail": "Interceptors für Basis-URL, Ladezustand, RFC-9457-Problem-Details und ein Mock-Backend."
+      },
+      "performance": {
+        "title": "Performance",
+        "detail": "Lazy Routes, @defer, zoneless Change Detection, Lazy Services und Bundle-Budgets."
+      },
+      "routing": {
+        "title": "Fortgeschrittenes Routing",
+        "detail": "Input-Binding, funktionale Redirects, Aufräumen von Routen-Injectors, isActive()."
+      },
+      "a11y": {
+        "title": "Barrierefreiheit (WCAG 2.1 AA)",
+        "detail": "Angular-Aria-Widgets, Skip-Link, beschriftete Formulare, Tastaturbedienung, axe im E2E."
+      },
+      "i18n": {
+        "title": "Internationalisierung",
+        "detail": "EN / ES / DE mit ngx-translate, html lang und übersetzte Titel, Tests auf Schlüsselgleichheit."
+      },
+      "designSystem": {
+        "title": "Wiederverwendbares Design System",
+        "detail": "Tokens und thematisierte Komponenten für alle Demos, mit Fallbacks für Content Projection."
+      },
+      "testing": {
+        "title": "Testkultur",
+        "detail": "Jest + Testing Library mit mindestens 80 % Coverage, Playwright-E2E in drei Browsern."
+      }
+    }
   }
 }
