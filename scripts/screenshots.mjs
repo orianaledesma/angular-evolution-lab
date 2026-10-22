@@ -11,7 +11,7 @@ await new Promise((r) => setTimeout(r, 800));
 const base = 'http://localhost:4320';
 const browser = await chromium.launch();
 
-async function shot(name, path, options = {}, prepare = async () => {}) {
+async function shot(name, path, options = {}, prepare = async () => {}, init) {
   const context = await browser.newContext({
     viewport: { width: 1280, height: 800 },
     deviceScaleFactor: 1,
@@ -19,6 +19,9 @@ async function shot(name, path, options = {}, prepare = async () => {}) {
     ...options,
   });
   const page = await context.newPage();
+  if (init) {
+    await page.addInitScript(init);
+  }
   await page.goto(base + path);
   await page.waitForLoadState('networkidle');
   await prepare(page);
@@ -54,6 +57,32 @@ await shot('interview', '/interview', { colorScheme: 'dark' }, async (page) => {
   await question.getByRole('button', { name: 'Show answer' }).click();
   await question.scrollIntoViewIfNeeded();
 });
+await shot(
+  'quiz',
+  '/quiz',
+  {},
+  async (page) => {
+    const play = async (option) => {
+      await page.getByRole('radio', { name: /Theory/ }).check();
+      await page.getByRole('button', { name: 'Start round' }).click();
+      await page
+        .getByRole('list', { name: 'Answer options' })
+        .getByRole('button')
+        .nth(option)
+        .click();
+    };
+    // Math.random is fixed below, so the deal repeats: retry once to show a wrong answer.
+    await play(0);
+    if (await page.getByText('Correct!').isVisible()) {
+      await page.getByRole('button', { name: 'End round' }).click();
+      await play(1);
+    }
+    await page.locator('#quiz-card').scrollIntoViewIfNeeded();
+  },
+  () => {
+    Math.random = () => 0.42;
+  },
+);
 await shot('mobile-de', '/v19', { ...devices['Pixel 7'], locale: 'de-DE' });
 
 await browser.close();

@@ -38,6 +38,17 @@ for a decision, trade-off, internal mechanism or failure mode, never a definitio
 `short` is one sentence to say out loud; `long` is the reasoning. `interview.spec.ts` fails if a question has no text or links to a route or anchor that
 does not exist.
 
+A new interview question also needs two wrong answers for the quiz in `quiz.distractors.<id>.{a,b}`:
+realistic misconceptions of similar length, clearly wrong given `long`.
+
+## Practice quiz
+
+`features/quiz/quiz-items.ts` builds the items from what already exists (interview questions, hook
+mappings, demo labels, takeaways and explanations); the only quiz-specific text is `quiz.prompts.*`
+and `quiz.distractors.*`. Reuse keys before adding new ones. The first option of an item is the
+correct one; `QuizSession` samples and shuffles them. `quiz-items.spec.ts` fails on a missing key in
+any language, an unfilled placeholder, a repeated option or a demo anchor that does not exist.
+
 ## i18n
 
 Every user-facing string goes through `ngx-translate`. Add the key to **all three** of
