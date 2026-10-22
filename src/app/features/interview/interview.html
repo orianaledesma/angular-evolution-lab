@@ -1,0 +1,180 @@
+<section class="page">
+  <header class="page-header">
+    <div class="cluster">
+      <app-badge tone="info">{{ 'nav.groups.prep' | translate }}</app-badge>
+      <app-badge tone="success">{{ 'interview.badge' | translate: { count: total } }}</app-badge>
+    </div>
+    <h1>{{ 'interview.title' | translate }}</h1>
+    <p>{{ 'interview.intro' | translate }}</p>
+  </header>
+
+  <form class="filters" role="search" (submit)="$event.preventDefault()">
+    <div class="search">
+      <label for="interview-search">{{ 'interview.search' | translate }}</label>
+      <input
+        id="interview-search"
+        class="input"
+        type="search"
+        autocomplete="off"
+        [value]="query()"
+        (input)="onSearch($event)"
+      />
+    </div>
+
+    <fieldset class="chips">
+      <legend>{{ 'interview.category' | translate }}</legend>
+      <label class="chip">
+        <input
+          type="radio"
+          name="interview-category"
+          [checked]="category() === 'all'"
+          (change)="category.set('all')"
+        />
+        <span>{{ 'interview.all' | translate }} ({{ counts().all }})</span>
+      </label>
+      @for (c of categories; track c) {
+        <label class="chip">
+          <input
+            type="radio"
+            name="interview-category"
+            [checked]="category() === c"
+            (change)="category.set(c)"
+          />
+          <span>{{ 'interview.categories.' + c | translate }} ({{ counts()[c] }})</span>
+        </label>
+      }
+    </fieldset>
+
+    <fieldset class="chips">
+      <legend>{{ 'interview.level' | translate }}</legend>
+      <label class="chip">
+        <input
+          type="radio"
+          name="interview-level"
+          [checked]="level() === 'all'"
+          (change)="level.set('all')"
+        />
+        <span>{{ 'interview.all' | translate }}</span>
+      </label>
+      @for (l of levels; track l) {
+        <label class="chip">
+          <input
+            type="radio"
+            name="interview-level"
+            [checked]="level() === l"
+            (change)="level.set(l)"
+          />
+          <span>{{ 'interview.levels.' + l | translate }}</span>
+        </label>
+      }
+    </fieldset>
+
+    <div class="practice">
+      <label class="checkbox">
+        <input
+          type="checkbox"
+          role="switch"
+          aria-describedby="practice-hint"
+          [checked]="practice()"
+          (change)="setPractice($event)"
+        />
+        <strong>{{ 'interview.practice' | translate }}</strong>
+      </label>
+      <p id="practice-hint" class="status">{{ 'interview.practiceHint' | translate }}</p>
+      @if (practice()) {
+        <div class="toolbar">
+          <button app-button variant="secondary" size="sm" type="button" (click)="revealAll()">
+            {{ 'interview.revealAll' | translate }}
+          </button>
+          <button app-button variant="ghost" size="sm" type="button" (click)="hideAll()">
+            {{ 'interview.hideAll' | translate }}
+          </button>
+        </div>
+      }
+    </div>
+  </form>
+
+  <p class="status" aria-live="polite" data-testid="interview-count">
+    {{ 'interview.showing' | translate: { count: visible().length, total } }}
+  </p>
+
+  @if (visible().length) {
+    <ol class="questions">
+      @for (q of visible(); track q.id) {
+        @let open = isOpen(q.id);
+        @let base = 'interview.q.' + q.id;
+        <li>
+          <article
+            class="question"
+            [id]="'q-' + q.id"
+            [attr.aria-labelledby]="'q-' + q.id + '-title'"
+          >
+            <header class="question-header">
+              <div class="cluster">
+                <app-badge tone="info">{{
+                  'interview.categories.' + q.category | translate
+                }}</app-badge>
+                <app-badge [tone]="q.level === 'senior' ? 'warning' : 'neutral'">
+                  {{ 'interview.levels.' + q.level | translate }}
+                </app-badge>
+              </div>
+              <h2 [id]="'q-' + q.id + '-title'">{{ base + '.q' | translate }}</h2>
+            </header>
+
+            @if (practice()) {
+              <button
+                app-button
+                variant="secondary"
+                size="sm"
+                type="button"
+                [attr.aria-expanded]="open"
+                [attr.aria-controls]="'q-' + q.id + '-answer'"
+                (click)="open ? hide(q.id) : reveal(q.id)"
+              >
+                {{ (open ? 'interview.hide' : 'interview.show') | translate }}
+              </button>
+            }
+
+            <div class="answer" [id]="'q-' + q.id + '-answer'" [hidden]="!open">
+              @if (open) {
+                <p class="short">
+                  <span class="label">{{ 'interview.short' | translate }}</span>
+                  {{ base + '.short' | translate }}
+                </p>
+                <p class="long">{{ base + '.long' | translate }}</p>
+                @if (snippets[q.id]; as code) {
+                  <pre
+                    class="code"
+                    tabindex="0"
+                    [attr.aria-label]="'interview.code' | translate"
+                  ><code>{{ code }}</code></pre>
+                }
+                @if (q.demo; as demo) {
+                  <a
+                    app-button
+                    class="demo-link"
+                    [routerLink]="demo.path"
+                    [fragment]="demo.anchor"
+                    [state]="backState(q.id)"
+                  >
+                    {{
+                      'interview.seeExample' | translate: { page: (pageKey(demo.path) | translate) }
+                    }}
+                    <span aria-hidden="true">→</span>
+                  </a>
+                }
+              }
+            </div>
+          </article>
+        </li>
+      }
+    </ol>
+  } @else {
+    <div class="empty-state">
+      <p>{{ 'interview.noResults' | translate }}</p>
+      <button app-button variant="secondary" size="sm" type="button" (click)="clearFilters()">
+        {{ 'interview.clearFilters' | translate }}
+      </button>
+    </div>
+  }
+</section>

@@ -48,6 +48,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/rxjs/rxjs'),
   },
   {
+    path: 'interview',
+    title: 'nav.interview',
+    loadComponent: () => import('./features/interview/interview'),
+  },
+  {
     path: 'requirements',
     title: 'nav.requirements',
     loadComponent: () => import('./features/requirements/requirements'),

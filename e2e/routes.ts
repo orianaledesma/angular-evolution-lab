@@ -9,5 +9,6 @@ export const ROUTES = [
   { path: '/v22', heading: 'OnPush by default' },
   { path: '/lifecycle', heading: 'Lifecycle & change detection' },
   { path: '/rxjs', heading: 'RxJS in practice' },
+  { path: '/interview', heading: 'Interview questions' },
   { path: '/requirements', heading: 'Requirements map' },
 ] as const;

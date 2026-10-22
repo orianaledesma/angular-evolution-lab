@@ -1,4 +1,4 @@
-export type NavGroup = 'start' | 'versions' | 'fundamentals' | 'project';
+export type NavGroup = 'start' | 'versions' | 'fundamentals' | 'prep' | 'project';
 
 export interface DemoNavItem {
   readonly path: string;
@@ -18,8 +18,15 @@ export const DEMO_NAV: readonly DemoNavItem[] = [
   { path: '/v22', labelKey: 'nav.v22', group: 'versions', version: 22 },
   { path: '/lifecycle', labelKey: 'nav.lifecycle', group: 'fundamentals' },
   { path: '/rxjs', labelKey: 'nav.rxjs', group: 'fundamentals' },
+  { path: '/interview', labelKey: 'nav.interview', group: 'prep' },
   { path: '/requirements', labelKey: 'nav.requirements', group: 'project' },
 ];
 
 /** Groups in display order; `start` has no heading. */
-export const NAV_GROUPS: readonly NavGroup[] = ['start', 'versions', 'fundamentals', 'project'];
+export const NAV_GROUPS: readonly NavGroup[] = [
+  'start',
+  'versions',
+  'fundamentals',
+  'prep',
+  'project',
+];

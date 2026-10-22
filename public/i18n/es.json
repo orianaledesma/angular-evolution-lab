@@ -30,9 +30,11 @@
     "groups": {
       "versions": "Versiones de Angular",
       "fundamentals": "Fundamentos",
-      "project": "Proyecto"
+      "project": "Proyecto",
+      "prep": "Preparación"
     },
-    "rxjs": "RxJS en la práctica"
+    "rxjs": "RxJS en la práctica",
+    "interview": "Preguntas de entrevista"
   },
   "common": {
     "loading": "Cargando…",
@@ -765,6 +767,224 @@
       "t1": "Angular no se desuscribe por vos: las suscripciones a fuentes de larga vida (intervalos, stores, eventos del router, WebSockets) sobreviven al componente si nada las termina.",
       "t2": "Lo mejor es no suscribirse a mano: toSignal() o el pipe async. Si tenés que suscribirte, usá takeUntilDestroyed() en un contexto de inyección (o pasale un DestroyRef).",
       "t3": "Los requests de HttpClient completan después de una respuesta, así que rara vez generan fugas, pero uno sin terminar mantiene vivo su callback. Las fuentes que nunca completan son las peligrosas."
+    }
+  },
+  "interview": {
+    "title": "Preguntas de entrevista",
+    "badge": "{{count}} preguntas",
+    "intro": "Preguntas que aparecen en entrevistas de Angular senior, cada una con una respuesta de una frase para decir en voz alta, el razonamiento detrás y, cuando ayuda, un ejemplo en vivo en esta app. El modo práctica oculta las respuestas hasta que intentes responder vos.",
+    "search": "Buscar en preguntas y respuestas",
+    "category": "Tema",
+    "level": "Nivel",
+    "all": "Todas",
+    "categories": {
+      "core": "Angular core",
+      "rxjs": "RxJS",
+      "architecture": "Arquitectura y calidad",
+      "tricky": "Preguntas trampa senior"
+    },
+    "levels": {
+      "mid": "Semi senior",
+      "senior": "Senior"
+    },
+    "practice": "Modo práctica",
+    "practiceHint": "Las respuestas quedan ocultas hasta que las mostrás, una por una.",
+    "revealAll": "Mostrar todas",
+    "hideAll": "Ocultar todas",
+    "showing": "Mostrando {{count}} de {{total}} preguntas",
+    "show": "Mostrar respuesta",
+    "hide": "Ocultar respuesta",
+    "short": "En una frase",
+    "code": "Ejemplo de código",
+    "seeExample": "Ver ejemplo: {{page}}",
+    "noResults": "Ninguna pregunta coincide con estos filtros.",
+    "clearFilters": "Limpiar filtros",
+    "q": {
+      "signals": {
+        "q": "¿Qué es un signal y en qué se diferencia de un Observable?",
+        "short": "Un signal es un valor reactivo que siempre se puede leer de forma sincrónica; un Observable es un flujo de valores en el tiempo al que te suscribís.",
+        "long": "Un signal siempre tiene un valor actual, registra quién lo lee y notifica solo a esos consumidores cuando cambia: no hay suscripción ni limpieza. Un Observable puede emitir cero, uno o muchos valores, puede completar o fallar, y es lazy hasta que alguien se suscribe. Los signals modelan estado; los Observables modelan eventos y trabajo asincrónico como un input con debounce, WebSockets o requests cancelables. Angular conecta los dos con toSignal() y toObservable()."
+      },
+      "computedEffect": {
+        "q": "computed() vs effect(): ¿cuándo usás cada uno?",
+        "short": "computed() deriva un valor a partir de otros signals; effect() ejecuta un efecto secundario cuando cambian. Usá computed() siempre que puedas.",
+        "long": "computed() es puro, lazy y memoizado: solo recalcula cuando cambió una dependencia y alguien lo lee. effect() es para sincronizar con el mundo exterior: logs, localStorage, una librería de gráficos, analytics. Usar un effect para setear otro signal es una mala señal: genera un render extra y puede crear loops; ese valor debería ser un computed() o un linkedSignal(). Desde v19, los effects de componente corren durante change detection, después de que se setean los inputs."
+      },
+      "linkedSignal": {
+        "q": "¿Qué problema resuelve linkedSignal()?",
+        "short": "Es un signal editable cuyo valor se reinicia a partir de un signal fuente: estado derivado que el usuario igual puede sobrescribir.",
+        "long": "Ejemplo clásico: la ciudad seleccionada depende del país seleccionado, pero el usuario puede elegir otra ciudad. Un computed() no sería editable, y un effect() que copia el valor llegaría un render tarde. linkedSignal(() => cities(country())[0]) te da el valor por defecto, te deja hacer set() y se recalcula cuando cambia el país. La forma extendida recibe el valor anterior, así podés conservar la selección si sigue siendo válida."
+      },
+      "zoneless": {
+        "q": "¿Cómo funciona change detection sin zone.js?",
+        "short": "Angular solo agenda un chequeo cuando algo le avisa: un signal leído por un template, un evento de template, un cambio de input, markForCheck() o el pipe async.",
+        "long": "zone.js parcheaba todas las APIs asincrónicas y disparaba un chequeo de toda la app después de cada callback. Angular zoneless (estable en v20.2, default en v21) elimina eso: no pasa nada a menos que una notificación marque una vista como sucia. Los signals son la notificación más fina: solo se refrescan las vistas que los leen, y sus ancestros solo se recorren. Las ventajas son bundles más chicos, ninguna API parcheada, stack traces más claros y menos chequeos inútiles; el costo es que mutar un campo común desde un setTimeout o un callback de terceros ya no actualiza la vista."
+      },
+      "onPush": {
+        "q": "¿Qué hace OnPush y qué cambió en Angular 22?",
+        "short": "OnPush saltea un componente salvo que reciba una nueva referencia en un input, maneje un evento, lea un signal que cambió o se marque para chequeo; en v22 es el default.",
+        "long": "Antes de v22 cada componente se chequeaba siempre que se chequeaba su padre (Default), salvo que eligieras OnPush. Angular 22 lo invirtió: los componentes son OnPush salvo que escribas ChangeDetectionStrategy.Eager, el nuevo nombre de Default. Con signals esto es natural, porque leer un signal notifica con precisión. Lo que sigue rompiendo OnPush es la mutación en el lugar: hacer push en un array mantiene la misma referencia, así que ni el chequeo de inputs ni el signal ven el cambio."
+      },
+      "lifecycleOrder": {
+        "q": "¿En qué orden se ejecutan los hooks del ciclo de vida?",
+        "short": "constructor, ngOnChanges, ngOnInit, ngDoCheck, ngAfterContentInit/Checked, ngAfterViewInit/Checked y después los render hooks; ngOnDestroy al final.",
+        "long": "ngOnChanges corre antes de ngOnInit y en cada cambio de input; ngOnInit corre una sola vez, cuando ya hay inputs. ngDoCheck y los dos hooks *Checked corren en cada chequeo del padre, incluso cuando el hijo OnPush se saltea, así que tienen que ser livianos. Los hooks de contenido van antes que los de vista porque primero se resuelve el contenido proyectado. afterNextRender/afterRenderEffect corren después de actualizar el DOM, y al destruir, ngOnDestroy corre antes que los callbacks de DestroyRef. El log en vivo de esta app lo muestra todo."
+      },
+      "afterRender": {
+        "q": "¿afterNextRender vs afterRenderEffect vs ngAfterViewInit?",
+        "short": "ngAfterViewInit se dispara cuando se crea la vista; afterNextRender corre una vez después de pintar el DOM; afterRenderEffect se vuelve a ejecutar después de cada render en el que cambiaron sus signals.",
+        "long": "Usá afterNextRender para trabajo único sobre el DOM: dar foco, medir, inicializar un widget de terceros. afterRenderEffect sirve para mantener el DOM sincronizado con signals, separado en las fases earlyRead, write, mixedReadWrite y read para que Angular agrupe lecturas y escrituras de todos los componentes y evite el layout thrashing. Los dos corren solo en el navegador y nunca en el servidor, lo que los hace seguros para SSR. ngAfterViewInit sigue sirviendo para queries de vista, pero los signals de viewChild() suelen volverlo innecesario."
+      },
+      "diHierarchy": {
+        "q": "¿Cómo resuelve Angular una dependencia en la jerarquía de injectors?",
+        "short": "Sube por los element injectors del árbol de componentes y después por los environment injectors (ruta y luego root); gana el primer provider que encuentra.",
+        "long": "providedIn: 'root' (o @Service() en v22) da un singleton tree-shakable. Los providers de un componente crean una instancia por cada instancia del componente, compartida con sus hijos y destruida junto con él: ideal para el estado de un widget. Los providers de una ruta crean un environment injector por ruta, que se destruye al salir con withAutoCleanupInjectors(). Modificadores como optional, self, skipSelf y host controlan dónde empieza y dónde termina la búsqueda."
+      },
+      "injectionContext": {
+        "q": "¿Qué es un contexto de inyección y por qué aparece NG0203?",
+        "short": "inject() solo funciona mientras Angular está creando algo: inicializadores de campos, constructores, funciones factory o runInInjectionContext(); en otro lugar lanza NG0203.",
+        "long": "inject() necesita saber a qué injector preguntar, y Angular solo lo sabe durante la creación. En un handler de clic, un setTimeout o después de un await, el contexto ya no existe. Inyectá lo que necesitás en un campo y usalo después, o guardá el Injector y llamá a runInInjectionContext(). La misma regla aplica a las funciones basadas en inject(), como takeUntilDestroyed() o toSignal(), salvo que les pases un injector o un DestroyRef explícito."
+      },
+      "standalone": {
+        "q": "¿Por qué componentes standalone y qué reemplazó a los NgModules?",
+        "short": "Cada componente declara sus propias dependencias en imports, así el componente es la unidad de compilación, de carga lazy y de tree-shaking.",
+        "long": "Los NgModules agregaban una indirección: para saber qué podía usar un template había que buscar el módulo que lo declaraba. Los componentes standalone (default desde v19) importan exactamente lo que usan, las rutas cargan un componente de forma lazy con loadComponent y la app arranca con bootstrapApplication() y funciones de providers como provideRouter() y provideHttpClient(). El resultado es menos boilerplate, dependencias más claras y mejor tree-shaking."
+      },
+      "signalInputs": {
+        "q": "¿input(), output() y model() vs @Input y @Output?",
+        "short": "input() es un signal de solo lectura, output() un emisor de eventos liviano y model() un signal con binding bidireccional; todos tipados y usables en computed().",
+        "long": "Como input() es un signal, los valores derivados son un computed() en lugar de ngOnChanges o setters, e input.required() se valida en tiempo de compilación. Los transforms como numberAttribute reemplazan el parseo manual. output() ya no depende del EventEmitter de RxJS, y outputFromObservable() conecta streams. model() reemplaza el par @Input/@Output para [(value)]. Además funcionan con OnPush y zoneless sin configuración extra."
+      },
+      "controlFlow": {
+        "q": "¿Por qué track es obligatorio en @for y qué cambió respecto de *ngFor?",
+        "short": "track le dice a Angular cómo reconocer el mismo ítem entre renders, para mover nodos del DOM en vez de recrearlos.",
+        "long": "@if, @for y @switch están integrados en el compilador de templates: no hace falta importar CommonModule, el narrowing de tipos es mejor y el diffing es más rápido. *ngFor tenía un trackBy opcional que casi todo el código olvidaba; @for vuelve track obligatorio, así que tenés que pensar en la identidad. Trackeá por un id estable; por $index solo en listas estáticas. @empty resuelve el caso vacío sin un @if extra."
+      },
+      "deferBlocks": {
+        "q": "¿Qué hace @defer y cuándo lo usarías?",
+        "short": "Mueve una parte del template y sus dependencias a un chunk lazy aparte, que se carga con un trigger como viewport, idle, interaction o timer.",
+        "long": "Usalo para widgets pesados que quedan fuera de la primera pantalla (gráficos, mapas, editores) o para contenido que solo necesitan algunos usuarios. Los triggers deciden cuándo se descarga el chunk; prefetch puede bajarlo antes, por ejemplo en idle. @placeholder, @loading y @error cubren los estados, con tiempos minimum y after para evitar parpadeos. Solo se separan las dependencias standalone que se usan exclusivamente dentro del bloque; lo que también se importa en otro lado queda en el bundle principal."
+      },
+      "resourceApi": {
+        "q": "¿Cómo cargás datos con la Resource API?",
+        "short": "resource()/httpResource() convierten parámetros reactivos en un valor asincrónico con estado, error y reload, y cancelan solos los requests viejos.",
+        "long": "httpResource(() => `/api/vehicles/${id()}`) vuelve a pedir los datos cada vez que cambia id() y expone value(), status(), error(), isLoading() y hasValue(). resource() hace lo mismo con cualquier loader basado en Promise y un AbortSignal; rxResource() recibe un stream Observable. Reemplaza el patrón toObservable + switchMap + toSignal para lecturas. Ojo: value() lanza un error en el estado de error, así que chequeá error() o hasValue() antes. Las mutaciones siguen siendo llamadas explícitas."
+      },
+      "signalForms": {
+        "q": "Reactive Forms vs Signal Forms: ¿qué cambia?",
+        "short": "Signal Forms arman el formulario a partir de un modelo signal con un schema de validadores; el estado de cada campo son signals, así que no hay suscripciones a valueChanges.",
+        "long": "En Reactive Forms el FormGroup es dueño del valor y vos lo sincronizás con tu modelo; en Signal Forms, form(model, schema) envuelve tu signal y [formField] enlaza un control. La validación y la lógica de disabled o hidden viven en el schema y pueden ser reactivas. El manejo del submit mapea los errores del servidor a los campos. Signal Forms es estable en v22; Reactive Forms sigue con soporte completo, y un codebase grande existente no necesita reescribirse."
+      },
+      "routeParams": {
+        "q": "¿Cómo leés los parámetros de ruta en un componente?",
+        "short": "Con withComponentInputBinding(), los parámetros de path, los query params y los data de la ruta se enlazan a inputs con el mismo nombre.",
+        "long": "En lugar de inyectar ActivatedRoute y suscribirte a paramMap, declarás id = input.required<string>() y el router lo setea, también cuando navegás a la misma ruta con otros parámetros. Como es un signal input, lo podés pasar directo a httpResource() o a un computed(). ActivatedRoute sigue siendo útil para fragments o cuando un componente necesita el snapshot completo."
+      },
+      "flattening": {
+        "q": "switchMap, mergeMap, concatMap, exhaustMap: ¿cuál es la diferencia?",
+        "short": "Se diferencian en qué pasa cuando llega un valor nuevo mientras el observable interno anterior sigue corriendo: switch cancela, merge corre en paralelo, concat encola y exhaust ignora.",
+        "long": "switchMap sirve para búsquedas mientras se escribe y cambios de ruta, donde solo importa el último resultado. mergeMap sirve para trabajo independiente en paralelo, idealmente con un límite de concurrencia. concatMap sirve para escrituras que tienen que mantener el orden. exhaustMap sirve para botones de enviar o de login, donde hay que ignorar clics repetidos mientras hay un request en curso. Elegir uno es una decisión de negocio sobre concurrencia, y tiene que quedar visible en el code review."
+      },
+      "hotCold": {
+        "q": "¿Cuál es la diferencia entre un Observable hot y uno cold?",
+        "short": "Un Observable cold arranca un productor nuevo para cada suscriptor; uno hot comparte un productor que corre independientemente de los suscriptores.",
+        "long": "Los requests de HttpClient son cold: tres suscriptores son tres requests. Los eventos del DOM y los Subjects son hot: los suscriptores que llegan tarde se pierden lo que ya se emitió. shareReplay({ bufferSize: 1, refCount: true }) convierte un request cold en uno compartido y cacheado; refCount: true se desuscribe de la fuente cuando se va el último suscriptor. Saber cuál tenés explica requests duplicados y valores que faltan."
+      },
+      "subjects": {
+        "q": "Subject, BehaviorSubject o ReplaySubject: ¿cuál y cuándo?",
+        "short": "Subject para eventos puros, BehaviorSubject para un valor actual con estado inicial, ReplaySubject cuando los suscriptores tardíos necesitan los últimos n valores.",
+        "long": "Un Subject no tiene memoria. Un BehaviorSubject exige un valor inicial y entrega su valor actual al suscribirse, por eso fue el contenedor de estado clásico. ReplaySubject(n) guarda los últimos n valores. Exponelos con asObservable() para que solo el dueño pueda llamar a next(). Para estado de componentes y servicios hoy un signal es más simple: la misma semántica de valor actual, lecturas sincrónicas y sin suscripciones."
+      },
+      "rxjsErrors": {
+        "q": "¿Cómo manejás errores en un stream de RxJS sin matarlo?",
+        "short": "Atrapá los errores dentro del operador de aplanado, en el request interno, para que el stream externo sobreviva; sumá retry con backoff para fallas transitorias.",
+        "long": "Un error termina el observable al que llega. Un catchError al final de clicks$.pipe(switchMap(...)) reemplaza todo el stream después del primer error, y los clics siguientes se ignoran en silencio. Poné retry({ count, delay }) y catchError en el observable interno. Usá backoff exponencial, reintentá solo requests idempotentes y mapeá los errores a un estado tipado, como ProblemDetails, para la UI."
+      },
+      "unsubscribe": {
+        "q": "¿Cuándo y cómo te desuscribís?",
+        "short": "Evitá las suscripciones manuales con toSignal() o el pipe async; si tenés que suscribirte, terminá la suscripción con takeUntilDestroyed().",
+        "long": "Las fuentes que nunca completan (intervalos, eventos del router, stores, WebSockets) mantienen vivos la suscripción y sus callbacks después de que se destruye el componente. takeUntilDestroyed() ata la suscripción a DestroyRef y funciona también en servicios y directivas; fuera de un contexto de inyección, pasale un DestroyRef. Los requests de HttpClient completan después de una respuesta, así que rara vez generan fugas, pero un request sin terminar retiene su callback hasta que completa."
+      },
+      "stillRxjs": {
+        "q": "Con signals, ¿todavía necesitamos RxJS?",
+        "short": "Sí, para eventos en el tiempo: debounce, cancelación, reintentos, WebSockets y combinar fuentes asincrónicas; los signals se ocupan del estado.",
+        "long": "Los signals reemplazaron al BehaviorSubject como estado y buena parte del pipe async. La Resource API cubre la mayoría de las cargas de datos, y debounced() en v22 cubre el debounce simple. RxJS sigue siendo la herramienta correcta cuando importa cada ocurrencia o cuando el tiempo es parte de la lógica. La regla práctica: signals dentro de los componentes y para el estado, RxJS en los bordes para los streams, con toSignal() y toObservable() como frontera."
+      },
+      "structure": {
+        "q": "¿Cómo estructurás una aplicación Angular grande?",
+        "short": "Por feature: carpetas de features con carga lazy, un core para los singletons de toda la app y una librería de UI compartida sin lógica de negocio.",
+        "long": "Cada feature es dueña de sus rutas, componentes, servicios y estado, y se carga de forma lazy, lo que mantiene chico el bundle inicial y claros los límites. core tiene interceptors, layout, i18n y modelos; shared/ui tiene componentes de presentación solo con inputs y outputs. Los path aliases y las reglas de lint evitan que las features se importen entre sí. En un monorepo la misma idea escala con librerías de Nx y límites de módulo forzados."
+      },
+      "stateManagement": {
+        "q": "¿Dónde debería vivir el estado: signals, servicios o NgRx?",
+        "short": "Lo más cerca posible de donde se usa: signals locales, después un servicio con alcance de componente, después un servicio de toda la app; un store solo cuando los flujos compartidos se vuelven complejos.",
+        "long": "El estado de UI, como un panel abierto, pertenece al componente. El estado que comparten los hijos de un widget encaja en un servicio provisto en ese componente. Los datos de sesión o el carrito encajan en un servicio de root con signals y selectores computed(). NgRx (hoy muchas veces el Signal Store) vale la pena cuando muchas features comparten estado, necesitás devtools y time travel, o mucha gente tiene que seguir las mismas convenciones. Los datos del servidor son estado cacheado, así que la Resource API muchas veces elimina la necesidad de un store."
+      },
+      "httpErrors": {
+        "q": "¿Cómo manejás los errores HTTP en toda la aplicación?",
+        "short": "Con interceptors funcionales que normalizan los errores en una única forma tipada, más un estado de UI por request que los muestra.",
+        "long": "Un interceptor de errores mapea HttpErrorResponse a un modelo tipado como ProblemDetails de la RFC 9457, así los componentes nunca parsean respuestas crudas. Otros interceptors agregan auth, reintentos para llamadas idempotentes y un indicador de carga global. Cada pantalla igual decide cómo mostrar los estados de carga, vacío y error; httpResource los expone directamente. Los errores de validación (422) se mapean a los campos del formulario; los inesperados van al logging."
+      },
+      "testing": {
+        "q": "¿Cuál es tu estrategia de testing para una app Angular?",
+        "short": "Muchos tests de componentes rápidos que usan el DOM como un usuario, pocos E2E para los flujos críticos y chequeos de accesibilidad en CI.",
+        "long": "Los tests de componentes con Testing Library buscan por rol y por label, así prueban comportamiento y accesibilidad en lugar de detalles de implementación. Los servicios y las funciones puras tienen unit tests comunes. Playwright cubre los flujos críticos en varios navegadores, y axe corre en cada ruta. La cobertura es un piso, no el objetivo. Los tests tienen que ser deterministas: timers falsos, un backend mock y nada de estado compartido."
+      },
+      "accessibility": {
+        "q": "¿Cómo hacés accesible una aplicación Angular?",
+        "short": "HTML nativo primero, un nombre accesible correcto para cada control, soporte de teclado y manejo del foco, verificado con axe y tests de teclado.",
+        "long": "Usá botones, links, labels y landmarks reales; agregá ARIA solo cuando HTML no tiene un equivalente. Los widgets compuestos como tabs, listboxes y menús vienen de Angular Aria o del CDK, que resuelven roles, foco y flechas. Anunciá los cambios asincrónicos con live regions, mové el foco después de navegar, respetá prefers-reduced-motion y revisá el contraste en los dos temas. Las herramientas automáticas encuentran más o menos un tercio de los problemas, así que probá también con teclado y lector de pantalla."
+      },
+      "performance": {
+        "q": "Una app Angular se siente lenta. ¿Cómo lo encarás?",
+        "short": "Primero medir (Angular DevTools, Lighthouse, el reporte del bundle) y después atacar la causa más grande: tamaño del bundle, change detection innecesario o renderizado pesado.",
+        "long": "Tiempo de carga: rutas lazy, @defer para widgets pesados, budgets en CI, optimización de imágenes y headers de caché. En ejecución: OnPush y signals para que se chequeen menos vistas, track en @for, virtual scrolling para listas largas y sacar el trabajo pesado de los templates a computed(). El profiler de DevTools muestra qué componentes se chequean y cuánto tarda cada uno. Confirmalo siempre con una medición antes y después."
+      },
+      "bundle": {
+        "q": "¿Cómo mantenés chico el bundle?",
+        "short": "Cargando de forma lazy las rutas y los widgets pesados, usando dependencias tree-shakable y aplicando budgets en CI.",
+        "long": "Las rutas lazy y @defer separan el código según cuándo se necesita. injectAsync() (v22) carga un servicio recién cuando se usa por primera vez, con prefetch opcional en idle. Sacá zone.js, evitá librerías grandes para tareas chicas, importá entry points específicos y revisá las estadísticas del build para encontrar duplicados. Los budgets hacen que el build avise o falle ante regresiones. Tené en cuenta que el código compartido entre varios chunks lazy puede terminar subido al bundle inicial."
+      },
+      "i18n": {
+        "q": "¿Cómo manejás la internacionalización?",
+        "short": "Traducción en runtime (por ejemplo ngx-translate) cuando el usuario cambia de idioma en vivo; @angular/localize en build cuando la performance es lo más importante y recargar está bien.",
+        "long": "@angular/localize compila un build por idioma: costo cero en runtime, pero cambiar de idioma implica cargar otro build. Las librerías de runtime cargan archivos JSON y cambian al instante, a cambio de un pequeño overhead y de claves que validan los tests en lugar del compilador. En los dos casos: actualizá el atributo lang, formateá fechas y números según el locale, prevé textos más largos en alemán y layouts de derecha a izquierda, y testeá que cada idioma tenga todas las claves."
+      },
+      "effectSync": {
+        "q": "¿Por qué no conviene usar effect() para mantener dos signals sincronizados?",
+        "short": "Porque actualiza el segundo signal un paso tarde, genera un render extra y puede crear loops; derivalo con computed() o linkedSignal().",
+        "long": "Un effect corre después de que cambian sus dependencias, así que por un momento los dos signals son inconsistentes y el template puede renderizar primero el valor viejo. Escribir signals dentro de effects también hace difícil seguir el flujo de datos. Si el valor se puede calcular, es un computed(); si tiene que seguir siendo editable pero reiniciarse cuando cambia la fuente, es un linkedSignal(). Dejá los effects para salir del mundo Angular: storage, logs, APIs imperativas."
+      },
+      "mutation": {
+        "q": "Un componente OnPush no se actualiza después de items.push(newItem). ¿Por qué?",
+        "short": "push() muta el array en el lugar: la referencia no cambia, así que ni el chequeo de inputs ni el signal lo notan.",
+        "long": "OnPush compara referencias de inputs, y los signals comparan valores con Object.is por defecto. Al mutar, el objeto sigue siendo el mismo, Angular no ve ningún cambio y saltea la vista. Creá un array nuevo, items.update(list => [...list, newItem]), o un objeto nuevo para cambios anidados. Tratar el estado como inmutable es lo que vuelve predecibles a OnPush y a los signals; markForCheck() solo escondería el problema."
+      },
+      "switchMapSave": {
+        "q": "¿Por qué switchMap es una mala elección para un botón de guardar?",
+        "short": "switchMap cancela el request anterior cuando llega un clic nuevo, pero el servidor puede haberlo aplicado igual: perdés la respuesta, no la escritura.",
+        "long": "Desuscribirse aborta el request HTTP en el navegador, pero eso no dice nada del servidor: el primer guardado puede procesarse igual, en desorden con el segundo. Para escrituras usá concatMap para mantener el orden, o exhaustMap para ignorar clics mientras hay un guardado en curso, y deshabilitá el botón para darle feedback al usuario. switchMap es para lecturas, donde solo importa la última respuesta."
+      },
+      "requiredInput": {
+        "q": "¿Por qué leer un input requerido en un inicializador de campo lanza un error?",
+        "short": "Los inicializadores de campos corren en el constructor, antes de que Angular setee cualquier input, así que input.required() todavía no tiene valor (NG0950).",
+        "long": "Los inputs se setean después de crear el componente y antes de ngOnInit. Por eso leer this.amount() en un inicializador de campo o en el constructor lanza un error. Leelo de forma lazy: dentro de computed(), effect(), un template o ngOnInit. Los inputs opcionales devuelven su valor por defecto antes de tiempo, lo que esconde el mismo bug hasta que el input pasa a ser requerido."
+      },
+      "thirdParty": {
+        "q": "En una app zoneless, un callback de una librería de terceros actualiza un campo pero la vista no cambia. ¿Cómo lo arreglás?",
+        "short": "Nada le avisa a Angular, así que guardá el valor en un signal, o llamá a markForCheck() si no podés cambiar el campo.",
+        "long": "Con zone.js cada callback disparaba un chequeo completo, y eso escondía el problema. Sin zonas, asignar un campo común en un callback de un mapa, un gráfico o un WebSocket no agenda nada. Setear un signal notifica exactamente a las vistas que lo leen. Si el código no es tuyo, ChangeDetectorRef.markForCheck() marca la vista y sus ancestros para el próximo chequeo. Los eventos enlazados en el template ya notifican a Angular."
+      },
+      "trackIndex": {
+        "q": "¿Qué sale mal si usás track $index en una lista que se puede reordenar?",
+        "short": "Angular reutiliza cada fila del DOM y cada componente por posición, así que después de reordenar las filas conservan su estado pero muestran otros ítems.",
+        "long": "Con track $index, el ítem 0 siempre es la fila 0. Si ordenás o filtrás la lista, Angular actualiza bindings en vez de mover filas, así que el estado local del componente (un panel expandido, el texto de un input, el foco, una animación) queda en la fila equivocada. También es más lento, porque cambian más bindings. Trackeá por una identidad estable, como el id o el VIN; $index solo es seguro en listas estáticas."
+      },
+      "ng0100": {
+        "q": "¿Qué es ExpressionChangedAfterItHasBeenCheckedError (NG0100)?",
+        "short": "En modo desarrollo Angular chequea los bindings dos veces; si un valor cambió entre los dos chequeos (en general seteado en un hook durante la misma pasada), lanza NG0100.",
+        "long": "Indica que se rompió el flujo de datos unidireccional: un hijo o un hook cambia un estado que el padre ya renderizó, por ejemplo en ngAfterViewInit. Envolver el cambio en un setTimeout solo lo esconde. Arreglá el flujo: derivá el valor con computed(), setealo antes de que se chequee la vista, o mové las actualizaciones únicas que dependen del DOM a afterNextRender() y escribí un signal, que agenda un render nuevo. El error nunca aparece en builds de producción, pero la UI desactualizada sí."
+      }
     }
   }
 }
