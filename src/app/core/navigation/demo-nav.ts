@@ -19,6 +19,7 @@ export const DEMO_NAV: readonly DemoNavItem[] = [
   { path: '/lifecycle', labelKey: 'nav.lifecycle', group: 'fundamentals' },
   { path: '/rxjs', labelKey: 'nav.rxjs', group: 'fundamentals' },
   { path: '/interview', labelKey: 'nav.interview', group: 'prep' },
+  { path: '/quiz', labelKey: 'nav.quiz', group: 'prep' },
   { path: '/requirements', labelKey: 'nav.requirements', group: 'project' },
 ];
 

@@ -1,0 +1,232 @@
+<section class="page">
+  <header class="page-header">
+    <div class="cluster">
+      <app-badge tone="info">{{ 'nav.groups.prep' | translate }}</app-badge>
+      <app-badge tone="success">{{ 'quiz.badge' | translate: { count: total } }}</app-badge>
+    </div>
+    <h1>{{ 'quiz.title' | translate }}</h1>
+    <p>{{ 'quiz.intro' | translate }}</p>
+  </header>
+
+  @switch (session.status()) {
+    @case ('idle') {
+      <form class="setup" (submit)="$event.preventDefault(); start(session.deck())">
+        <fieldset class="chips">
+          <legend>{{ 'quiz.deck' | translate }}</legend>
+          @for (d of decks; track d) {
+            <label class="chip">
+              <input
+                type="radio"
+                name="quiz-deck"
+                [value]="d"
+                [checked]="session.deck() === d"
+                [attr.aria-describedby]="'deck-hint-' + d"
+                (change)="onDeck($event)"
+              />
+              <span>{{ 'quiz.decks.' + d + '.name' | translate }} ({{ counts()[d] }})</span>
+            </label>
+          }
+        </fieldset>
+        @for (d of decks; track d) {
+          <p class="status" [id]="'deck-hint-' + d" [hidden]="session.deck() !== d">
+            {{ 'quiz.decks.' + d + '.hint' | translate }}
+          </p>
+        }
+        <p class="status">{{ 'quiz.round' | translate: { count: roundSize } }}</p>
+        <button app-button type="submit" class="start">{{ 'quiz.start' | translate }}</button>
+      </form>
+    }
+
+    @case ('playing') {
+      @if (view(); as v) {
+        @let chosen = session.currentAnswer();
+        @let done = chosen !== undefined;
+        <article class="card" id="quiz-card" aria-labelledby="quiz-prompt">
+          <div class="scoreboard">
+            <p data-testid="quiz-progress">
+              {{
+                'quiz.progress'
+                  | translate: { n: session.index() + 1, total: session.cards().length }
+              }}
+            </p>
+            <progress
+              [value]="session.index() + (done ? 1 : 0)"
+              [max]="session.cards().length"
+              [attr.aria-label]="
+                'quiz.progress'
+                  | translate: { n: session.index() + 1, total: session.cards().length }
+              "
+            ></progress>
+            <dl class="tally">
+              <dt>{{ 'quiz.score' | translate }}</dt>
+              <dd data-testid="quiz-score">{{ session.score() }}</dd>
+              <dt>{{ 'quiz.streak' | translate }}</dt>
+              <dd>{{ session.streak() }}</dd>
+            </dl>
+          </div>
+
+          <app-badge tone="info">{{
+            'quiz.decks.' + v.card.item.deck + '.name' | translate
+          }}</app-badge>
+          <h2 id="quiz-prompt" tabindex="-1" #prompt>{{ v.prompt.text }}</h2>
+
+          <ul class="options" [attr.aria-label]="'quiz.options' | translate">
+            @for (o of v.options; track $index) {
+              @let isRight = done && $index === v.card.correct;
+              @let isWrong = done && $index === chosen && !isRight;
+              <li>
+                <button
+                  type="button"
+                  class="option"
+                  [class.option--right]="isRight"
+                  [class.option--wrong]="isWrong"
+                  [class.option--faded]="done && !isRight && !isWrong"
+                  [disabled]="done"
+                  (click)="answer($index)"
+                >
+                  <span class="letter" aria-hidden="true">{{ letters[$index] }}</span>
+                  @if (o.code) {
+                    <code>{{ o.text }}</code>
+                  } @else {
+                    <span>{{ o.text }}</span>
+                  }
+                  @if (isRight) {
+                    <span class="mark"
+                      ><span aria-hidden="true">✓</span>
+                      <span class="visually-hidden"
+                        >({{ 'quiz.correctAnswer' | translate }})</span
+                      ></span
+                    >
+                  } @else if (isWrong) {
+                    <span class="mark"
+                      ><span aria-hidden="true">✗</span>
+                      <span class="visually-hidden"
+                        >({{ 'quiz.yourAnswer' | translate }})</span
+                      ></span
+                    >
+                  }
+                </button>
+              </li>
+            }
+          </ul>
+
+          @if (done) {
+            @let right = chosen === v.card.correct;
+            <div
+              class="feedback"
+              [class.feedback--right]="right"
+              [class.feedback--wrong]="!right"
+              tabindex="-1"
+              #feedback
+              data-testid="quiz-feedback"
+            >
+              <p class="verdict">
+                <strong>{{ (right ? 'quiz.correct' : 'quiz.incorrect') | translate }}</strong>
+                @if (!right) {
+                  {{ 'quiz.correctIs' | translate }}
+                  @if (v.correctOption.code) {
+                    <code>{{ v.correctOption.text }}</code>
+                  } @else {
+                    «{{ v.correctOption.text }}»
+                  }
+                }
+              </p>
+              <ng-template #explanation>
+                @if (v.card.item.question; as q) {
+                  <app-answer-detail [question]="q" [back]="back" [showShort]="false" />
+                } @else {
+                  @for (e of v.explain; track $index) {
+                    <p>{{ e }}</p>
+                  }
+                  @if (v.card.item.demo; as demo) {
+                    <a
+                      app-button
+                      class="demo-link"
+                      [routerLink]="demo.path"
+                      [fragment]="demo.anchor"
+                      [state]="back"
+                    >
+                      {{
+                        'interview.seeExample'
+                          | translate: { page: (pageKey(demo.path) | translate) }
+                      }}
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  }
+                }
+              </ng-template>
+              @if (right) {
+                <details>
+                  <summary>{{ 'quiz.why' | translate }}</summary>
+                  <div class="explanation">
+                    <ng-container [ngTemplateOutlet]="explanation" />
+                  </div>
+                </details>
+              } @else {
+                <div class="explanation">
+                  <ng-container [ngTemplateOutlet]="explanation" />
+                </div>
+              }
+            </div>
+          }
+
+          <div class="actions">
+            @if (done) {
+              <button app-button type="button" (click)="next()">
+                {{ (session.isLast() ? 'quiz.finish' : 'quiz.next') | translate }}
+              </button>
+            }
+            <button app-button variant="ghost" size="sm" type="button" (click)="quit()">
+              {{ 'quiz.quit' | translate }}
+            </button>
+          </div>
+        </article>
+      }
+    }
+
+    @case ('finished') {
+      <article class="card results" aria-labelledby="quiz-results">
+        <h2 id="quiz-results" tabindex="-1" #results>{{ 'quiz.resultTitle' | translate }}</h2>
+        <p class="result" data-testid="quiz-result">
+          {{ 'quiz.result' | translate: { score: session.score(), total: session.cards().length } }}
+        </p>
+        <p>{{ 'quiz.verdicts.' + verdict() | translate }}</p>
+
+        @if (missed().length) {
+          <h3>{{ 'quiz.missedTitle' | translate }}</h3>
+          <ol class="missed">
+            @for (m of missed(); track m.card.item.id) {
+              <li>
+                <p class="missed-prompt">{{ m.prompt.text }}</p>
+                <p>
+                  ✓
+                  @if (m.correctOption.code) {
+                    <code>{{ m.correctOption.text }}</code>
+                  } @else {
+                    {{ m.correctOption.text }}
+                  }
+                </p>
+              </li>
+            }
+          </ol>
+        } @else {
+          <p>{{ 'quiz.allCorrect' | translate }}</p>
+        }
+
+        <div class="actions">
+          @if (missed().length) {
+            <button app-button type="button" (click)="retryMissed()">
+              {{ 'quiz.retryMissed' | translate: { count: missed().length } }}
+            </button>
+          }
+          <button app-button variant="secondary" type="button" (click)="start(session.deck())">
+            {{ 'quiz.again' | translate }}
+          </button>
+          <button app-button variant="ghost" type="button" (click)="quit()">
+            {{ 'quiz.changeDeck' | translate }}
+          </button>
+        </div>
+      </article>
+    }
+  }
+</section>

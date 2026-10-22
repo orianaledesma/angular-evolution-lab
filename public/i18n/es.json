@@ -35,7 +35,8 @@
       "prep": "Preparación"
     },
     "rxjs": "RxJS en la práctica",
-    "interview": "Preguntas de entrevista"
+    "interview": "Preguntas de entrevista",
+    "quiz": "Quiz de práctica"
   },
   "common": {
     "loading": "Cargando…",
@@ -464,7 +465,8 @@
     "topics": {
       "lifecycle": "Los hooks en su orden real, qué vistas refresca un cambio y cuánto vive un servicio.",
       "rxjs": "Los cuatro operadores de aplanado en una misma línea de tiempo, hot vs cold, errores que matan un stream, fugas.",
-      "interview": "Respuestas para decir en voz alta, el razonamiento detrás y un ejemplo en vivo para cada una."
+      "interview": "Respuestas para decir en voz alta, el razonamiento detrás y un ejemplo en vivo para cada una.",
+      "quiz": "Multiple choice sobre la teoría, los casos de uso y las preguntas de entrevista. Si errás, te muestra la respuesta correcta con su explicación y su demo."
     }
   },
   "requirements": {
@@ -1018,6 +1020,253 @@
         "q": "Tu app Angular tiene que correr en el head unit de un vehículo o en la tablet de un concesionario con una CPU débil. ¿Qué cambiás?",
         "short": "Pongo presupuesto al main thread: menos JavaScript, menos DOM, nada de long tasks ni layout thrashing, y mido en el dispositivo real en lugar de una laptop de desarrollo.",
         "long": "Una CPU lenta convierte cada ineficiencia en jank visible. Pongo budgets estrictos en angular.json para que falle el build antes de que sufra el usuario, cargo lazy todo lo que no está en la primera pantalla, difiero los widgets que quedan fuera de vista y virtualizo las listas largas. Zoneless y OnPush reducen el trabajo por cambio; los cálculos pesados, como la geometría de una ruta, van a un Web Worker. Las animaciones solo tocan transform y opacity, se respeta prefers-reduced-motion y los targets táctiles son grandes, porque estas pantallas se usan dentro de un vehículo en movimiento. Perfilo con el panel de performance de Chrome por remote debugging en el hardware real: una laptop esconde problemas que un chip automotriz muestra enseguida."
+      }
+    }
+  },
+  "quiz": {
+    "title": "Quiz de práctica",
+    "badge": "{{count}} preguntas",
+    "intro": "Multiple choice sobre todo lo que hay en esta app: la teoría medida en las demos de ciclo de vida y RxJS, los casos de uso y las preguntas de entrevista senior. Si errás, te muestra la respuesta correcta con la misma explicación y la demo en vivo que encontrás en el resto de la app.",
+    "deck": "Mazo",
+    "decks": {
+      "all": {
+        "name": "Todo",
+        "hint": "Una mezcla de los tres mazos."
+      },
+      "theory": {
+        "name": "Teoría",
+        "hint": "Ciclo de vida, change detection y RxJS, tal como se miden en las demos."
+      },
+      "cases": {
+        "name": "Casos de uso",
+        "hint": "Elegí la herramienta correcta para una situación concreta."
+      },
+      "interview": {
+        "name": "Preguntas de entrevista",
+        "hint": "Las preguntas senior, con la respuesta entre malentendidos verosímiles."
+      }
+    },
+    "round": "Cada ronda tiene hasta {{count}} preguntas al azar, y las opciones se mezclan cada vez.",
+    "start": "Empezar ronda",
+    "progress": "Pregunta {{n}} de {{total}}",
+    "score": "Puntaje",
+    "streak": "Racha",
+    "options": "Opciones de respuesta",
+    "yourAnswer": "tu respuesta",
+    "correctAnswer": "respuesta correcta",
+    "correct": "¡Correcto!",
+    "incorrect": "No exactamente.",
+    "correctIs": "La respuesta correcta es:",
+    "why": "¿Por qué?",
+    "next": "Siguiente pregunta",
+    "finish": "Ver resultados",
+    "quit": "Terminar ronda",
+    "resultTitle": "Ronda terminada",
+    "result": "{{score}} de {{total}} correctas",
+    "verdicts": {
+      "great": "Listo para la entrevista en este mazo.",
+      "good": "Sólido. Repasá las que erraste.",
+      "low": "Vale la pena otra pasada por las explicaciones de abajo."
+    },
+    "missedTitle": "Repasá lo que erraste",
+    "allCorrect": "Sin errores en esta ronda.",
+    "retryMissed": "Reintentar las {{count}} que erraste",
+    "again": "Nueva ronda",
+    "changeDeck": "Cambiar de mazo",
+    "backToQuiz": "Volver al quiz",
+    "prompts": {
+      "tree": "En el árbol de change detection hacés “{{action}}”. ¿Qué pasa?",
+      "order": "Cuando se crea un componente, ¿cuál de estos se ejecuta primero?",
+      "orderDestroy": "Cuando se destruye un componente, ¿cuál de estos se ejecuta primero?",
+      "migrate": "Al migrar un componente a signals, ¿qué reemplaza a {{hook}}?",
+      "phase": "¿Qué fase de afterRenderEffect sirve para {{desc}}?",
+      "source": "¿Qué fuente se comporta así? “{{behaviour}}”",
+      "scenario": "Los clics en 0, 0,4, 0,8, 2,6 y 3,0 s disparan cada uno un request que tarda 1,2 s. ¿Qué respuestas emite {{op}}?",
+      "burstEffect": "Un clic escribe tres valores en un signal de forma sincrónica. ¿Cuántas veces se ejecuta un effect() que lo lee?",
+      "burstSubject": "El mismo clic llama tres veces a next() sobre un Subject. ¿Cuántos valores recibe su suscriptor?",
+      "catchError": "¿Dónde va catchError para que un request fallido no mate el stream de clics?",
+      "leak": "¿Cuál de estos sigue corriendo después de que se destruye su componente?",
+      "operatorFor": "¿Qué operador de aplanamiento encaja con este caso de uso? “{{use}}”",
+      "need": "¿Qué usás cuando necesitás esto: {{need}}?",
+      "scope": {
+        "panel": "Cada panel del dashboard necesita su propio TripMeter, que se destruya junto con el panel. ¿Dónde lo proveés?",
+        "app": "Un único FleetClock compartido por toda la app, y tree-shakable. ¿Cómo lo proveés?",
+        "route": "Estado que tiene que vivir solo mientras el usuario está dentro de una ruta y limpiarse al salir. ¿Dónde lo proveés?"
+      },
+      "linked": "La ciudad por defecto es la primera del país seleccionado, pero el usuario puede elegir otra. ¿Cómo lo modelás?"
+    },
+    "distractors": {
+      "signals": {
+        "a": "Cada set() vuelve a ejecutar de forma sincrónica todos los computed() dependientes en orden topológico, así el valor derivado ya está recalculado y cacheado antes de que alguien lo lea.",
+        "b": "Los signals son un wrapper liviano sobre BehaviorSubject: cada computed() se suscribe a sus fuentes, así que tenés que desuscribirte o los valores derivados siguen recalculando y pierden memoria."
+      },
+      "computedEffect": {
+        "a": "Sincronizá con effect() siempre que puedas: corre después de cada cambio, así que setear el signal destino adentro es la forma más segura de mantener consistente el estado derivado.",
+        "b": "Usá resource() por defecto para todo lo que pueda volverse asincrónico, computed() solo para formatear en el template; linkedSignal() es apenas un computed() con un effect() adentro."
+      },
+      "linkedSignal": {
+        "a": "Es un computed() de solo lectura que además expone el valor anterior, así podés comparar el estado viejo y el nuevo: útil para animaciones, pero nunca editable.",
+        "b": "Es un binding bidireccional entre dos signals que los mantiene siempre sincronizados: un reemplazo de model() para compartir estado entre padre e hijo."
+      },
+      "zoneless": {
+        "a": "Angular recorre el árbol de componentes en cada requestAnimationFrame y solo vuelve a renderizar las vistas cuyos bindings dieron un valor distinto al del frame anterior.",
+        "b": "Angular sigue parcheando setTimeout, Promise y fetch por dentro, solo que con un scheduler más liviano, así que cualquier callback asincrónico igual dispara un chequeo de toda la app."
+      },
+      "onPush": {
+        "a": "Casi nada, porque Angular 22 sigue chequeando todo el árbol después de cada tarea asincrónica; solo hay que revisar componentes con ngDoCheck o llamadas manuales a ChangeDetectorRef.",
+        "b": "Sobre todo los componentes con signals, porque OnPush solo reacciona a cambios de referencia en los inputs; los encontrás buscando signal() y agregás markForCheck() después de cada set()."
+      },
+      "lifecycleOrder": {
+        "a": "Todos, porque los signals no cambian cuándo Angular llama a los hooks; ngDoCheck y los *Checked se saltean por completo en las vistas OnPush, así que ahí no cuestan nada.",
+        "b": "ngOnChanges sigue siendo clave para reaccionar a cambios de input() y ngAfterViewInit para todo acceso al DOM; ngDoCheck y los *Checked corren una sola vez por componente, después del primer render."
+      },
+      "afterRender": {
+        "a": "Son equivalentes: los tres se disparan una vez después del primer change detection, pero afterNextRender y afterRenderEffect también corren en el servidor para soportar la hidratación.",
+        "b": "ngAfterViewInit corre después de que el navegador pinta; afterNextRender corre antes de cada render; afterRenderEffect reemplaza a effect() para cualquier actualización de estado basada en signals."
+      },
+      "diHierarchy": {
+        "a": "Primero mira el root injector y solo recurre a los providers del componente si root no tiene ninguno; el último provider registrado pisa a los demás.",
+        "b": "Busca en el NgModule que declaró el componente, después en los módulos hermanos y después en el platform injector; los providers duplicados tiran error al bootstrap."
+      },
+      "injectionContext": {
+        "a": "Como utilidades comunes: inject() funciona en cualquier lado, incluso después de un await, porque Angular guarda el injector actual en un global; devolvé valores planos y limpiá en ngOnDestroy.",
+        "b": "Ponelas en una clase base abstracta que los componentes extiendan, así inject() corre en el constructor y la limpieza pasa por un ngOnDestroy heredado."
+      },
+      "signalInputs": {
+        "a": "Los inputs pasan a ser signals editables que el hijo puede setear con set(), los outputs también se vuelven signals y model() es el default para cualquier valor que pase el padre.",
+        "b": "Cambia poco: input() es azúcar sobre @Input, así que igual necesitás ngOnChanges o setters para reaccionar a valores nuevos, y output() es solo EventEmitter con otro nombre."
+      },
+      "controlFlow": {
+        "a": "Renderizando todas las filas dentro de NgZone.runOutsideAngular() y llamando a detectChanges() una sola vez al final, para que Angular chequee toda la lista de una pasada.",
+        "b": "Usando track $index para que Angular reutilice nodos del DOM por posición y pasando el formateo de cada fila a métodos del template, así cada valor se calcula lazy por fila."
+      },
+      "deferBlocks": {
+        "a": "Posterga el render de una parte del template hasta que el change detection está ocioso, pero sus dependencias quedan en el bundle principal: mejora el runtime, no el tamaño de descarga.",
+        "b": "Carga lazy un bloque como loadComponent hace con las rutas, y toda dependencia usada adentro se separa en otro chunk, aunque también se importe en otra parte de la app."
+      },
+      "resourceApi": {
+        "a": "resource() envuelve un Observable en un signal y cachea la primera respuesta; para pedir de nuevo llamás a reload() desde un effect() cuando cambian los parámetros.",
+        "b": "httpResource() reemplaza directamente a HttpClient.post() y put(): encola las mutaciones, las reintenta si fallan y expone la última respuesta como signal."
+      },
+      "signalForms": {
+        "a": "Signal Forms son Reactive Forms con toSignal() aplicado a valueChanges; el FormGroup sigue siendo dueño del valor, solo que lo leés como signal en vez de suscribirte.",
+        "b": "Signal Forms sacan la validación del formulario y la pasan a computed() en el componente, y Reactive Forms quedan deprecados en v22 y hay que migrarlos."
+      },
+      "flattening": {
+        "a": "Se elige por rendimiento: mergeMap es el más rápido, así que va por defecto, y concatMap solo cuando el backend no banca requests en paralelo; el resto es legacy.",
+        "b": "Se elige por el tipo de fuente: switchMap para HTTP, mergeMap para eventos del DOM, concatMap para WebSockets; cada uno es seguro para su fuente, así que ninguno tiene un modo de falla real."
+      },
+      "hotCold": {
+        "a": "Un Observable cold espera a su primer suscriptor y después comparte esa ejecución; uno hot reproduce todos los valores pasados a cada suscriptor nuevo, así que siempre pide una sola vez.",
+        "b": "Un Observable hot arranca un productor nuevo para cada suscriptor; uno cold comparte un único productor, así que se arregla envolviendo el request en un Subject nuevo por componente."
+      },
+      "subjects": {
+        "a": "Para estado compartido: un BehaviorSubject le da el valor actual a los suscriptores tardíos, así que exponelo público y dejá que los componentes llamen a next() cuando necesiten actualizarlo.",
+        "b": "Nunca en Angular moderno: modelá también los eventos como signals, reemplazando cada Subject por signal() y set(), porque el chequeo de igualdad deduplica gratis las notificaciones ruidosas."
+      },
+      "rxjsErrors": {
+        "a": "Agregá catchError al final del pipe externo y devolvé EMPTY, así el error se traga y el stream sigue escuchando el próximo valor como antes.",
+        "b": "Envolvé el callback de subscribe() en un try/catch y volvé a suscribirte desde el handler de error; un retry() en el stream externo repite el request fallido con backoff."
+      },
+      "unsubscribe": {
+        "a": "Haciendo que cada componente implemente ngOnDestroy y llame a unsubscribe() en cada campo Subscription, garantizado por una clase base que todos los componentes tengan que extender.",
+        "b": "Confiando en que HttpClient y el router completan solos sus Observables; solo interval() necesita takeUntil(), así que una política para todo el código aporta poco."
+      },
+      "stillRxjs": {
+        "a": "No, los signals ya cubren los streams: effect() con setTimeout resuelve el debounce, y resource() se encarga de WebSockets, reintentos y combinar fuentes asincrónicas.",
+        "b": "Solo para HTTP, porque HttpClient devuelve Observables; cuando httpResource() esté en todos lados, RxJS se puede sacar del bundle porque Angular 22 ya no lo necesita."
+      },
+      "structure": {
+        "a": "Por tipo técnico: carpetas de components, services, models y pipes en el nivel superior, más un SharedModule que importa todo para que cualquier feature lo reutilice.",
+        "b": "Una librería Nx por componente desde el día uno, todas cargadas de forma eager a través de un barrel file en la raíz, así los imports quedan cortos y el tree-shaking saca lo que no se usa."
+      },
+      "stateManagement": {
+        "a": "En NgRx desde el día uno: un único store global hace predecible todo el estado, incluidos los flags de UI, así los componentes nunca guardan estado propio.",
+        "b": "En servicios root con BehaviorSubjects, porque los signals de componente se pierden al navegar y los servicios con alcance de componente filtran estado entre instancias."
+      },
+      "httpErrors": {
+        "a": "De forma central: un interceptor global atrapa todos los errores y muestra un toast, así ninguna feature necesita manejar errores por su cuenta.",
+        "b": "Por componente: cada subscribe() tiene su propio callback de error que parsea el HttpErrorResponse, así cada pantalla controla del todo sus mensajes."
+      },
+      "testing": {
+        "a": "Mayormente tests E2E sobre la UI real para cada flujo, porque los tests de componentes mockean demasiado como para encontrar bugs reales.",
+        "b": "Tests unitarios para cada método de componente y helper privado, más snapshots del markup, con 100% de cobertura exigido en CI."
+      },
+      "accessibility": {
+        "a": "Roles ARIA y aria-label en cada elemento, incluidos los botones nativos, con un puntaje de accesibilidad de 100 en Lighthouse como prueba.",
+        "b": "Controles custom basados en div con estilos consistentes, tabindex=\"0\" en todo lo interactivo, verificado solo con un scan automático de axe en CI."
+      },
+      "performance": {
+        "a": "Pasar todos los componentes a OnPush y agregar trackBy en todos lados de entrada, porque el change detection siempre es la causa real de la lentitud.",
+        "b": "Activar SSR y actualizar a la última versión de Angular primero, porque el renderizado en servidor arregla tanto la carga lenta como las interacciones lentas."
+      },
+      "bundle": {
+        "a": "Mandando un único chunk con gzip y cache HTTP, porque los chunks lazy suman round-trips.",
+        "b": "Poniendo el código compartido en un SharedModule raíz, así las features lo reutilizan sin duplicar bytes."
+      },
+      "i18n": {
+        "a": "Siempre @angular/localize en build, porque las librerías de runtime no manejan plurales ICU ni formatos de locale, y el contenido del CMS se puede meter directo en cada build por locale.",
+        "b": "Siempre traducción en runtime con un único build compartido, porque LOCALE_ID y los formatos de fecha solo se pueden definir en runtime, así que el i18n en build no sirve para varios mercados."
+      },
+      "effectSync": {
+        "a": "Porque effect() corre una sola vez al crearse y se pierde los cambios posteriores; sincronizalos con toObservable() y un subscribe() manual.",
+        "b": "Porque escribir un signal dentro de effect() tira error por defecto; pasá allowSignalWrites: true para que el effect los mantenga sincronizados sin riesgo."
+      },
+      "mutation": {
+        "a": "OnPush solo re-renderiza con eventos del DOM dentro del componente, así que los inputs que cambia el padre nunca disparan una actualización.",
+        "b": "Los signals comparan arrays en profundidad, pero OnPush apaga el tracking de signals en el template, así que la vista nunca se agenda para chequear."
+      },
+      "switchMapSave": {
+        "a": "switchMap ejecuta los requests en paralelo y sin orden, así que dos clics generan dos guardados; mergeMap los serializaría bien.",
+        "b": "switchMap nunca se desuscribe del request anterior, así que cada clic deja una suscripción colgada y las respuestas viejas quedan en memoria."
+      },
+      "requiredInput": {
+        "a": "Los inputs requeridos se setean recién después de ngAfterViewInit, así que leerlos en un inicializador de campo o en ngOnInit tira error (NG0950).",
+        "b": "input.required() devuelve un Observable y no un valor, así que tiene que pasar por toSignal() o el pipe async antes de leerlo."
+      },
+      "thirdParty": {
+        "a": "El callback corre fuera de la zona, así que envolvelo en ngZone.run() para recuperar el chequeo completo de la app.",
+        "b": "Llamá a detectChanges() dentro de un setInterval para que la vista siga consultando a la librería por valores nuevos."
+      },
+      "trackIndex": {
+        "a": "Nada funcional se rompe; $index es apenas un poco más lento que un id porque Angular recalcula los bindings de cada fila.",
+        "b": "Angular tira un error de clave duplicada después de reordenar, porque el mismo $index ahora apunta a dos ítems distintos."
+      },
+      "ng0100": {
+        "a": "Significa que un valor cambió fuera de zone.js durante el hook; envolver la actualización en setTimeout o ngZone.run() es el fix correcto y recomendado.",
+        "b": "Indica una suscripción colgada en un lifecycle hook que emite durante el render; agregarle takeUntilDestroyed() elimina el error para siempre."
+      },
+      "migration": {
+        "a": "Primero zoneless con provideZonelessChangeDetection() para que todos los bugs ocultos salgan de una, y después signals y OnPush solo donde se rompan pantallas.",
+        "b": "A mano en un PR grande y coordinado, convirtiendo todos los NgModules juntos, porque los schematics no pueden con el routing ni con los módulos lazy."
+      },
+      "routeData": {
+        "a": "Siempre resolvers, porque cargar dentro del componente dispara NG0100 y los parámetros de ruta no están disponibles como signal inputs.",
+        "b": "Suscribirse en ngOnInit y leer los params de ActivatedRoute.snapshot, ya que el snapshot se actualiza solo cada vez que cambia el parámetro."
+      },
+      "realtimeTelemetry": {
+        "a": "Un WebSocket separado por widget para que cada uno quede aislado, y detectChanges() en cada mensaje para que los números en pantalla siempre sean exactos.",
+        "b": "Empujar cada mensaje a un BehaviorSubject y renderizarlo con el pipe async, ya que Angular agrupa automáticamente 50 actualizaciones por segundo en un solo frame."
+      },
+      "connectionLoss": {
+        "a": "Reintentar al instante en un loop cerrado hasta que vuelva el socket, seguir mostrando los últimos valores para que la pantalla se vea estable y encolar los comandos del usuario para mandarlos solos al volver la conexión.",
+        "b": "Reconectar cada intervalo fijo y confiar en que el servidor reenvíe todos los mensajes perdidos, así la UI sigue donde quedó sin necesitar un snapshot ni mostrar ningún estado."
+      },
+      "configurator": {
+        "a": "Cada opción es su propio signal escribible y un effect() revalida los conflictos y recalcula el precio en el cliente, así el precio que se muestra siempre es el vinculante.",
+        "b": "Las reglas viven como if en cada componente de opción y el cliente calcula el precio vinculante, porque consultar al servidor en cada clic sería demasiado lento."
+      },
+      "microFrontends": {
+        "a": "Sí, por defecto: los micro-frontends son la arquitectura estándar para portales Angular grandes, y cada equipo puede usar su propia versión de Angular sin un costo extra real.",
+        "b": "Sí, con un iframe por equipo de marca: los iframes dan aislamiento total y deploys independientes, y compartir la autenticación y el design system entre ellos es sencillo."
+      },
+      "multiBrand": {
+        "a": "Cada marca y mercado tiene su propia rama de git, mergeada desde main seguido, así cada país puede adaptar componentes y textos legales directo en el código.",
+        "b": "Los componentes inyectan un BrandService y ramifican con if/switch según marca y código de país, así cada diferencia queda explícita y visible en los templates."
+      },
+      "headUnit": {
+        "a": "Muevo el renderizado al servidor con SSR e hydration, dejo el bundle completo como está y mido con el throttling de CPU de Lighthouse en mi laptop de desarrollo.",
+        "b": "Mantengo zone.js por seguridad, disimulo la latencia con spinners y transiciones, y pruebo con la emulación de dispositivos de Chrome en lugar del hardware real."
       }
     }
   }

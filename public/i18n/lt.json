@@ -35,7 +35,8 @@
       "prep": "Pasiruošimas pokalbiui"
     },
     "rxjs": "RxJS praktikoje",
-    "interview": "Darbo pokalbio klausimai"
+    "interview": "Darbo pokalbio klausimai",
+    "quiz": "Praktinis testas"
   },
   "common": {
     "loading": "Įkeliama…",
@@ -464,7 +465,8 @@
     "topics": {
       "lifecycle": "Hook'ai tikra iškvietimo tvarka, kuriuos vaizdus atnaujina pakeitimas ir kiek gyvuoja servisas.",
       "rxjs": "Keturi flattening operatoriai vienoje laiko juostoje, hot prieš cold, klaidos, kurios nutraukia srautą, ir atminties nutekėjimai.",
-      "interview": "Atsakymai, kuriuos verta pasakyti garsiai, jų logika ir veikiantis pavyzdys kiekvienam."
+      "interview": "Atsakymai, kuriuos verta pasakyti garsiai, jų logika ir veikiantis pavyzdys kiekvienam.",
+      "quiz": "Klausimai su atsakymų variantais apie teoriją, panaudojimo atvejus ir darbo pokalbio klausimus. Atsakius neteisingai, parodomas teisingas atsakymas su paaiškinimu ir demonstracija."
     }
   },
   "requirements": {
@@ -1018,6 +1020,253 @@
         "q": "Jūsų Angular aplikacija turi veikti automobilio multimedijos sistemoje (head unit) arba pardavėjo planšetėje su silpnu procesoriumi. Ką keistumėte?",
         "short": "Taupau pagrindinę giją: siunčiu mažiau JavaScript, renderinu mažiau DOM, vengiu ilgų užduočių ir layout thrashing, o matuoju tikrame įrenginyje, ne programuotojo nešiojamajame.",
         "long": "Lėtas procesorius kiekvieną neefektyvumą paverčia matomu strigimu. angular.json nustatau griežtus bundle budgets, kad build'as nepavyktų anksčiau, nei nukentės vartotojas, lazy-load viską, kas nėra pirmame ekrane, atidedu valdiklius žemiau matomos srities ir virtualizuoju ilgus sąrašus. Zoneless ir OnPush sumažina darbą per kiekvieną pokytį; sunkūs skaičiavimai, pavyzdžiui, maršruto geometrija, keliauja į Web Worker. Animacijos liečia tik transform ir opacity, gerbiamas prefers-reduced-motion, o lietimo zonos didelės, nes šie ekranai naudojami važiuojančiame automobilyje. Profiliuoju su Chrome performance skydeliu per remote debugging tikroje aparatinėje įrangoje: nešiojamasis kompiuteris paslepia problemas, kurias automobilio lustas parodo iškart."
+      }
+    }
+  },
+  "quiz": {
+    "title": "Praktinis testas",
+    "badge": "Klausimų: {{count}}",
+    "intro": "Klausimai su atsakymų variantais apie viską, kas yra šioje programoje: teoriją, išmatuotą gyvavimo ciklo ir RxJS demonstracijose, panaudojimo atvejus ir senior lygio darbo pokalbio klausimus. Atsakius neteisingai, parodomas teisingas atsakymas su tuo pačiu paaiškinimu ir gyva demonstracija, kaip ir kitose programos dalyse.",
+    "deck": "Rinkinys",
+    "decks": {
+      "all": {
+        "name": "Viskas",
+        "hint": "Visų trijų rinkinių mišinys."
+      },
+      "theory": {
+        "name": "Teorija",
+        "hint": "Gyvavimo ciklas, pakeitimų aptikimas ir RxJS, kaip išmatuota demonstracijose."
+      },
+      "cases": {
+        "name": "Panaudojimo atvejai",
+        "hint": "Pasirinkite tinkamą įrankį konkrečiai situacijai."
+      },
+      "interview": {
+        "name": "Darbo pokalbio klausimai",
+        "hint": "Senior lygio klausimai, kur teisingas atsakymas slepiasi tarp įtikinamų klaidingų įsitikinimų."
+      }
+    },
+    "round": "Kiekviename raunde yra iki {{count}} atsitiktinių klausimų, o variantai kaskart sumaišomi.",
+    "start": "Pradėti raundą",
+    "progress": "Klausimas {{n}} iš {{total}}",
+    "score": "Rezultatas",
+    "streak": "Serija",
+    "options": "Atsakymų variantai",
+    "yourAnswer": "jūsų atsakymas",
+    "correctAnswer": "teisingas atsakymas",
+    "correct": "Teisingai!",
+    "incorrect": "Ne visai.",
+    "correctIs": "Teisingas atsakymas:",
+    "why": "Kodėl?",
+    "next": "Kitas klausimas",
+    "finish": "Žiūrėti rezultatus",
+    "quit": "Baigti raundą",
+    "resultTitle": "Raundas baigtas",
+    "result": "Teisingai: {{score}} iš {{total}}",
+    "verdicts": {
+      "great": "Šiam rinkiniui esate pasiruošę darbo pokalbiui.",
+      "good": "Neblogai. Peržiūrėkite tuos, kuriuos praleidote.",
+      "low": "Verta dar kartą peržiūrėti paaiškinimus žemiau."
+    },
+    "missedTitle": "Peržiūrėkite, ką praleidote",
+    "allCorrect": "Šiame raunde klaidų nėra.",
+    "retryMissed": "Pakartoti neteisingai atsakytus ({{count}})",
+    "again": "Naujas raundas",
+    "changeDeck": "Keisti rinkinį",
+    "backToQuiz": "Grįžti į testą",
+    "prompts": {
+      "tree": "Pakeitimų aptikimo medyje atliekate veiksmą „{{action}}“. Kas nutinka?",
+      "order": "Kai komponentas sukuriamas, kuris iš šių vykdomas pirmas?",
+      "orderDestroy": "Kai komponentas sunaikinamas, kuris iš šių vykdomas pirmas?",
+      "migrate": "Perkeliant komponentą į signalus: kas pakeičia {{hook}}?",
+      "phase": "Kuri afterRenderEffect fazė skirta {{desc}}?",
+      "source": "Kuris šaltinis elgiasi taip? „{{behaviour}}“",
+      "scenario": "Paspaudimai ties 0, 0,4, 0,8, 2,6 ir 3,0 s kiekvienas paleidžia užklausą, kuri trunka 1,2 s. Kuriuos atsakymus emituoja {{op}}?",
+      "burstEffect": "Vienas paspaudimas sinchroniškai įrašo tris reikšmes į signalą. Kiek kartų įvykdomas jį skaitantis effect()?",
+      "burstSubject": "Tas pats paspaudimas tris kartus iškviečia next() Subject'e. Kiek reikšmių gauna jo prenumeratorius?",
+      "catchError": "Kur dėti catchError, kad viena nepavykusi užklausa nenutrauktų paspaudimų srauto?",
+      "leak": "Kuris iš šių toliau veikia po to, kai jo komponentas sunaikinamas?",
+      "operatorFor": "Kuris flattening operatorius tinka šiam panaudojimo atvejui? „{{use}}“",
+      "need": "Ką naudojate, kai reikia {{need}}?",
+      "scope": {
+        "panel": "Kiekvienam dashboard'o skydeliui reikia savo TripMeter, sunaikinamo kartu su skydeliu. Kur jį pateikiate (provide)?",
+        "app": "Vienas FleetClock visai programai, ir tree-shakable. Kaip jį pateikiate (provide)?",
+        "route": "Būsena, kuri turi gyvuoti tik tol, kol vartotojas yra viename maršrute, ir būti išvalyta jį paliekant. Kur ją pateikiate (provide)?"
+      },
+      "linked": "Pagal nutylėjimą miestas yra pirmasis pasirinktos šalies miestas, bet vartotojas gali pasirinkti kitą. Kaip tai sumodeliuojate?"
+    },
+    "distractors": {
+      "signals": {
+        "a": "Kiekvienas set() sinchroniškai topologine tvarka iš naujo paleidžia visus priklausomus computed() – todėl išvestinė reikšmė visada perskaičiuota ir kešuota dar prieš ją kam nors perskaitant.",
+        "b": "Signalai – tai plonas BehaviorSubject apvalkalas: kiekvienas computed() prenumeruoja savo šaltinius, todėl privalai atšaukti prenumeratą, kitaip išvestinės reikšmės toliau skaičiuojamos ir nuteka atmintis."
+      },
+      "computedEffect": {
+        "a": "Sinchronizuok per effect() visur, kur įmanoma: jis vykdomas po kiekvieno pakeitimo, todėl tikslinio signalo nustatymas jame – saugiausias būdas išlaikyti nuoseklią išvestinę būseną.",
+        "b": "Pagal nutylėjimą naudok resource() viskam, kas ateityje gali tapti asinchronine, computed() – tik formatavimui šablone; linkedSignal() – tiesiog computed() su effect() viduje."
+      },
+      "linkedSignal": {
+        "a": "Tai tik skaitomas computed(), kuris papildomai pateikia ankstesnę reikšmę, kad galėtum palyginti seną ir naują būseną – patogu animacijoms, bet jo niekada negalima nustatyti.",
+        "b": "Tai dvikryptis dviejų signalų susiejimas, nuolat laikantis juos sinchronizuotus – model() pakaitalas, kai būseną reikia dalytis tarp tėvinio ir vaikinio komponento."
+      },
+      "zoneless": {
+        "a": "Angular per kiekvieną requestAnimationFrame apklausia komponentų medį ir iš naujo atvaizduoja tik tuos rodinius, kurių binding'ai davė kitokią reikšmę nei ankstesniame kadre.",
+        "b": "Angular viduje vis dar „patch'ina“ setTimeout, Promise ir fetch, tik su lengvesniu planuokliu, todėl bet koks asinchroninis callback'as vis tiek sukelia visos programos patikrą."
+      },
+      "onPush": {
+        "a": "Beveik niekas, nes Angular 22 po kiekvienos asinchroninės užduoties vis tiek tikrina visą medį; peržiūrėti reikia tik komponentus su ngDoCheck ar rankiniais ChangeDetectorRef iškvietimais.",
+        "b": "Daugiausia signalais paremti komponentai, nes OnPush reaguoja tik į input nuorodų pasikeitimus; juos rasi ieškodamas signal() ir po kiekvieno set() pridėsi markForCheck()."
+      },
+      "lifecycleOrder": {
+        "a": "Visi, nes signalai nekeičia to, kada Angular kviečia hook'us; ngDoCheck ir *Checked hook'ai OnPush rodiniams visiškai praleidžiami, todėl ten nieko nekainuoja.",
+        "b": "ngOnChanges lieka būtinas reaguoti į input() pokyčius, o ngAfterViewInit – bet kokiai prieigai prie DOM; ngDoCheck ir *Checked hook'ai vykdomi tik vieną kartą per komponentą, po pirmojo atvaizdavimo."
+      },
+      "afterRender": {
+        "a": "Jie lygiaverčiai: visi trys suveikia vieną kartą po pirmosios change detection, bet afterNextRender ir afterRenderEffect papildomai vykdomi ir serveryje, kad palaikytų hidrataciją.",
+        "b": "ngAfterViewInit vykdomas naršyklei nupiešus; afterNextRender vykdomas prieš kiekvieną atvaizdavimą; afterRenderEffect pakeičia effect() bet kokiam signalais grįstam būsenos atnaujinimui."
+      },
+      "diHierarchy": {
+        "a": "Jis pirmiausia tikrina root injector'ių ir į komponento provider'ius kreipiasi tik tada, kai root jo neturi; paskutinis užregistruotas provider'is perrašo kitus.",
+        "b": "Jis ieško NgModule, kuris deklaravo komponentą, tada gretimuose moduliuose, tada platform injector'iuje; pasikartojantys provider'iai sukelia klaidą per bootstrap."
+      },
+      "injectionContext": {
+        "a": "Rašyk jas kaip paprastas pagalbines funkcijas: inject() veikia bet kur, net po await, nes Angular dabartinį injector'ių laiko globaliai; grąžink paprastas reikšmes ir valyk ngOnDestroy.",
+        "b": "Sudėk jas į abstrakčią bazinę klasę, kurią paveldi komponentai, kad inject() vyktų konstruktoriuje, o išvalymas – per paveldėtą ngOnDestroy."
+      },
+      "signalInputs": {
+        "a": "Input'ai tampa rašomais signalais, kuriuos vaikinis komponentas gali tiesiogiai keisti per set(), output'ai irgi tampa signalais, o model() – numatytasis bet kuriai tėvo perduodamai reikšmei.",
+        "b": "Mažai kas keičiasi: input() – tik sintaksinis cukrus virš @Input, todėl vis tiek reikia ngOnChanges ar setter'ių naujoms reikšmėms, o output() – tiesiog pervadintas EventEmitter."
+      },
+      "controlFlow": {
+        "a": "Atvaizduok visas eilutes NgZone.runOutsideAngular() viduje, o pabaigoje vieną kartą iškviesk detectChanges(), kad Angular visą sąrašą patikrintų vienu perėjimu.",
+        "b": "Naudok track $index, kad Angular pakartotinai naudotų DOM mazgus pagal poziciją, o eilučių formatavimą perkelk į šablono metodus, kad kiekviena reikšmė būtų skaičiuojama tingiai."
+      },
+      "deferBlocks": {
+        "a": "Jis atideda šablono dalies atvaizdavimą, kol change detection tampa neaktyvi, bet priklausomybės lieka pagrindiniame bundle – tai padeda vykdymo laikui, ne atsisiuntimo dydžiui.",
+        "b": "Jis tingiai įkelia bloką taip, kaip loadComponent – maršrutus, o kiekviena viduje naudojama priklausomybė iškeliama atskirai, net jei ji importuojama ir kitur programoje."
+      },
+      "resourceApi": {
+        "a": "resource() apgaubia Observable signalu ir kešuoja pirmąjį atsakymą; naujas užklausas paleidi iš effect() kviesdamas reload(), kai pasikeičia parametrai.",
+        "b": "httpResource() – tiesioginis HttpClient.post() ir put() pakaitalas: jis rikiuoja mutacijas į eilę, pakartoja jas nepavykus ir pateikia paskutinį atsakymą kaip signalą."
+      },
+      "signalForms": {
+        "a": "Signal Forms – tai Reactive Forms su toSignal(), pritaikytu valueChanges; FormGroup vis dar valdo reikšmę, tik ją skaitai kaip signalą, užuot prenumeravęs.",
+        "b": "Signal Forms iškelia validaciją iš formos į komponento computed() signalus, o Reactive Forms v22 versijoje pasenę (deprecated) ir juos būtina migruoti."
+      },
+      "flattening": {
+        "a": "Rinkis pagal pralaidumą: mergeMap greičiausias, todėl naudok jį pagal nutylėjimą, o į concatMap pereik tik tada, kai backend'as neatlaiko lygiagrečių užklausų; kiti – palikimas.",
+        "b": "Rinkis pagal šaltinio tipą: switchMap – HTTP, mergeMap – DOM įvykiams, concatMap – WebSocket'ams; kiekvienas saugus savo šaltiniui, todėl nė vienas neturi tikro gedimo režimo."
+      },
+      "hotCold": {
+        "a": "Šaltas (cold) Observable laukia pirmojo prenumeratoriaus ir tada dalijasi tuo vykdymu; karštas (hot) kiekvienam naujam prenumeratoriui pakartoja visas ankstesnes reikšmes, todėl visada užklausia vieną kartą.",
+        "b": "Karštas (hot) Observable kiekvienam prenumeratoriui paleidžia naują gamintoją; šaltas (cold) dalijasi vienu gamintoju, todėl problemą išspręsi užklausą kiekviename komponente apgaubdamas nauju Subject."
+      },
+      "subjects": {
+        "a": "Bendrai būsenai: BehaviorSubject vėlyviems prenumeratoriams pateikia dabartinę reikšmę, todėl atverk jį viešai ir leisk komponentams kviesti next(), kai tik reikia atnaujinti.",
+        "b": "Šiuolaikiniame Angular – niekada: įvykius irgi modeliuok signalais, kiekvieną Subject pakeisdamas signal() ir set(), nes lygybės patikra nemokamai pašalina triukšmingus pasikartojančius pranešimus."
+      },
+      "rxjsErrors": {
+        "a": "Pridėk catchError išorinio pipe pabaigoje ir grąžink EMPTY – klaida bus nuryta, o srautas, kaip ir anksčiau, toliau lauks kitos reikšmės.",
+        "b": "Apgaubk subscribe() callback'ą try/catch ir iš klaidų apdorojimo iš naujo prenumeruok; retry() ant išorinio srauto pakartos nepavykusią užklausą su backoff."
+      },
+      "unsubscribe": {
+        "a": "Priversk kiekvieną komponentą įgyvendinti ngOnDestroy ir kviesti unsubscribe() kiekvienam Subscription laukui, tai užtikrinant bazine klase, kurią privalo paveldėti visi komponentai.",
+        "b": "Pasikliauk tuo, kad HttpClient ir router'is savo Observable užbaigia patys; takeUntil() reikia tik interval(), todėl visos kodo bazės taisyklė duoda mažai naudos."
+      },
+      "stillRxjs": {
+        "a": "Ne, signalai dabar apima ir srautus: effect() su setTimeout atlieka debounce, o resource() tvarko WebSocket'us, pakartojimus ir asinchroninių šaltinių sujungimą.",
+        "b": "Tik HTTP, nes HttpClient grąžina Observable; kai httpResource() bus visur, RxJS galima išmesti iš bundle, nes Angular 22 jo nebereikia."
+      },
+      "structure": {
+        "a": "Pagal techninį tipą: aukščiausio lygio components, services, models ir pipes katalogai bei vienas SharedModule, importuojantis viską, kad bet kuris feature galėtų tai naudoti.",
+        "b": "Nuo pirmos dienos po vieną Nx biblioteką kiekvienam komponentui, visos įkeliamos iš karto (eager) per root barrel failą, kad importai būtų trumpi, o tree-shaking pašalintų nenaudojamą kodą."
+      },
+      "stateManagement": {
+        "a": "NgRx nuo pirmos dienos: viena globali saugykla daro nuspėjamą visą būseną, įskaitant UI vėliavėles, todėl komponentai niekada nelaiko savos būsenos.",
+        "b": "Root servisuose su BehaviorSubject, nes komponentų signalai prarandami naršant, o komponento lygio servisai nutekina būseną tarp egzempliorių."
+      },
+      "httpErrors": {
+        "a": "Centralizuotai: vienas globalus interceptorius pagauna visas klaidas ir rodo toast, todėl funkcijoms niekada nereikia savo klaidų apdorojimo.",
+        "b": "Kiekviename komponente: kiekvienas subscribe() turi savo error callback, kuris analizuoja HttpErrorResponse, todėl kiekvienas ekranas pats valdo savo pranešimus."
+      },
+      "testing": {
+        "a": "Daugiausia E2E testai per tikrą UI kiekvienam srautui, nes komponentų testai per daug mockina, kad pagautų tikras klaidas.",
+        "b": "Unit testai kiekvienam komponento metodui ir privačiam helper, plius markup snapshots, o CI reikalauja 100 % padengimo."
+      },
+      "accessibility": {
+        "a": "ARIA roles ir aria-label kiekvienam elementui, įskaitant natyvius mygtukus, o įrodymas — Lighthouse prieinamumo įvertis 100.",
+        "b": "Savi div pagrindu sukurti valdikliai su vienodu stiliumi, tabindex=\"0\" viskam, kas interaktyvu, patikrinta tik automatiniu axe skenavimu CI."
+      },
+      "performance": {
+        "a": "Iškart perjungiu visus komponentus į OnPush ir visur pridedu trackBy, nes change detection visada yra tikroji lėtumo priežastis.",
+        "b": "Pirmiausia įjungiu SSR ir atnaujinu Angular į naujausią versiją, nes serverio renderinimas sutvarko ir lėtą įkėlimą, ir lėtas sąveikas."
+      },
+      "bundle": {
+        "a": "Vienas chunk su gzip ir HTTP cache, nes lazy chunks tik prideda tinklo užklausų.",
+        "b": "Bendras kodas šakniniame SharedModule, kad funkcijos jį pernaudotų nedubliuodamos baitų."
+      },
+      "i18n": {
+        "a": "Visada build-time @angular/localize, nes runtime bibliotekos nepalaiko ICU daugiskaitos ir lokalės formatų, o CMS turinį galima tiesiog įkepti į kiekvienos lokalės build.",
+        "b": "Visada runtime vertimai su vienu bendru build, nes LOCALE_ID ir datos formatus galima nustatyti tik runtime, todėl build-time i18n negali aptarnauti kelių rinkų."
+      },
+      "effectSync": {
+        "a": "Nes effect() įvykdomas tik vieną kartą sukūrimo metu ir praleidžia vėlesnius pokyčius; geriau sinchronizuoti su toObservable() ir rankiniu subscribe().",
+        "b": "Nes signalo rašymas effect() viduje pagal nutylėjimą meta klaidą; perduokite allowSignalWrites: true, kad effect saugiai palaikytų abu sinchronizuotus."
+      },
+      "mutation": {
+        "a": "OnPush perrenderina tik dėl DOM įvykių komponento viduje, todėl tėvinio komponento pakeisti inputs niekada nesukelia atnaujinimo.",
+        "b": "Signalai masyvus lygina giliai, bet OnPush išjungia signalų sekimą šablone, todėl view niekada nesuplanuojamas patikrai."
+      },
+      "switchMapSave": {
+        "a": "switchMap vykdo užklausas lygiagrečiai ir be eilės, todėl du paspaudimai sukuria du išsaugojimus; mergeMap jas teisingai sudėliotų į eilę.",
+        "b": "switchMap niekada neatsisako ankstesnės užklausos prenumeratos, todėl kiekvienas paspaudimas palieka nutekančią prenumeratą, o seni atsakymai lieka atmintyje."
+      },
+      "requiredInput": {
+        "a": "Privalomi inputs nustatomi tik po ngAfterViewInit, todėl juos skaitant laukų inicializatoriuje ar ngOnInit metama klaida (NG0950).",
+        "b": "input.required() grąžina Observable, o ne reikšmę, todėl prieš skaitant jį reikia praleisti per toSignal() arba async pipe."
+      },
+      "thirdParty": {
+        "a": "Callback vykdomas už zonos ribų, todėl jį apgaubiu ngZone.run(), kad vėl būtų paleista visos aplikacijos patikra.",
+        "b": "Kviečiu detectChanges() setInterval viduje, kad view nuolat tikrintų, ar biblioteka turi naujų reikšmių."
+      },
+      "trackIndex": {
+        "a": "Funkciškai niekas nesugenda; $index tik šiek tiek lėtesnis už id, nes Angular perskaičiuoja kiekvienos eilutės bindings.",
+        "b": "Po perrikiavimo Angular meta pasikartojančio rakto klaidą, nes tas pats $index dabar rodo į du skirtingus elementus."
+      },
+      "ng0100": {
+        "a": "Tai reiškia, kad hook metu reikšmė pasikeitė už zone.js ribų; atnaujinimą apgaubti setTimeout arba ngZone.run() yra teisingas, rekomenduojamas sprendimas.",
+        "b": "Tai rodo nutekančią prenumeratą lifecycle hook, kuri emituoja renderinimo metu; pridėjus takeUntilDestroyed() klaida dingsta visam laikui."
+      },
+      "migration": {
+        "a": "Pirmiausia zoneless su provideZonelessChangeDetection(), kad visos paslėptos klaidos išlįstų iškart, o tada signals ir OnPush tik ten, kur sugenda ekranai.",
+        "b": "Rankiniu būdu viename dideliame koordinuotame PR, visus NgModule perrašant vienu metu, nes schematics nesusitvarko su maršrutizavimu ir lazy moduliais."
+      },
+      "routeData": {
+        "a": "Visada resolvers, nes duomenų įkėlimas komponente sukelia NG0100, o maršruto parametrai nepasiekiami kaip signal inputs.",
+        "b": "Prenumeruoju ngOnInit ir skaitau ActivatedRoute.snapshot parametrus, nes snapshot pats atsinaujina kiekvieną kartą pasikeitus parametrui."
+      },
+      "realtimeTelemetry": {
+        "a": "Atskiras WebSocket kiekvienam valdikliui, kad kiekvienas būtų izoliuotas, ir detectChanges() po kiekvieno pranešimo, kad skaičiai ekrane visada būtų tikslūs.",
+        "b": "Kiekvieną pranešimą stumiu į BehaviorSubject ir renderinu su async pipe, nes Angular automatiškai sujungia 50 atnaujinimų per sekundę į vieną kadrą."
+      },
+      "connectionLoss": {
+        "a": "Iškart bandau jungtis iš naujo glaudžiame cikle, kol socket grįžta, toliau rodau paskutines reikšmes, kad ekranas atrodytų stabilus, o vartotojo komandas dedu į eilę, kad jos išsisiųstų automatiškai atsiradus ryšiui.",
+        "b": "Jungiuosi iš naujo fiksuotu intervalu ir pasikliauju, kad serveris pakartotinai atsiųs visus praleistus pranešimus, todėl UI tiesiog tęsia nuo ten, kur sustojo, be snapshot ir be jokios matomos būsenos."
+      },
+      "configurator": {
+        "a": "Kiekviena parinktis yra atskiras rašomas signalas, o effect() iš naujo tikrina konfliktus ir perskaičiuoja kainą kliente, todėl rodoma kaina visada yra galutinė.",
+        "b": "Taisyklės gyvena kaip if sąlygos kiekviename parinkties komponente, o galutinę kainą apskaičiuoja klientas, nes kreiptis į serverį po kiekvieno paspaudimo būtų per lėta."
+      },
+      "microFrontends": {
+        "a": "Taip, pagal nutylėjimą: micro-frontends yra standartinė architektūra dideliems Angular portalams, o kiekviena komanda gali naudoti savo Angular versiją be realių papildomų kaštų.",
+        "b": "Taip, su vienu iframe kiekvienai prekės ženklo komandai: iframe suteikia visišką izoliaciją ir nepriklausomus deploy, o dalintis autentifikacija ir design system tarp jų paprasta."
+      },
+      "multiBrand": {
+        "a": "Kiekvienas prekės ženklas ir rinka turi savo git šaką, reguliariai sujungiamą iš main, todėl kiekviena šalis gali pritaikyti komponentus ir teisinius tekstus tiesiai kode.",
+        "b": "Komponentai injektuoja BrandService ir šakojasi su if/switch pagal prekės ženklą ir šalies kodą, todėl kiekvienas skirtumas lieka aiškus ir matomas šablonuose."
+      },
+      "headUnit": {
+        "a": "Renderinimą perkeliu į serverį su SSR ir hydration, visą bundle palieku kaip yra ir matuoju su Lighthouse CPU throttling savo programuotojo nešiojamajame.",
+        "b": "Saugumo dėlei palieku zone.js, vėlavimą maskuoju įkėlimo spinner ir perėjimais, o testuoju Chrome įrenginių emuliacijoje, ne tikroje įrangoje."
       }
     }
   }

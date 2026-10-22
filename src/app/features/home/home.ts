@@ -29,6 +29,7 @@ export default class Home {
     { path: '/lifecycle', key: 'nav.lifecycle', body: 'home.topics.lifecycle' },
     { path: '/rxjs', key: 'nav.rxjs', body: 'home.topics.rxjs' },
     { path: '/interview', key: 'nav.interview', body: 'home.topics.interview' },
+    { path: '/quiz', key: 'nav.quiz', body: 'home.topics.quiz' },
   ] as const;
 
   protected switchTo(lang: string): void {

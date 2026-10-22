@@ -1,0 +1,172 @@
+@use 'mixins';
+
+.setup,
+.card {
+  @include mixins.surface;
+  @include mixins.stack(var(--space-4));
+
+  align-items: flex-start;
+  max-width: 52rem;
+  padding: var(--space-5);
+
+  p {
+    margin: 0;
+  }
+}
+
+.card h2 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+}
+
+.scoreboard {
+  @include mixins.cluster(var(--space-4));
+
+  width: 100%;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+
+  progress {
+    flex: 1 1 8rem;
+    height: 0.5rem;
+    accent-color: var(--color-accent-strong);
+  }
+}
+
+.tally {
+  display: flex;
+  gap: var(--space-2);
+  margin: 0;
+
+  dd {
+    margin: 0 var(--space-2) 0 0;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+}
+
+.options {
+  @include mixins.stack(var(--space-2));
+
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.option {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: var(--space-3);
+  font: inherit;
+  color: var(--color-text);
+  text-align: start;
+  cursor: pointer;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-accent-strong);
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  code {
+    overflow-wrap: anywhere;
+  }
+}
+
+.letter {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  background: var(--color-surface-muted);
+  border-radius: 50%;
+}
+
+.mark {
+  margin-inline-start: auto;
+  font-weight: 700;
+}
+
+.option--right {
+  background: var(--color-success-bg);
+  border: 2px solid var(--color-success);
+}
+
+.option--wrong {
+  background: var(--color-danger-bg);
+  border: 2px solid var(--color-danger);
+}
+
+.option--faded {
+  color: var(--color-text-muted);
+}
+
+.feedback {
+  @include mixins.stack(var(--space-3));
+
+  width: 100%;
+  padding: var(--space-4);
+  border-inline-start: 4px solid var(--color-success);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-muted);
+
+  &--wrong {
+    border-inline-start-color: var(--color-danger);
+  }
+
+  summary {
+    font-weight: 600;
+    cursor: pointer;
+  }
+}
+
+.explanation {
+  @include mixins.stack(var(--space-3));
+
+  max-width: 80ch;
+  margin-top: var(--space-2);
+
+  p {
+    margin: 0;
+  }
+}
+
+.demo-link {
+  align-self: flex-start;
+}
+
+.actions {
+  @include mixins.cluster(var(--space-3));
+}
+
+.result {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+}
+
+.missed {
+  @include mixins.stack(var(--space-3));
+
+  padding-inline-start: var(--space-5);
+  margin: 0;
+}
+
+.missed-prompt {
+  font-weight: 600;
+}

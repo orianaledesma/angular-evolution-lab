@@ -53,6 +53,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/interview/interview'),
   },
   {
+    path: 'quiz',
+    title: 'nav.quiz',
+    loadComponent: () => import('./features/quiz/quiz'),
+  },
+  {
     path: 'requirements',
     title: 'nav.requirements',
     loadComponent: () => import('./features/requirements/requirements'),
