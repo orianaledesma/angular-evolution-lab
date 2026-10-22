@@ -26,4 +26,18 @@ describe('Sidenav', () => {
     expect(screen.getByRole('link', { name: 'Overview' })).toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: /linkedSignal/ })).not.toHaveAttribute('aria-current');
   });
+
+  it('groups the links under labelled lists', async () => {
+    await render(Sidenav, {
+      providers: [provideTranslateTesting()],
+      routes: [{ path: '**', component: Blank }],
+    });
+    const fundamentals = screen.getByRole('list', { name: 'Fundamentals' });
+    expect(fundamentals).toContainElement(
+      screen.getByRole('link', { name: 'Lifecycle & change detection' }),
+    );
+    expect(
+      screen.getByRole('list', { name: 'Angular versions' }).querySelectorAll('a'),
+    ).toHaveLength(7);
+  });
 });

@@ -7,5 +7,6 @@ export const ROUTES = [
   { path: '/v20', heading: 'Stable signals' },
   { path: '/v21', heading: 'Signal Forms & Aria' },
   { path: '/v22', heading: 'OnPush by default' },
+  { path: '/lifecycle', heading: 'Lifecycle & change detection' },
   { path: '/requirements', heading: 'Requirements map' },
 ] as const;

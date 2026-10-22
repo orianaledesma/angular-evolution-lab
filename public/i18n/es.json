@@ -25,7 +25,13 @@
     "v20": "Signals estables",
     "v21": "Signal Forms y Aria",
     "v22": "OnPush por defecto",
-    "requirements": "Mapa de requisitos"
+    "requirements": "Mapa de requisitos",
+    "lifecycle": "Ciclo de vida y change detection",
+    "groups": {
+      "versions": "Versiones de Angular",
+      "fundamentals": "Fundamentos",
+      "project": "Proyecto"
+    }
   },
   "common": {
     "loading": "Cargando…",
@@ -40,7 +46,8 @@
     "submit": "Enviar",
     "reset": "Restablecer",
     "notFound": "Página no encontrada",
-    "backHome": "Volver al resumen"
+    "backHome": "Volver al resumen",
+    "clear": "Limpiar"
   },
   "v16": {
     "title": "Llegan los signals",
@@ -507,6 +514,103 @@
         "title": "Cultura de testing",
         "detail": "Jest + Testing Library con 80 % de cobertura mínima, E2E con Playwright en tres navegadores."
       }
+    }
+  },
+  "lifecycle": {
+    "title": "Ciclo de vida y change detection",
+    "intro": "Qué se ejecuta cuando un componente se crea, se actualiza y se destruye, medido en vivo en esta app y no copiado de la documentación. Cada log de esta página sale de hooks reales en Angular 22, zoneless y con OnPush por defecto.",
+    "takeaways": "Puntos clave",
+    "backHere": "Volver a Ciclo de vida",
+    "hooks": {
+      "title": "Ciclo de vida de un componente, en vivo",
+      "description": "El hijo implementa los ocho hooks clásicos y registra las APIs modernas (effect, afterNextRender, afterRenderEffect, DestroyRef). Cada botón es una acción del usuario; el log lista cada llamada que provocó, en orden.",
+      "clicks": "clics",
+      "clickInside": "Clic dentro del hijo",
+      "logTitle": "Log de hooks (lo más nuevo arriba)",
+      "classic": "hook clásico",
+      "modern": "API moderna",
+      "none": "No se ejecutó ningún hook.",
+      "empty": "Montá el hijo para empezar.",
+      "actions": {
+        "mount": "Montar el hijo",
+        "input": "Cambiar el input",
+        "parent": "Cambio solo en el padre",
+        "unmount": "Desmontar el hijo",
+        "inside": "Clic dentro del hijo"
+      },
+      "t1": "Orden de creación: constructor (inicializadores de campos, inject()) → ngOnChanges → ngOnInit → ngDoCheck → effect() → hooks de contenido → hooks de vista → afterNextRender / afterRenderEffect cuando el DOM ya está actualizado.",
+      "t2": "ngOnChanges solo corre cuando cambia un input. Un cambio solo en el padre igual ejecuta ngDoCheck y los dos hooks *Checked, aunque el hijo OnPush no se re-renderice: mantenelos livianos o evitalos.",
+      "t3": "Los inputs requeridos no están disponibles en el constructor (NG0950): leelos en computed(), effect() o ngOnInit, nunca en un inicializador de campo.",
+      "t4": "Al destruir, primero corre ngOnDestroy y después los callbacks de DestroyRef, que es el mecanismo que usan takeUntilDestroyed() y toSignal() para limpiar."
+    },
+    "modern": {
+      "title": "Hooks clásicos → APIs modernas",
+      "description": "Los signals eliminan la mayoría de los motivos para implementar un hook. Esta es la equivalencia para aplicar al migrar un componente.",
+      "classic": "Clásico",
+      "modern": "Moderno",
+      "note": "Cuándo / por qué",
+      "rows": {
+        "constructor": "inject() funciona en los inicializadores de campos y en el constructor (el contexto de inyección). Los inputs todavía no tienen valor.",
+        "onChanges": "El estado derivado es un computed(). Un valor que se reinicia cuando cambia un input pero sigue siendo editable es un linkedSignal().",
+        "onInit": "Sigue sirviendo para trabajo imperativo puntual que necesita los inputs. Cargar datos suele pasar a ser un resource() / httpResource() que depende de los inputs.",
+        "doCheck": "El dirty checking manual es justo lo que reemplazan los signals. Conservalo solo para integrar objetos mutables de terceros.",
+        "content": "Los resultados de las queries son signals: derivá de ellos con computed() en lugar de esperar un hook.",
+        "viewInit": "viewChild() es un signal, undefined hasta que existe la vista. afterNextRender() es para trabajo único sobre el DOM: foco, mediciones, widgets de terceros.",
+        "viewChecked": "Corre después de un render solo si cambiaron los signals que leyó, separado en fases de lectura y escritura, en vez de después de cada chequeo.",
+        "onDestroy": "Registrá la limpieza junto al código que la necesita. Funciona también en servicios y funciones, no solo en componentes."
+      },
+      "phasesTitle": "Fases de afterRenderEffect, en orden de ejecución",
+      "phases": {
+        "earlyRead": "leer el DOM antes de escribir nada (medir el layout)",
+        "write": "escribir en el DOM; acá nunca se lee",
+        "mixed": "leer y escribir; es el default con un único callback, evitalo cuando puedas",
+        "read": "leer el DOM después de todas las escrituras"
+      },
+      "phasesExplain": "Angular ejecuta cada fase en todos los componentes antes de pasar a la siguiente, así las lecturas y escrituras se agrupan y el navegador calcula el layout una sola vez. Cada fase recibe el valor de la anterior como signal. Los render hooks nunca corren en el servidor."
+    },
+    "tree": {
+      "title": "Árbol de change detection",
+      "description": "Seis componentes, dos estrategias. Cada número cuenta cuántas veces se refrescó la vista de ese componente. Mandá una notificación y mirá qué vistas toca Angular de verdad.",
+      "hint": "Probá también el botón dentro de Leaf A2.",
+      "clickA2": "Clic dentro de A2",
+      "actions": {
+        "signal": "Cambiar un signal que solo lee A1",
+        "input": "Cambiar el input de B1",
+        "plain": "Mutar un campo común (sin signal)",
+        "event": "Evento dentro de A2"
+      },
+      "checked": "se refrescaron {{count}} de 6:",
+      "nothing": "no se refrescó nada.",
+      "why": {
+        "signal": "Un signal leído en un template marca solo esa vista para refrescar. Sus ancestros se recorren para llegar a ella pero no se re-renderizan, ni siquiera los OnPush.",
+        "input": "La raíz lee plate(), así que se refresca. Branch B es Eager y se refresca con su padre; Leaf B1 es OnPush pero recibió un input nuevo. Branch A (OnPush, sin cambios) se saltea, y con él también la Leaf A2 Eager que tiene adentro.",
+        "plain": "Sin signal, sin evento en el árbol y sin markForCheck(): sin zone.js nadie le avisa a Angular que algo cambió. A1 sigue mostrando el valor viejo hasta que otra cosa la refresque.",
+        "event": "Un evento de template marca su vista y todos sus ancestros como sucios, igual que markForCheck(). Root, Branch A y A2 se refrescan; Branch B (Eager) se refresca porque se refrescó su padre. Las hojas OnPush A1 y B1 se saltean."
+      },
+      "t1": "Angular zoneless agenda change detection solo ante notificaciones: cambia un signal leído por un template, se dispara un evento de template, cambia un input, se llama a markForCheck() o el pipe async recibe un valor.",
+      "t2": "OnPush (el default de v22) saltea un componente salvo que reciba una notificación o una nueva referencia en un input. Eager (antes Default) se chequea siempre que se chequea su padre.",
+      "t3": "Los signals son la granularidad más fina: solo se re-renderizan las vistas que leen el signal. Mutar objetos en el lugar, o campos comunes, es el bug clásico de OnPush."
+    },
+    "injectors": {
+      "title": "Servicios e injectors",
+      "description": "Un servicio vive lo mismo que el injector que lo creó. Agregá y quitá paneles: cada uno provee su propio TripMeter, compartido con su hijo y destruido junto con él, mientras el FleetClock de root nunca cambia.",
+      "root": "Servicio de root",
+      "createdAt": "Creado a las",
+      "add": "Agregar {{name}}",
+      "remove": "Quitar {{name}}",
+      "gauge": "Componente hijo",
+      "shared": "la misma instancia que su hijo",
+      "logTitle": "Instancias de TripMeter",
+      "created": "TripMeter #{{id}} creado",
+      "destroyed": "TripMeter #{{id}} destruido (DestroyRef.onDestroy)",
+      "contextTitle": "Contexto de inyección",
+      "injectHandler": "inject() en un handler de clic",
+      "injectContext": "runInInjectionContext()",
+      "routeScoped": "Los providers de una ruta crean un tercer tipo de injector, que se destruye al salir de la ruta (withAutoCleanupInjectors).",
+      "routeLink": "Verlo en la demo de v21",
+      "t1": "La resolución empieza en el element injector del componente, sube por sus ancestros y después por los environment injectors (ruta → root). Gana el primer provider que encuentra.",
+      "t2": "providedIn: 'root' o @Service() da un singleton tree-shakable. providers: [] en un componente da una instancia por cada instancia del componente, ideal para estado que pertenece a un solo widget.",
+      "t3": "inject() solo funciona en un contexto de inyección: inicializadores de campos, el constructor, funciones factory o runInInjectionContext(). En cualquier otro lugar lanza NG0203."
     }
   }
 }

@@ -212,3 +212,11 @@ kbd {
   font-size: var(--font-size-sm);
   color: var(--color-danger);
 }
+
+.takeaways {
+  @include mixins.stack(var(--space-2));
+
+  max-width: 75ch;
+  padding-inline-start: var(--space-5);
+  margin: 0;
+}

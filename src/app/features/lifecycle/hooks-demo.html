@@ -1,0 +1,99 @@
+<app-card [heading]="'lifecycle.hooks.title' | translate">
+  <p class="muted">{{ 'lifecycle.hooks.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <button app-button size="sm" type="button" [disabled]="mounted()" (click)="mount()">
+        {{ 'lifecycle.hooks.actions.mount' | translate }}
+      </button>
+      <button
+        app-button
+        variant="secondary"
+        size="sm"
+        type="button"
+        [disabled]="!mounted()"
+        (click)="changeInput()"
+      >
+        {{ 'lifecycle.hooks.actions.input' | translate }}
+      </button>
+      <button
+        app-button
+        variant="secondary"
+        size="sm"
+        type="button"
+        [disabled]="!mounted()"
+        (click)="parentOnly()"
+      >
+        {{ 'lifecycle.hooks.actions.parent' | translate }}
+      </button>
+      <button
+        app-button
+        variant="danger"
+        size="sm"
+        type="button"
+        [disabled]="!mounted()"
+        (click)="unmount()"
+      >
+        {{ 'lifecycle.hooks.actions.unmount' | translate }}
+      </button>
+    </div>
+
+    <div class="hooks-grid">
+      <app-hooks-stage
+        [mounted]="mounted()"
+        [plate]="plate()"
+        [tick]="tick()"
+        (childClicked)="childClicked()"
+      />
+
+      <section class="hooks-log" aria-labelledby="hooks-log-title">
+        <div class="toolbar">
+          <h3 id="hooks-log-title">{{ 'lifecycle.hooks.logTitle' | translate }}</h3>
+          <button app-button variant="ghost" size="sm" type="button" (click)="log.clear()">
+            {{ 'common.clear' | translate }}
+          </button>
+        </div>
+        <div class="legend">
+          <app-badge tone="info">{{ 'lifecycle.hooks.classic' | translate }}</app-badge>
+          <app-badge tone="success">{{ 'lifecycle.hooks.modern' | translate }}</app-badge>
+        </div>
+        <div aria-live="polite">
+          @for (group of log.groups(); track group.id; let latest = $first) {
+            <div class="group" [class.latest]="latest" data-testid="hooks-group">
+              <h4>
+                {{ group.actionKey | translate }}
+                <span class="count">· {{ group.entries.length }}</span>
+              </h4>
+              @if (group.entries.length) {
+                <ol>
+                  @for (entry of group.entries; track $index) {
+                    <li [class]="'hook hook--' + entry.kind">
+                      <code>{{ entry.hook }}</code>
+                      @if (entry.detail) {
+                        <span class="detail">{{ entry.detail }}</span>
+                      }
+                    </li>
+                  }
+                </ol>
+              } @else {
+                <p class="status">{{ 'lifecycle.hooks.none' | translate }}</p>
+              }
+            </div>
+          } @empty {
+            <p class="empty-state">{{ 'lifecycle.hooks.empty' | translate }}</p>
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <h3>{{ 'lifecycle.takeaways' | translate }}</h3>
+  <ul class="takeaways">
+    <li>{{ 'lifecycle.hooks.t1' | translate }}</li>
+    <li>{{ 'lifecycle.hooks.t2' | translate }}</li>
+    <li>{{ 'lifecycle.hooks.t3' | translate }}</li>
+    <li>{{ 'lifecycle.hooks.t4' | translate }}</li>
+  </ul>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

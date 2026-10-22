@@ -25,7 +25,13 @@
     "v20": "Stable signals",
     "v21": "Signal Forms & Aria",
     "v22": "OnPush by default",
-    "requirements": "Requirements map"
+    "requirements": "Requirements map",
+    "lifecycle": "Lifecycle & change detection",
+    "groups": {
+      "versions": "Angular versions",
+      "fundamentals": "Fundamentals",
+      "project": "Project"
+    }
   },
   "common": {
     "loading": "Loading…",
@@ -40,7 +46,8 @@
     "submit": "Submit",
     "reset": "Reset",
     "notFound": "Page not found",
-    "backHome": "Back to overview"
+    "backHome": "Back to overview",
+    "clear": "Clear"
   },
   "v16": {
     "title": "Signals arrive",
@@ -507,6 +514,103 @@
         "title": "Testing culture",
         "detail": "Jest + Testing Library with 80 % minimum coverage, Playwright E2E across three browsers."
       }
+    }
+  },
+  "lifecycle": {
+    "title": "Lifecycle & change detection",
+    "intro": "What runs when a component is created, updated and destroyed — measured live in this app, not copied from the docs. Every log on this page comes from real hooks running in Angular 22, zoneless and OnPush by default.",
+    "takeaways": "Key points",
+    "backHere": "Back to Lifecycle",
+    "hooks": {
+      "title": "Component lifecycle, live",
+      "description": "The child implements all eight classic hooks and registers the modern APIs (effect, afterNextRender, afterRenderEffect, DestroyRef). Each button is one user action; the log lists every call it caused, in order.",
+      "clicks": "clicks",
+      "clickInside": "Click inside the child",
+      "logTitle": "Hook log (newest first)",
+      "classic": "classic hook",
+      "modern": "modern API",
+      "none": "No hook ran.",
+      "empty": "Mount the child to start.",
+      "actions": {
+        "mount": "Mount the child",
+        "input": "Change the input",
+        "parent": "Parent-only change",
+        "unmount": "Unmount the child",
+        "inside": "Click inside the child"
+      },
+      "t1": "Creation order: constructor (field initializers, inject()) → ngOnChanges → ngOnInit → ngDoCheck → effect() → content hooks → view hooks → afterNextRender / afterRenderEffect once the DOM is up to date.",
+      "t2": "ngOnChanges runs only when an input changes. A parent-only change still runs ngDoCheck and both *Checked hooks, even though the OnPush child is not re-rendered — keep them cheap or avoid them.",
+      "t3": "Required inputs are not available in the constructor (NG0950): read them in computed(), effect() or ngOnInit, never in a field initializer.",
+      "t4": "On destroy, ngOnDestroy runs first and then the DestroyRef callbacks — the mechanism takeUntilDestroyed() and toSignal() use to clean up."
+    },
+    "modern": {
+      "title": "Classic hooks → modern APIs",
+      "description": "Signals remove most reasons to implement a hook. This is the mapping to apply when migrating a component.",
+      "classic": "Classic",
+      "modern": "Modern",
+      "note": "When / why",
+      "rows": {
+        "constructor": "inject() works in field initializers and the constructor (the injection context). Inputs are not set yet.",
+        "onChanges": "Derived state is a computed(). A value that resets when an input changes but stays writable is a linkedSignal().",
+        "onInit": "Still fine for one-off imperative work that needs inputs. Loading data usually becomes a resource() / httpResource() keyed on the inputs.",
+        "doCheck": "Custom dirty checking is exactly what signals replace. Keep it only to integrate mutable third-party objects.",
+        "content": "Query results are signals: derive from them with computed() instead of waiting for a hook.",
+        "viewInit": "viewChild() is a signal, undefined until the view exists. afterNextRender() is for one-time DOM work: focus, measuring, third-party widgets.",
+        "viewChecked": "Runs after a render only when the signals it read changed, split into read/write phases — instead of after every check.",
+        "onDestroy": "Register cleanup next to the code that needs it. Works in services and plain functions too, not only components."
+      },
+      "phasesTitle": "afterRenderEffect phases, in execution order",
+      "phases": {
+        "earlyRead": "read the DOM before anything is written (measure layout)",
+        "write": "write to the DOM; never read here",
+        "mixed": "read and write; the default for a single callback, avoid it when you can",
+        "read": "read the DOM after all writes"
+      },
+      "phasesExplain": "Angular runs each phase for every component before moving to the next one, so reads and writes are batched and the browser computes layout once. Each phase receives the previous phase's value as a signal. Render hooks never run on the server."
+    },
+    "tree": {
+      "title": "Change detection tree",
+      "description": "Six components, two strategies. Each number counts how many times that component's view was refreshed. Send a notification and see which views Angular actually touches.",
+      "hint": "Also try the button inside Leaf A2.",
+      "clickA2": "Click inside A2",
+      "actions": {
+        "signal": "Set a signal read only by A1",
+        "input": "Change the input of B1",
+        "plain": "Mutate a plain field (no signal)",
+        "event": "Event inside A2"
+      },
+      "checked": "refreshed {{count}} of 6:",
+      "nothing": "nothing was refreshed.",
+      "why": {
+        "signal": "A signal read in a template marks only that view for refresh. Its ancestors are traversed to reach it but not re-rendered, even the OnPush ones.",
+        "input": "The root reads plate(), so it refreshes. Branch B is Eager and refreshes with its parent; Leaf B1 is OnPush but got a new input. Branch A (OnPush, nothing changed) is skipped — and so is the Eager Leaf A2 inside it.",
+        "plain": "No signal, no event in the tree, no markForCheck(): without zone.js nobody tells Angular that something changed. A1 keeps the old value until something else refreshes it.",
+        "event": "A template event marks its view and all its ancestors dirty, like markForCheck(). Root, Branch A and A2 refresh; Eager Branch B refreshes because its parent did. The OnPush leaves A1 and B1 are skipped."
+      },
+      "t1": "Zoneless Angular schedules change detection only on notifications: a signal read by a template changes, a template event fires, an input changes, markForCheck() is called, or the async pipe receives a value.",
+      "t2": "OnPush (the v22 default) skips a component unless it is notified or receives a new input reference. Eager (formerly Default) is checked whenever its parent is.",
+      "t3": "Signals are the finest grain: only the views that read the signal re-render. Mutating objects in place, or plain fields, is the classic OnPush bug."
+    },
+    "injectors": {
+      "title": "Services and injectors",
+      "description": "A service lives as long as the injector that created it. Add and remove panels: each one provides its own TripMeter, shared with its child and destroyed with it, while the root FleetClock never changes.",
+      "root": "Root service",
+      "createdAt": "Created at",
+      "add": "Add {{name}}",
+      "remove": "Remove {{name}}",
+      "gauge": "Child component",
+      "shared": "same instance as its child",
+      "logTitle": "TripMeter instances",
+      "created": "TripMeter #{{id}} created",
+      "destroyed": "TripMeter #{{id}} destroyed (DestroyRef.onDestroy)",
+      "contextTitle": "Injection context",
+      "injectHandler": "inject() in a click handler",
+      "injectContext": "runInInjectionContext()",
+      "routeScoped": "Route providers create a third kind of injector, destroyed when you leave the route (withAutoCleanupInjectors).",
+      "routeLink": "See it in the v21 demo",
+      "t1": "Resolution starts at the component's element injector, walks up its ancestors and then the environment injectors (route → root). The first provider found wins.",
+      "t2": "providedIn: 'root' or @Service() gives one tree-shakable singleton. providers: [] on a component gives one instance per component instance — ideal for state that belongs to a single widget.",
+      "t3": "inject() works only in an injection context: field initializers, the constructor, factory functions or runInInjectionContext(). Anywhere else it throws NG0203."
     }
   }
 }

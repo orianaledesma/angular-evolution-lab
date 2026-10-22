@@ -1,7 +1,7 @@
 import { Component, inject, output } from '@angular/core';
 import { Router, RouterLink, isActive } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DEMO_NAV } from '../navigation/demo-nav';
+import { DEMO_NAV, NAV_GROUPS } from '../navigation/demo-nav';
 
 @Component({
   selector: 'app-sidenav',
@@ -15,7 +15,7 @@ export class Sidenav {
   readonly navigate = output();
 
   // v22: isActive() returns a Signal<boolean> — no RouterLinkActive directive needed.
-  protected readonly items = DEMO_NAV.map((item) => ({
+  private readonly items = DEMO_NAV.map((item) => ({
     ...item,
     active: isActive(item.path, this.router, {
       paths: item.path === '/' ? 'exact' : 'subset',
@@ -23,5 +23,10 @@ export class Sidenav {
       fragment: 'ignored',
       matrixParams: 'ignored',
     }),
+  }));
+
+  protected readonly groups = NAV_GROUPS.map((group) => ({
+    group,
+    items: this.items.filter((item) => item.group === group),
   }));
 }

@@ -38,6 +38,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/v22-maturity/v22-maturity'),
   },
   {
+    path: 'lifecycle',
+    title: 'nav.lifecycle',
+    loadComponent: () => import('./features/lifecycle/lifecycle'),
+  },
+  {
     path: 'requirements',
     title: 'nav.requirements',
     loadComponent: () => import('./features/requirements/requirements'),

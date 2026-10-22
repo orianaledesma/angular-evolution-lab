@@ -1,0 +1,97 @@
+<app-card [heading]="'lifecycle.injectors.title' | translate">
+  <p class="muted">{{ 'lifecycle.injectors.description' | translate }}</p>
+
+  <div class="demo-live">
+    <dl class="kv">
+      <div class="emphasis">
+        <dt>{{ 'lifecycle.injectors.root' | translate }}</dt>
+        <dd>FleetClock #{{ clock.id }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'lifecycle.injectors.createdAt' | translate }}</dt>
+        <dd>{{ clock.createdAt.toLocaleTimeString() }}</dd>
+      </div>
+    </dl>
+
+    <div class="toolbar">
+      <button app-button size="sm" type="button" (click)="togglePanel('a')">
+        {{
+          (panelA() ? 'lifecycle.injectors.remove' : 'lifecycle.injectors.add')
+            | translate: { name: 'Panel A' }
+        }}
+      </button>
+      <button app-button size="sm" type="button" (click)="togglePanel('b')">
+        {{
+          (panelB() ? 'lifecycle.injectors.remove' : 'lifecycle.injectors.add')
+            | translate: { name: 'Panel B' }
+        }}
+      </button>
+    </div>
+
+    <div class="demo-grid">
+      @if (panelA()) {
+        <app-trip-panel name="Panel A" />
+      }
+      @if (panelB()) {
+        <app-trip-panel name="Panel B" />
+      }
+    </div>
+
+    <div class="log">
+      <div class="toolbar">
+        <h3>{{ 'lifecycle.injectors.logTitle' | translate }}</h3>
+        <button app-button variant="ghost" size="sm" type="button" (click)="log.clear()">
+          {{ 'common.clear' | translate }}
+        </button>
+      </div>
+      <ul aria-live="polite" data-testid="scope-log">
+        @for (event of log.events(); track event.id) {
+          <li>
+            {{ 'lifecycle.injectors.' + event.key | translate: { id: event.instance } }}
+          </li>
+        } @empty {
+          <li>—</li>
+        }
+      </ul>
+    </div>
+
+    <h3>{{ 'lifecycle.injectors.contextTitle' | translate }}</h3>
+    <div class="toolbar">
+      <button app-button variant="secondary" size="sm" type="button" (click)="injectInHandler()">
+        {{ 'lifecycle.injectors.injectHandler' | translate }}
+      </button>
+      <button app-button variant="secondary" size="sm" type="button" (click)="injectInContext()">
+        {{ 'lifecycle.injectors.injectContext' | translate }}
+      </button>
+    </div>
+    <div aria-live="polite">
+      @if (injectResult(); as result) {
+        @if (result.ok) {
+          <p class="status" data-testid="inject-result">✓ {{ result.message }}</p>
+        } @else {
+          <div class="problem" data-testid="inject-result">
+            <p>
+              <code>{{ result.message }}</code>
+            </p>
+          </div>
+        }
+      }
+    </div>
+
+    <p class="explain">
+      {{ 'lifecycle.injectors.routeScoped' | translate }}
+      <a routerLink="/v21" fragment="cleanup-demo" [state]="back">
+        {{ 'lifecycle.injectors.routeLink' | translate }}
+      </a>
+    </p>
+  </div>
+
+  <h3>{{ 'lifecycle.takeaways' | translate }}</h3>
+  <ul class="takeaways">
+    <li>{{ 'lifecycle.injectors.t1' | translate }}</li>
+    <li>{{ 'lifecycle.injectors.t2' | translate }}</li>
+    <li>{{ 'lifecycle.injectors.t3' | translate }}</li>
+  </ul>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

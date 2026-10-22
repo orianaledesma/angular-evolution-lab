@@ -1,0 +1,44 @@
+<app-card [heading]="'lifecycle.tree.title' | translate">
+  <p class="muted">{{ 'lifecycle.tree.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <button app-button size="sm" type="button" (click)="setSignal()">
+        {{ 'lifecycle.tree.actions.signal' | translate }}
+      </button>
+      <button app-button variant="secondary" size="sm" type="button" (click)="changeInput()">
+        {{ 'lifecycle.tree.actions.input' | translate }}
+      </button>
+      <button app-button variant="secondary" size="sm" type="button" (click)="mutatePlain()">
+        {{ 'lifecycle.tree.actions.plain' | translate }}
+      </button>
+    </div>
+    <p class="status">{{ 'lifecycle.tree.hint' | translate }}</p>
+
+    <app-tree-root [plate]="plate()" />
+
+    <div aria-live="polite" class="tree-result" data-testid="tree-result">
+      @if (probe.result(); as result) {
+        <p>
+          <strong>{{ 'lifecycle.tree.actions.' + result.action | translate }}</strong> →
+          @if (result.checked.length) {
+            {{ 'lifecycle.tree.checked' | translate: { count: result.checked.length } }}
+            <code>{{ names(result.checked) }}</code>
+          } @else {
+            {{ 'lifecycle.tree.nothing' | translate }}
+          }
+        </p>
+        <p class="explain">{{ 'lifecycle.tree.why.' + result.action | translate }}</p>
+      }
+    </div>
+  </div>
+
+  <h3>{{ 'lifecycle.takeaways' | translate }}</h3>
+  <ul class="takeaways">
+    <li>{{ 'lifecycle.tree.t1' | translate }}</li>
+    <li>{{ 'lifecycle.tree.t2' | translate }}</li>
+    <li>{{ 'lifecycle.tree.t3' | translate }}</li>
+  </ul>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>
