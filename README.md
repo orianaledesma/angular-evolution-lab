@@ -5,6 +5,8 @@ code it replaced, and every demo maps to a requirement of a Senior Frontend role
 The app itself is built the v22 way: zoneless, OnPush by default, signals first, accessible, and in
 English, Spanish, German and Lithuanian.
 
+**Live:** https://orianaledesma.github.io/angular-evolution-lab/
+
 ![Home: the v16 → v22 timeline](docs/screenshots/home.png)
 
 ## Quick start
@@ -160,6 +162,12 @@ without that ecosystem constraint I would keep Vitest.
 3. **build:** production build, then the zone.js check.
 4. **e2e:** one job per browser, using the build artifact.
 5. **docker:** image build + smoke test.
+
+When CI passes on `main`, `.github/workflows/pages.yml` builds with
+`--base-href /angular-evolution-lab/` and publishes to GitHub Pages. Translations and mock data are
+requested with relative URLs, so the same build works under that sub-path and at the root (Docker).
+Pages has no rewrites, so `404.html` is a copy of `index.html`: a deep link like `/quiz` boots the app
+and the router takes over.
 
 The `Dockerfile` is multi-stage: `node:24-alpine` builds, `nginx:stable-alpine` serves. `nginx.conf`
 adds:
