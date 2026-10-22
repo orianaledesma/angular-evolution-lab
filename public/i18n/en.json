@@ -787,7 +787,8 @@
       "core": "Angular core",
       "rxjs": "RxJS",
       "architecture": "Architecture & quality",
-      "tricky": "Senior trick questions"
+      "tricky": "Senior trick questions",
+      "domain": "Automotive scenarios"
     },
     "practice": "Practice mode",
     "practiceHint": "Answers stay hidden until you reveal them, one by one.",
@@ -986,6 +987,36 @@
         "q": "How do you design data loading for a route: resolvers, component input binding or the Resource API?",
         "short": "Resolvers when the page must never render without its data; otherwise navigate immediately and load with a resource keyed on route inputs, showing a skeleton.",
         "long": "A resolver blocks navigation: the URL changes only when data is there, which suits pages that cannot be shown partially, but it makes navigation feel slow and needs its own error path. With withComponentInputBinding(), route params arrive as signal inputs; an httpResource() keyed on them starts loading instantly, cancels when the param changes and exposes loading and error states for the template. For perceived performance, prefetch on hover or with @defer, and cache shared data in a service so returning to a page does not refetch."
+      },
+      "realtimeTelemetry": {
+        "q": "A fleet dashboard receives 50 telemetry messages per second over a WebSocket. How do you keep it fast?",
+        "short": "One shared connection, sample the stream down to what a person can read, and turn it into signals at the edge so zoneless change detection only refreshes the views that read them.",
+        "long": "The bottleneck is rarely the socket; it is doing work for every message. I open a single connection in a root service and share it, so ten widgets don't open ten sockets. Then I reduce before rendering: scan the messages into a map keyed by vehicle and sample it with auditTime — the screen refreshes at 60 Hz, but a person reads a number maybe once a second. At the boundary toSignal turns the stream into state, and with OnPush and zoneless only the views that read a changed signal are refreshed. Charts with thousands of points go to a canvas, not one DOM node per point. And I measure with the Angular DevTools profiler instead of guessing."
+      },
+      "connectionLoss": {
+        "q": "The WebSocket drops when a vehicle drives into an underground garage. What does your code do, and what does the user see?",
+        "short": "Reconnect with exponential backoff and jitter, show the connection state and the age of the last value instead of a frozen screen, and resync from a snapshot after reconnecting, because the missed messages are gone.",
+        "long": "A dropped socket must not look like a car standing still. I model the connection as a state (live, reconnecting, offline) exposed as a signal, and every value carries its timestamp so the UI can say \"last update 2 min ago\". retry with a delay function gives the backoff; jitter stops a thousand clients from reconnecting in the same second after a backend restart. On reconnect I load a snapshot first and then apply live messages, dropping the ones older than the snapshot by sequence number, because messages sent while offline are not replayed. Commands the user triggered while offline, such as unlocking the car, are never queued silently: they fail visibly or wait for a server confirmation."
+      },
+      "configurator": {
+        "q": "How do you model the state of a car configurator with trims, engines, packages, conflicting rules and a live price?",
+        "short": "The selection is the only writable state; available options, conflicts and the estimated price are computed from it and from rules that come from the backend as data — and the binding price always comes from the server.",
+        "long": "Rules such as \"the towing package requires the 2.0 engine and excludes the sport suspension\" change per market and model year, so they are data, not if-statements in components. A pure function checks the selection against the rules and is unit-tested on its own. In the component the selection is a signal, the available options and conflicts are computed, and dependent choices that become invalid — a colour that the new trim doesn't offer — are linkedSignals that reset themselves. The price shown while clicking is an estimate; a resource asks the server for the binding price, because taxes, incentives and dealer discounts live there. The configuration is serialised into the URL so it can be shared, bookmarked and handed over to a dealer."
+      },
+      "microFrontends": {
+        "q": "Several brand teams want to release their parts of the customer portal independently. Would you use micro-frontends?",
+        "short": "Only if independent deployment is a real business need: micro-frontends solve an organisational problem and cost performance, version alignment and consistency, so I would try a modular monorepo with enforced boundaries first.",
+        "long": "Most teams asking for micro-frontends actually want clear ownership and fewer merge conflicts, and a monorepo with lazy feature routes, library boundaries enforced by lint rules and CODEOWNERS per team gives them that for free. When teams really need separate release cycles, I would use Native Federation: Angular, RxJS and the design system shared as singletons in one version, a thin shell that owns routing, authentication and layout, and contracts between remotes as typed events or URL state instead of shared services. The costs have to be accepted explicitly: an Angular upgrade becomes a coordinated project across every remote, the first load gets heavier, and integration tests need the composed app, not each remote on its own."
+      },
+      "multiBrand": {
+        "q": "One codebase serves several brands and markets (DE, AT, CH, LT). How do you handle branding, formats and legal differences without forking?",
+        "short": "Brands are design tokens, markets are runtime configuration, and both are resolved once at startup and injected — components never ask which brand or country they are in.",
+        "long": "Branding is a set of CSS custom properties per brand on the same components, so a new brand is a token file, not a code change. Market differences — currency and date formats, required consent texts, available financing options — come from a configuration loaded before bootstrap and provided through an InjectionToken, so features read a value instead of branching on a country code. Formatting uses Intl with the full locale, because de-CH formats numbers differently from de-DE. Legal texts come from the CMS, since legal teams change them without a release. Visual regression tests run per brand, because a token change can break contrast in one brand only."
+      },
+      "headUnit": {
+        "q": "Your Angular app has to run on a vehicle head unit or a dealer tablet with a weak CPU. What do you change?",
+        "short": "I budget the main thread: ship less JavaScript, render less DOM, avoid long tasks and layout thrashing, and measure on the real device instead of a developer laptop.",
+        "long": "A slow CPU turns every inefficiency into visible jank. I set strict bundle budgets in angular.json so the build fails before the user suffers, lazy-load everything that isn't on the first screen, defer widgets below the fold and virtualise long lists. Zoneless and OnPush reduce the work per change; heavy calculations such as route geometry move to a Web Worker. Animations only touch transform and opacity, prefers-reduced-motion is respected and touch targets are large, because these screens are used in a moving vehicle. I profile with the Chrome performance panel through remote debugging on the actual hardware: a laptop hides problems that an automotive chip shows immediately."
       }
     }
   }

@@ -177,6 +177,63 @@ private exporter = injectAsync(() => import('./csv-export.service'), {
 <span i18n>{count, plural, =1 {1 vehicle} other {{{count}} vehicles}}</span>
 
 // Either way: LOCALE_ID per market (de-DE ≠ de-AT ≠ de-CH)`,
+  realtimeTelemetry: `// One socket for the whole app, shared by every widget
+private readonly socket$ = webSocket<Telemetry>(WS_URL).pipe(share());
+
+readonly fleet = toSignal(
+  this.socket$.pipe(
+    scan((byVin, t) => byVin.set(t.vin, t), new Map<string, Telemetry>()),
+    auditTime(250),                       // ≤ 4 renders per second, not 50
+    map((byVin) => [...byVin.values()]),
+  ),
+  { initialValue: [] },
+);`,
+  connectionLoss: `socket$.pipe(
+  retry({
+    // 0.5 s, 1 s, 2 s … capped at 30 s, with jitter
+    delay: (_error, attempt) =>
+      timer(Math.min(30_000, 2 ** attempt * 250) * (0.5 + Math.random())),
+  }),
+);
+
+status = signal<'live' | 'reconnecting' | 'offline'>('live');
+lastUpdate = signal<Date | null>(null);   // "last update 2 min ago"
+// On reconnect: load a snapshot, then apply live messages with seq > snapshot.seq`,
+  configurator: `selection = signal<Selection>({ trim: 'base', engine: '1.5', packages: [] });
+rules = input.required<readonly Rule[]>();        // data from the backend
+
+conflicts = computed(() => validate(this.selection(), this.rules())); // pure, unit-tested
+colour = linkedSignal(() => defaultColour(this.selection().trim));    // resets on trim change
+estimate = computed(() => estimatePrice(this.selection()));           // instant, indicative
+quote = httpResource(() => ({                                         // binding, from the server
+  url: '/api/quote', method: 'POST', body: this.selection(),
+}));`,
+  microFrontends: `// federation.config.js (Native Federation): one version of the shared core
+shared: share({
+  '@angular/core': { singleton: true, strictVersion: true },
+  rxjs: { singleton: true, strictVersion: true },
+  '@brand/design-system': { singleton: true, strictVersion: true },
+}),
+
+// Shell: each remote stays a lazy route owned by its team
+{ path: 'service', loadChildren: () =>
+    loadRemoteModule('service', './routes').then((m) => m.ROUTES) }`,
+  multiBrand: `export const MARKET = new InjectionToken<MarketConfig>('MARKET');
+
+// main.ts: resolved once, before bootstrap
+const market = await fetch(\`/config/\${location.hostname}.json\`).then((r) => r.json());
+bootstrapApplication(App, { providers: [{ provide: MARKET, useValue: market }] });
+
+// A feature reads a value; it never branches on the country code
+protected readonly financing = inject(MARKET).financing;`,
+  headUnit: `// angular.json: fail the build, not the user
+"budgets": [{ "type": "initial", "maximumWarning": "250kB", "maximumError": "350kB" }]
+
+@defer (on viewport) { <app-trip-history /> }        <!-- not on the first screen -->
+
+// Heavy math off the main thread
+const worker = new Worker(new URL('./route.worker', import.meta.url));
+worker.postMessage(points);`,
   effectSync: `// ✗ effect to copy state: extra render, possible loops
 effect(() => this.city.set(CITIES[this.country()][0]));
 

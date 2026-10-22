@@ -787,7 +787,8 @@
       "core": "Angular Core",
       "rxjs": "RxJS",
       "architecture": "Architektur & Qualität",
-      "tricky": "Senior-Fangfragen"
+      "tricky": "Senior-Fangfragen",
+      "domain": "Automotive-Szenarien"
     },
     "practice": "Übungsmodus",
     "practiceHint": "Antworten bleiben verborgen, bis man sie einzeln aufdeckt.",
@@ -986,6 +987,36 @@
         "q": "Wie gestaltest du das Datenladen für eine Route: Resolver, Component Input Binding oder die Resource API?",
         "short": "Resolver, wenn die Seite nie ohne ihre Daten erscheinen darf; sonst sofort navigieren und mit einer Resource laden, die von den Routen-Inputs abhängt, mit einem Skeleton.",
         "long": "Ein Resolver blockiert die Navigation: Die URL ändert sich erst, wenn die Daten da sind – passend für Seiten, die sich nicht teilweise zeigen lassen, aber die Navigation fühlt sich langsam an und braucht einen eigenen Fehlerpfad. Mit withComponentInputBinding() kommen Routenparameter als Signal-Inputs an; eine httpResource(), die davon abhängt, lädt sofort, bricht bei Parameterwechsel ab und stellt Lade- und Fehlerzustände für das Template bereit. Für die gefühlte Performance per Hover oder @defer vorladen und gemeinsame Daten in einem Service cachen, damit die Rückkehr zu einer Seite nicht neu lädt."
+      },
+      "realtimeTelemetry": {
+        "q": "Ein Flotten-Dashboard empfängt 50 Telemetrie-Nachrichten pro Sekunde über einen WebSocket. Wie bleibt es schnell?",
+        "short": "Eine einzige geteilte Verbindung, den Stream auf das reduzieren, was ein Mensch lesen kann, und ihn am Rand in Signals umwandeln, damit die zoneless Change Detection nur die Views aktualisiert, die sie lesen.",
+        "long": "Der Engpass ist selten der Socket, sondern Arbeit pro Nachricht. Ich öffne eine einzige Verbindung in einem Root-Service und teile sie, damit zehn Widgets nicht zehn Sockets öffnen. Dann reduziere ich vor dem Rendern: Mit scan fasse ich die Nachrichten in einer Map pro Fahrzeug zusammen und sample sie mit auditTime – der Bildschirm läuft mit 60 Hz, aber ein Mensch liest eine Zahl vielleicht einmal pro Sekunde. An der Grenze macht toSignal aus dem Stream State, und mit OnPush und zoneless werden nur die Views aktualisiert, die ein geändertes Signal lesen. Charts mit Tausenden Punkten landen in einem Canvas statt ein DOM-Knoten pro Punkt. Und ich messe mit dem Profiler der Angular DevTools, statt zu raten."
+      },
+      "connectionLoss": {
+        "q": "Der WebSocket bricht ab, wenn ein Fahrzeug in eine Tiefgarage fährt. Was macht dein Code, und was sieht der Nutzer?",
+        "short": "Mit exponentiellem Backoff und Jitter neu verbinden, den Verbindungsstatus und das Alter des letzten Werts statt eines eingefrorenen Bildschirms zeigen und nach dem Reconnect über einen Snapshot neu synchronisieren, weil verpasste Nachrichten weg sind.",
+        "long": "Ein abgebrochener Socket darf nicht wie ein stehendes Auto aussehen. Ich modelliere die Verbindung als Zustand (live, verbindet neu, offline), der als Signal bereitsteht, und jeder Wert trägt seinen Zeitstempel, damit die UI \"letzte Aktualisierung vor 2 Min.\" anzeigen kann. retry mit einer Delay-Funktion liefert den Backoff; Jitter verhindert, dass sich nach einem Backend-Neustart tausend Clients in derselben Sekunde neu verbinden. Beim Reconnect lade ich zuerst einen Snapshot und wende dann die Live-Nachrichten an, wobei ich ältere als den Snapshot per Sequenznummer verwerfe, denn was offline gesendet wurde, wird nicht erneut zugestellt. Befehle, die der Nutzer offline ausgelöst hat, etwa das Entriegeln des Autos, werden nie still in eine Queue gelegt: Sie schlagen sichtbar fehl oder warten auf die Bestätigung des Servers."
+      },
+      "configurator": {
+        "q": "Wie modellierst du den State eines Fahrzeugkonfigurators mit Ausstattungslinien, Motoren, Paketen, widersprüchlichen Regeln und Live-Preis?",
+        "short": "Die Auswahl ist der einzige beschreibbare State; verfügbare Optionen, Konflikte und der geschätzte Preis werden daraus und aus Regeln berechnet, die als Daten vom Backend kommen – und den verbindlichen Preis liefert immer der Server.",
+        "long": "Regeln wie \"das Anhängerpaket setzt den 2.0-Motor voraus und schließt das Sportfahrwerk aus\" ändern sich je Markt und Modelljahr, also sind sie Daten und keine if-Abfragen in Komponenten. Eine reine Funktion prüft die Auswahl gegen die Regeln und wird isoliert getestet. In der Komponente ist die Auswahl ein Signal, verfügbare Optionen und Konflikte sind computed, und abhängige Entscheidungen, die ungültig werden – eine Farbe, die die neue Linie nicht anbietet –, sind linkedSignals, die sich selbst zurücksetzen. Der Preis beim Klicken ist eine Schätzung; eine Resource fragt den Server nach dem verbindlichen Preis, weil Steuern, Förderungen und Händlerrabatte dort liegen. Die Konfiguration wird in die URL serialisiert, damit man sie teilen, speichern und an einen Händler übergeben kann."
+      },
+      "microFrontends": {
+        "q": "Mehrere Markenteams wollen ihre Teile des Kundenportals unabhängig ausrollen. Würdest du Micro-Frontends einsetzen?",
+        "short": "Nur wenn unabhängiges Deployment ein echter Business-Bedarf ist: Micro-Frontends lösen ein organisatorisches Problem und kosten Performance, Versionsabgleich und Konsistenz, deshalb würde ich zuerst ein modulares Monorepo mit erzwungenen Grenzen versuchen.",
+        "long": "Die meisten Teams, die Micro-Frontends fordern, wollen eigentlich klare Ownership und weniger Merge-Konflikte – und ein Monorepo mit Lazy-Feature-Routen, per Lint-Regeln erzwungenen Bibliotheksgrenzen und CODEOWNERS pro Team liefert genau das. Wenn Teams wirklich getrennte Release-Zyklen brauchen, würde ich Native Federation nutzen: Angular, RxJS und das Design-System als Singletons in einer Version geteilt, eine schlanke Shell, die Routing, Authentifizierung und Layout besitzt, und Verträge zwischen Remotes als typisierte Events oder URL-State statt geteilter Services. Die Kosten muss man bewusst akzeptieren: Ein Angular-Upgrade wird zum koordinierten Projekt über alle Remotes, der erste Ladevorgang wird schwerer, und Integrationstests brauchen die zusammengesetzte App, nicht jedes Remote allein."
+      },
+      "multiBrand": {
+        "q": "Eine Codebasis bedient mehrere Marken und Märkte (DE, AT, CH, LT). Wie gehst du mit Branding, Formaten und rechtlichen Unterschieden um, ohne zu forken?",
+        "short": "Marken sind Design-Tokens, Märkte sind Laufzeitkonfiguration, und beides wird einmal beim Start aufgelöst und injiziert – Komponenten fragen nie, in welcher Marke oder welchem Land sie sind.",
+        "long": "Branding ist ein Satz CSS Custom Properties pro Marke auf denselben Komponenten, eine neue Marke ist also eine Token-Datei und keine Codeänderung. Marktunterschiede – Währungs- und Datumsformate, Pflicht-Einwilligungstexte, verfügbare Finanzierungsoptionen – kommen aus einer Konfiguration, die vor dem Bootstrap geladen und über ein InjectionToken bereitgestellt wird, sodass Features einen Wert lesen, statt nach Ländercode zu verzweigen. Formatiert wird mit Intl und vollständigem Locale, denn de-CH formatiert Zahlen anders als de-DE. Rechtstexte kommen aus dem CMS, weil die Rechtsabteilung sie ohne Release ändert. Visuelle Regressionstests laufen pro Marke, weil eine Token-Änderung den Kontrast in nur einer Marke brechen kann."
+      },
+      "headUnit": {
+        "q": "Deine Angular-App muss auf einer Head Unit im Fahrzeug oder einem Händler-Tablet mit schwacher CPU laufen. Was änderst du?",
+        "short": "Ich budgetiere den Main Thread: weniger JavaScript ausliefern, weniger DOM rendern, Long Tasks und Layout Thrashing vermeiden und auf dem echten Gerät messen statt auf einem Entwickler-Laptop.",
+        "long": "Eine langsame CPU macht jede Ineffizienz zu sichtbarem Ruckeln. Ich setze strenge Bundle-Budgets in angular.json, damit der Build fehlschlägt, bevor der Nutzer leidet, lade alles lazy, was nicht auf dem ersten Bildschirm ist, verzögere Widgets außerhalb des sichtbaren Bereichs und virtualisiere lange Listen. Zoneless und OnPush reduzieren die Arbeit pro Änderung; schwere Berechnungen wie Routengeometrie wandern in einen Web Worker. Animationen nutzen nur transform und opacity, prefers-reduced-motion wird respektiert und Touch-Ziele sind groß, weil diese Bildschirme in einem fahrenden Fahrzeug bedient werden. Ich profile mit dem Performance-Panel von Chrome per Remote Debugging auf der echten Hardware: Ein Laptop versteckt Probleme, die ein Automotive-Chip sofort zeigt."
       }
     }
   }

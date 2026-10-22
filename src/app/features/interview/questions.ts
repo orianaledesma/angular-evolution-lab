@@ -1,4 +1,4 @@
-export const CATEGORIES = ['core', 'rxjs', 'architecture', 'tricky'] as const;
+export const CATEGORIES = ['core', 'rxjs', 'architecture', 'domain', 'tricky'] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 /** A live demo in this app: route path plus the id of the demo host (see AnchorFocus). */
@@ -69,6 +69,17 @@ export const QUESTIONS: readonly Question[] = [
   { id: 'performance', category: 'architecture', demo: { path: '/v17', anchor: 'defer-demo' } },
   { id: 'bundle', category: 'architecture', demo: { path: '/v22', anchor: 'lazy-service-demo' } },
   { id: 'i18n', category: 'architecture', demo: { path: '/' } },
+  // Automotive scenarios
+  {
+    id: 'realtimeTelemetry',
+    category: 'domain',
+    demo: { path: '/lifecycle', anchor: 'cd-tree-demo' },
+  },
+  { id: 'connectionLoss', category: 'domain', demo: { path: '/rxjs', anchor: 'errors-demo' } },
+  { id: 'configurator', category: 'domain', demo: { path: '/v19', anchor: 'linked-demo' } },
+  { id: 'microFrontends', category: 'domain' },
+  { id: 'multiBrand', category: 'domain', demo: { path: '/' } },
+  { id: 'headUnit', category: 'domain', demo: { path: '/v17', anchor: 'for-demo' } },
   // Senior trick questions
   { id: 'effectSync', category: 'tricky', demo: { path: '/v19', anchor: 'linked-demo' } },
   { id: 'mutation', category: 'tricky', demo: { path: '/lifecycle', anchor: 'cd-tree-demo' } },
