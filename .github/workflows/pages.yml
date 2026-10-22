@@ -1,0 +1,49 @@
+name: Deploy to GitHub Pages
+
+# Publishes only what passed CI: runs after a successful CI run on main (or by hand).
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  HUSKY: 0
+
+jobs:
+  deploy:
+    name: Build and deploy
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Served from https://<user>.github.io/<repo>/, so every URL resolves under that path.
+      - run: npx ng build --base-href "/${{ github.event.repository.name }}/"
+      # Pages has no rewrites: its 404 page boots the SPA, so deep links like /quiz work.
+      - run: cp dist/angular-evolution-lab/browser/index.html dist/angular-evolution-lab/browser/404.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/angular-evolution-lab/browser
+      - id: deployment
+        uses: actions/deploy-pages@v4
