@@ -41,6 +41,20 @@
     </ol>
   </section>
 
+  <section aria-labelledby="topics-title" class="stack">
+    <h2 id="topics-title">{{ 'home.topicsTitle' | translate }}</h2>
+    <ul class="timeline">
+      @for (topic of topics; track topic.path) {
+        <li>
+          <a class="milestone topic" [routerLink]="topic.path">
+            <strong class="name">{{ topic.key | translate }}</strong>
+            <span class="body muted">{{ topic.body | translate }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </section>
+
   <div class="demo-grid">
     <app-card [heading]="'home.howTitle' | translate">
       <ol class="how">

@@ -447,7 +447,8 @@
       "versions": "Angular versions",
       "demos": "live demos",
       "requirements": "role requirements mapped",
-      "zone": "kB of zone.js"
+      "zone": "kB of zone.js",
+      "questions": "interview questions"
     },
     "timeline": "Seven versions, one app",
     "howTitle": "How to read this lab",
@@ -457,7 +458,13 @@
       "3": "Each demo has a unit test, and every page is checked for accessibility end-to-end."
     },
     "i18nDemo": "Internationalisation · EN / ES / DE",
-    "i18nBody": "All UI text comes from translation files. Switching language also updates the document language and the tab title."
+    "i18nBody": "All UI text comes from translation files. Switching language also updates the document language and the tab title.",
+    "topicsTitle": "Beyond the versions",
+    "topics": {
+      "lifecycle": "Hooks in real call order, which views a change refreshes, and how long a service lives.",
+      "rxjs": "The four flattening operators on one timeline, hot vs cold, errors that kill a stream, leaks.",
+      "interview": "Answers to say out loud, the reasoning behind them and a live example for each."
+    }
   },
   "requirements": {
     "badge": "Role: Senior Frontend Developer · automotive · DACH",

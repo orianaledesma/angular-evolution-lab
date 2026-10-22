@@ -447,7 +447,8 @@
       "versions": "versiones de Angular",
       "demos": "demos en vivo",
       "requirements": "requisitos del puesto mapeados",
-      "zone": "kB de zone.js"
+      "zone": "kB de zone.js",
+      "questions": "preguntas de entrevista"
     },
     "timeline": "Siete versiones, una app",
     "howTitle": "Cómo recorrer este lab",
@@ -457,7 +458,13 @@
       "3": "Cada demo tiene su test unitario y cada página se verifica en accesibilidad de punta a punta."
     },
     "i18nDemo": "Internacionalización · EN / ES / DE",
-    "i18nBody": "Todo el texto de la interfaz sale de archivos de traducción. Al cambiar de idioma también se actualizan el idioma del documento y el título de la pestaña."
+    "i18nBody": "Todo el texto de la interfaz sale de archivos de traducción. Al cambiar de idioma también se actualizan el idioma del documento y el título de la pestaña.",
+    "topicsTitle": "Más allá de las versiones",
+    "topics": {
+      "lifecycle": "Los hooks en su orden real, qué vistas refresca un cambio y cuánto vive un servicio.",
+      "rxjs": "Los cuatro operadores de aplanado en una misma línea de tiempo, hot vs cold, errores que matan un stream, fugas.",
+      "interview": "Respuestas para decir en voz alta, el razonamiento detrás y un ejemplo en vivo para cada una."
+    }
   },
   "requirements": {
     "badge": "Puesto: Senior Frontend Developer · automotriz · DACH",

@@ -24,6 +24,22 @@ describe('Home', () => {
     }
   });
 
+  it('links the fundamentals and interview sections', async () => {
+    await render(Home, { providers: [provideTranslateTesting()], routes: [] });
+    expect(screen.getByRole('link', { name: /^Interview questions/ })).toHaveAttribute(
+      'href',
+      '/interview',
+    );
+    expect(screen.getByRole('link', { name: /^RxJS in practice/ })).toHaveAttribute(
+      'href',
+      '/rxjs',
+    );
+    expect(screen.getByRole('link', { name: /^Lifecycle & change detection/ })).toHaveAttribute(
+      'href',
+      '/lifecycle',
+    );
+  });
+
   it('switches language from the i18n card and updates <html lang>', async () => {
     const user = userEvent.setup();
     await render(Home, { providers: [provideTranslateTesting()], routes: [] });

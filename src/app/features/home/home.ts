@@ -5,6 +5,7 @@ import { LanguageService, isLanguage } from '@core/i18n/language.service';
 import { Badge } from '@shared/ui/badge/badge';
 import { Button } from '@shared/ui/button/button';
 import { Card } from '@shared/ui/card/card';
+import { QUESTIONS } from '../interview/questions';
 import { REQUIREMENTS } from '../requirements/requirements-data';
 import { TIMELINE } from './timeline';
 
@@ -19,9 +20,15 @@ export default class Home {
   protected readonly timeline = TIMELINE;
   protected readonly stats = [
     { value: String(TIMELINE.length), key: 'home.stats.versions' },
-    { value: '30+', key: 'home.stats.demos' },
+    { value: '40+', key: 'home.stats.demos' },
     { value: String(REQUIREMENTS.length), key: 'home.stats.requirements' },
+    { value: String(QUESTIONS.length), key: 'home.stats.questions' },
     { value: '0', key: 'home.stats.zone' },
+  ] as const;
+  protected readonly topics = [
+    { path: '/lifecycle', key: 'nav.lifecycle', body: 'home.topics.lifecycle' },
+    { path: '/rxjs', key: 'nav.rxjs', body: 'home.topics.rxjs' },
+    { path: '/interview', key: 'nav.interview', body: 'home.topics.interview' },
   ] as const;
 
   protected switchTo(lang: string): void {

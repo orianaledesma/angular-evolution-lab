@@ -99,8 +99,14 @@ h2 {
 }
 
 .name,
-.apis {
+.apis,
+.body {
   grid-column: 1 / -1;
+}
+
+.topic .name {
+  font-size: var(--font-size-lg);
+  color: var(--color-accent-strong);
 }
 
 .apis {
