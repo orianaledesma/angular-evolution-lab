@@ -19,7 +19,7 @@ describe('LanguageSwitcher', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
     const items = screen.getAllByRole('menuitem');
-    expect(items.map((i) => i.getAttribute('lang'))).toEqual(['en', 'es', 'de']);
+    expect(items.map((i) => i.getAttribute('lang'))).toEqual(['en', 'es', 'de', 'lt']);
 
     await user.click(screen.getByRole('menuitem', { name: 'Deutsch' }));
     TestBed.tick();

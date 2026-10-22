@@ -1,6 +1,7 @@
 import de from '../../../../public/i18n/de.json';
 import en from '../../../../public/i18n/en.json';
 import es from '../../../../public/i18n/es.json';
+import lt from '../../../../public/i18n/lt.json';
 
 function flatKeys(tree: object, prefix = ''): string[] {
   return Object.entries(tree).flatMap(([key, value]) =>
@@ -33,6 +34,7 @@ describe('i18n files', () => {
   it.each([
     ['es', es],
     ['de', de],
+    ['lt', lt],
   ])('%s has exactly the same keys as en', (_lang, tree) => {
     expect(flatKeys(tree).sort()).toEqual(reference);
   });
@@ -40,12 +42,13 @@ describe('i18n files', () => {
   it.each([
     ['es', es],
     ['de', de],
+    ['lt', lt],
   ])('%s keeps the same interpolation placeholders as en', (_lang, tree) => {
     expect(placeholders(tree)).toEqual(placeholders(en));
   });
 
   it('has no empty translations', () => {
-    for (const tree of [en, es, de]) {
+    for (const tree of [en, es, de, lt]) {
       expect(Object.values(placeholders(tree))).toBeDefined();
       const empty = flatKeys(tree).filter((key) => {
         const value = key

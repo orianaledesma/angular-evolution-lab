@@ -31,3 +31,13 @@ test('picks the browser language on first visit', async ({ browser }) => {
   await expect(page.getByRole('link', { name: 'Empezar por la v16 →' })).toBeVisible();
   await context.close();
 });
+
+test('switches to Lithuanian, including the interview answers', async ({ page }) => {
+  await openPage(page, '/interview', 'Interview questions');
+  await page.getByRole('button', { name: /Change language/ }).click();
+  await page.getByRole('menuitem', { name: 'Lietuvių' }).click();
+
+  await expect(page.locator('html')).toHaveAttribute('lang', 'lt');
+  await expect(page.getByRole('radio', { name: /Automobilių pramonės scenarijai/ })).toBeVisible();
+  await expect(page).toHaveTitle(/· Angular Evolution Lab$/);
+});

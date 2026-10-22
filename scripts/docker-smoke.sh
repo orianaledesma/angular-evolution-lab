@@ -13,5 +13,6 @@ check /
 check /v22                       # client route → index.html fallback
 check /mock-api/vehicles.json
 check /i18n/de.json
+check /i18n/lt.json
 curl -fsS "http://localhost:$PORT/v19" | grep -q '<app-root' && echo '✔ fallback serves the app shell'
 curl -fsSI "http://localhost:$PORT/" | grep -qi 'content-security-policy' && echo '✔ security headers present'

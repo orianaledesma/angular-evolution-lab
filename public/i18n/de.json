@@ -6,7 +6,8 @@
   "languages": {
     "en": "Englisch",
     "es": "Spanisch",
-    "de": "Deutsch"
+    "de": "Deutsch",
+    "lt": "Litauisch"
   },
   "layout": {
     "skipLink": "Zum Hauptinhalt springen",
@@ -440,7 +441,7 @@
     }
   },
   "home": {
-    "lead": "Ein praktischer Rundgang durch die Entwicklung von Angular von v16 bis v22. Jedes Konzept ist eine funktionierende Demo neben dem Code, den es ersetzt hat – zoneless, OnPush, barrierefrei und in drei Sprachen.",
+    "lead": "Ein praktischer Rundgang durch die Entwicklung von Angular von v16 bis v22. Jedes Konzept ist eine funktionierende Demo neben dem Code, den es ersetzt hat – zoneless, OnPush, barrierefrei und in vier Sprachen.",
     "start": "Mit v16 beginnen",
     "requirements": "Zur Anforderungsübersicht",
     "stats": {
@@ -457,7 +458,7 @@
       "2": "Jede Karte ist interaktiv: erst ausprobieren, dann den Code von früher und heute lesen.",
       "3": "Jede Demo hat einen Unit-Test, und jede Seite wird end-to-end auf Barrierefreiheit geprüft."
     },
-    "i18nDemo": "Internationalisierung · EN / ES / DE",
+    "i18nDemo": "Internationalisierung · EN / ES / DE / LT",
     "i18nBody": "Alle UI-Texte stammen aus Übersetzungsdateien. Beim Sprachwechsel werden auch die Dokumentsprache und der Tab-Titel aktualisiert.",
     "topicsTitle": "Über die Versionen hinaus",
     "topics": {
@@ -514,7 +515,7 @@
       },
       "i18n": {
         "title": "Internationalisierung",
-        "detail": "EN / ES / DE mit ngx-translate, html lang und übersetzte Titel, Tests auf Schlüsselgleichheit."
+        "detail": "EN / ES / DE / LT mit ngx-translate, html lang und übersetzte Titel, Tests auf Schlüsselgleichheit."
       },
       "designSystem": {
         "title": "Wiederverwendbares Design System",

@@ -3,7 +3,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MenuButton, type MenuOption } from '@shared/ui/menu/menu-button';
 import { LanguageService, isLanguage } from '../i18n/language.service';
 
-const NATIVE_NAMES = { en: 'English', es: 'Español', de: 'Deutsch' } as const;
+const NATIVE_NAMES = { en: 'English', es: 'Español', de: 'Deutsch', lt: 'Lietuvių' } as const;
 
 @Component({
   selector: 'app-language-switcher',

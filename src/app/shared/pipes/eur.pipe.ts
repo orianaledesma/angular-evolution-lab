@@ -1,6 +1,11 @@
 import { Pipe, type PipeTransform } from '@angular/core';
 
-const LOCALES: Readonly<Record<string, string>> = { en: 'en-IE', es: 'es-ES', de: 'de-DE' };
+const LOCALES: Readonly<Record<string, string>> = {
+  en: 'en-IE',
+  es: 'es-ES',
+  de: 'de-DE',
+  lt: 'lt-LT',
+};
 const formatters = new Map<string, Intl.NumberFormat>();
 
 /** EUR formatting in the active UI language without bundling Angular locale data. */

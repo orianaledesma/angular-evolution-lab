@@ -3,7 +3,7 @@ import { Injectable, effect, inject, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 
-export const LANGUAGES = ['en', 'es', 'de'] as const;
+export const LANGUAGES = ['en', 'es', 'de', 'lt'] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 const STORAGE_KEY = 'ael.lang';

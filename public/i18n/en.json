@@ -6,7 +6,8 @@
   "languages": {
     "en": "English",
     "es": "Spanish",
-    "de": "German"
+    "de": "German",
+    "lt": "Lithuanian"
   },
   "layout": {
     "skipLink": "Skip to main content",
@@ -440,7 +441,7 @@
     }
   },
   "home": {
-    "lead": "A hands-on tour of how Angular changed from v16 to v22. Every concept is a working demo next to the code it replaced — built zoneless, OnPush, accessible and in three languages.",
+    "lead": "A hands-on tour of how Angular changed from v16 to v22. Every concept is a working demo next to the code it replaced — built zoneless, OnPush, accessible and in four languages.",
     "start": "Start with v16",
     "requirements": "See the requirements map",
     "stats": {
@@ -457,7 +458,7 @@
       "2": "Every card is interactive: use it first, then read the before/now code.",
       "3": "Each demo has a unit test, and every page is checked for accessibility end-to-end."
     },
-    "i18nDemo": "Internationalisation · EN / ES / DE",
+    "i18nDemo": "Internationalisation · EN / ES / DE / LT",
     "i18nBody": "All UI text comes from translation files. Switching language also updates the document language and the tab title.",
     "topicsTitle": "Beyond the versions",
     "topics": {
@@ -514,7 +515,7 @@
       },
       "i18n": {
         "title": "Internationalisation",
-        "detail": "EN / ES / DE with ngx-translate, html lang and translated titles, key-parity tests."
+        "detail": "EN / ES / DE / LT with ngx-translate, html lang and translated titles, key-parity tests."
       },
       "designSystem": {
         "title": "Reusable design system",

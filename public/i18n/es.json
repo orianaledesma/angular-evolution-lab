@@ -6,7 +6,8 @@
   "languages": {
     "en": "Inglés",
     "es": "Español",
-    "de": "Alemán"
+    "de": "Alemán",
+    "lt": "Lituano"
   },
   "layout": {
     "skipLink": "Saltar al contenido principal",
@@ -440,7 +441,7 @@
     }
   },
   "home": {
-    "lead": "Un recorrido práctico por cómo cambió Angular de la v16 a la v22. Cada concepto es una demo funcionando al lado del código que reemplazó, hecha zoneless, con OnPush, accesible y en tres idiomas.",
+    "lead": "Un recorrido práctico por cómo cambió Angular de la v16 a la v22. Cada concepto es una demo funcionando al lado del código que reemplazó, hecha zoneless, con OnPush, accesible y en cuatro idiomas.",
     "start": "Empezar por la v16",
     "requirements": "Ver el mapa de requisitos",
     "stats": {
@@ -457,7 +458,7 @@
       "2": "Cada tarjeta es interactiva: primero usala y después leé el código de antes y de ahora.",
       "3": "Cada demo tiene su test unitario y cada página se verifica en accesibilidad de punta a punta."
     },
-    "i18nDemo": "Internacionalización · EN / ES / DE",
+    "i18nDemo": "Internacionalización · EN / ES / DE / LT",
     "i18nBody": "Todo el texto de la interfaz sale de archivos de traducción. Al cambiar de idioma también se actualizan el idioma del documento y el título de la pestaña.",
     "topicsTitle": "Más allá de las versiones",
     "topics": {
@@ -514,7 +515,7 @@
       },
       "i18n": {
         "title": "Internacionalización",
-        "detail": "EN / ES / DE con ngx-translate, html lang y títulos traducidos, tests de paridad de claves."
+        "detail": "EN / ES / DE / LT con ngx-translate, html lang y títulos traducidos, tests de paridad de claves."
       },
       "designSystem": {
         "title": "Design system reutilizable",
