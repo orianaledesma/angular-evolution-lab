@@ -228,12 +228,3 @@ The same table is rendered at `/requirements`. Both come from
 | `@switch` with `@default never`       | Works, but narrowing needs a stable reference: `@let current = status()`                                  |
 | `resource.value()`                    | Throws while the resource is in error. Templates check `error()` / `hasValue()` first                     |
 | `ChangeDetectionStrategy.Default`     | Renamed `Eager`. `Default` is a deprecated alias                                                          |
-
-## AI usage
-
-I built this with Claude Code as a pair. It scaffolded features, drafted specs and translations, and
-ran the verification loop (lint, tests, build, E2E across browsers). The approach was set up front:
-no API was used before checking its signature in the installed `.d.ts` files, and every claim in the
-stability table comes from those `@publicApi` tags. The architecture, the trade-offs above and the
-review of every generated file are mine. The Firefox/WebKit issues (`NG0950`, the 5,000-row table)
-were found by the test suite and fixed deliberately, not patched over.
