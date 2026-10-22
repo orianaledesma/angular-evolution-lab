@@ -91,6 +91,35 @@ test('interview practice mode hides answers until revealed', async ({ page }) =>
   await expect(question.getByText('In one sentence')).toBeVisible();
 });
 
+test('quiz: an answer shows its explanation and the demo link keeps the round', async ({
+  page,
+}) => {
+  await openPage(page, '/quiz', 'Practice quiz');
+  await page.getByRole('radio', { name: /Theory/ }).check();
+  await page.getByRole('button', { name: 'Start round' }).click();
+  await expect(page.getByTestId('quiz-progress')).toHaveText('Question 1 of 10');
+
+  const prompt = await page.getByRole('heading', { level: 2 }).innerText();
+  await page.getByRole('list', { name: 'Answer options' }).getByRole('button').first().click();
+  const feedback = page.getByTestId('quiz-feedback');
+  await expect(feedback).toBeFocused();
+  await expect(feedback).toContainText(/Correct!|The right answer is:/);
+  const why = feedback.getByText('Why?');
+  if (await why.isVisible()) {
+    await why.click();
+  }
+
+  await feedback.getByRole('link', { name: /See it live/ }).click();
+  await expect(page).toHaveURL(/\/(lifecycle|rxjs)#[a-z-]+-demo$/);
+  await page.getByRole('link', { name: 'Back to the quiz' }).click();
+
+  await expect(page).toHaveURL(/\/quiz#quiz-card$/);
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText(prompt);
+  await expect(page.getByTestId('quiz-feedback')).toBeVisible();
+  await page.getByRole('button', { name: 'Next question' }).click();
+  await expect(page.getByTestId('quiz-progress')).toHaveText('Question 2 of 10');
+});
+
 test('rxjs: the scenario shows what each flattening operator does', async ({ page }) => {
   await openPage(page, '/rxjs', 'RxJS in practice');
   await page.getByRole('button', { name: /Play scenario/ }).click();

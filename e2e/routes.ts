@@ -10,5 +10,6 @@ export const ROUTES = [
   { path: '/lifecycle', heading: 'Lifecycle & change detection' },
   { path: '/rxjs', heading: 'RxJS in practice' },
   { path: '/interview', heading: 'Interview questions' },
+  { path: '/quiz', heading: 'Practice quiz' },
   { path: '/requirements', heading: 'Requirements map' },
 ] as const;
