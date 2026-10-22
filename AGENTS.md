@@ -41,7 +41,7 @@ does not exist.
 ## i18n
 
 Every user-facing string goes through `ngx-translate`. Add the key to **all three** of
-`public/i18n/{en,es,de}.json` — `i18n-keys.spec.ts` fails on any missing key or placeholder mismatch.
+`public/i18n/{en,es,de,lt}.json` — `i18n-keys.spec.ts` fails on any missing key or placeholder mismatch.
 Route `title`s are i18n keys (see `TranslatedTitleStrategy`).
 
 ## Accessibility
