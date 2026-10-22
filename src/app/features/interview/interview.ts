@@ -1,13 +1,13 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
 import { type AnchorState, returnTo } from '@core/navigation/anchor-focus';
-import { DEMO_NAV } from '@core/navigation/demo-nav';
 import { Badge } from '@shared/ui/badge/badge';
 import { Button } from '@shared/ui/button/button';
+import { AnswerDetail } from './answer-detail';
 import { CATEGORIES, type Category, QUESTIONS, type Question } from './questions';
 import { ANSWER_SNIPPETS } from './snippets';
 
@@ -23,7 +23,7 @@ export function normalize(text: string): string {
 
 @Component({
   selector: 'app-interview',
-  imports: [TranslatePipe, RouterLink, Badge, Button],
+  imports: [TranslatePipe, Badge, Button, AnswerDetail],
   templateUrl: './interview.html',
   styleUrl: './interview.scss',
 })
@@ -34,7 +34,6 @@ export default class Interview {
 
   protected readonly categories = CATEGORIES;
   protected readonly total = QUESTIONS.length;
-  protected readonly snippets = ANSWER_SNIPPETS;
 
   readonly query = signal('');
   readonly category = signal<Category | 'all'>('all');
@@ -133,11 +132,6 @@ export default class Interview {
 
   protected backState(id: string): AnchorState {
     return returnTo('/interview', `q-${id}`, 'layout.backToQuestion');
-  }
-
-  /** Nav label key of the demo's page, for the link text. */
-  protected pageKey(path: string): string {
-    return DEMO_NAV.find((item) => item.path === path)?.labelKey ?? 'nav.home';
   }
 
   private searchableText(q: Question): string {

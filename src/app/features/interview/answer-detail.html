@@ -1,0 +1,28 @@
+@let q = question();
+@let base = 'interview.q.' + q.id;
+@if (showShort()) {
+  <p class="short">
+    <span class="label">{{ 'interview.short' | translate }}</span>
+    {{ base + '.short' | translate }}
+  </p>
+}
+<p class="long">{{ base + '.long' | translate }}</p>
+@if (snippets[q.id]; as code) {
+  <pre
+    class="code"
+    tabindex="0"
+    [attr.aria-label]="'interview.code' | translate"
+  ><code>{{ code }}</code></pre>
+}
+@if (q.demo; as demo) {
+  <a
+    app-button
+    class="demo-link"
+    [routerLink]="demo.path"
+    [fragment]="demo.anchor"
+    [state]="back()"
+  >
+    {{ 'interview.seeExample' | translate: { page: (pageKey(demo.path) | translate) } }}
+    <span aria-hidden="true">→</span>
+  </a>
+}

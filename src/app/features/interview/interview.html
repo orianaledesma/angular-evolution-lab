@@ -110,32 +110,7 @@
 
             <div class="answer" [id]="'q-' + q.id + '-answer'" [hidden]="!open">
               @if (open) {
-                <p class="short">
-                  <span class="label">{{ 'interview.short' | translate }}</span>
-                  {{ base + '.short' | translate }}
-                </p>
-                <p class="long">{{ base + '.long' | translate }}</p>
-                @if (snippets[q.id]; as code) {
-                  <pre
-                    class="code"
-                    tabindex="0"
-                    [attr.aria-label]="'interview.code' | translate"
-                  ><code>{{ code }}</code></pre>
-                }
-                @if (q.demo; as demo) {
-                  <a
-                    app-button
-                    class="demo-link"
-                    [routerLink]="demo.path"
-                    [fragment]="demo.anchor"
-                    [state]="backState(q.id)"
-                  >
-                    {{
-                      'interview.seeExample' | translate: { page: (pageKey(demo.path) | translate) }
-                    }}
-                    <span aria-hidden="true">→</span>
-                  </a>
-                }
+                <app-answer-detail [question]="q" [back]="backState(q.id)" />
               }
             </div>
           </article>
