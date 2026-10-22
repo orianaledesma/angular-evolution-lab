@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, openPage, test } from './fixtures';
+import { expect, openPage, settleAnimations, test } from './fixtures';
 import { ROUTES } from './routes';
 
 const WCAG_21_AA = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
@@ -11,6 +11,7 @@ for (const scheme of ['light', 'dark'] as const) {
     for (const route of ROUTES) {
       test(`${route.path} has no violations`, async ({ page }) => {
         await openPage(page, route.path, route.heading);
+        await settleAnimations(page);
         const results = await new AxeBuilder({ page }).withTags(WCAG_21_AA).analyze();
         const summary = results.violations.map((v) => ({
           id: v.id,

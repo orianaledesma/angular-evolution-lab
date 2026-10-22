@@ -26,3 +26,18 @@ export async function openPage(page: Page, path: string, heading: string): Promi
   // Let lazy chunks, mock latency and @defer (on idle) settle.
   await page.waitForLoadState('networkidle');
 }
+
+/**
+ * Waits for running CSS transitions and animations (e.g. a button's background fading in), so a
+ * contrast check never samples a colour halfway through. Infinite animations are ignored.
+ */
+export async function settleAnimations(page: Page): Promise<void> {
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => a.effect?.getTiming().iterations !== Infinity)
+        .map((a) => a.finished.catch(() => undefined)),
+    ),
+  );
+}

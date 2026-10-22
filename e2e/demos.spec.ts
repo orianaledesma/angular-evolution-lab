@@ -64,3 +64,43 @@ test('v17 @for renders 5,000 rows and reuses them with track unit.id', async ({ 
   await page.getByRole('button', { name: 'Refresh data (new objects)' }).click();
   await expect(page.getByTestId('created')).toHaveText('5000');
 });
+
+test('interview: "See it live" jumps to the demo and the back link returns to the question', async ({
+  page,
+}) => {
+  await openPage(page, '/interview', 'Interview questions');
+  const question = page.getByRole('article', { name: /What does OnPush do/ });
+  await question.getByRole('link', { name: /See it live: OnPush by default/ }).click();
+
+  await expect(page).toHaveURL(/\/v22#cd-strategy-demo$/);
+  await expect(page.locator('#cd-strategy-demo')).toBeFocused();
+  await expect(page.locator('#cd-strategy-demo')).toBeInViewport();
+
+  await page.getByRole('link', { name: 'Back to the question' }).click();
+  await expect(page).toHaveURL(/\/interview#q-onPush$/);
+  await expect(page.locator('#q-onPush')).toBeFocused();
+  await expect(page.getByRole('link', { name: 'Back to the question' })).toBeHidden();
+});
+
+test('interview practice mode hides answers until revealed', async ({ page }) => {
+  await openPage(page, '/interview', 'Interview questions');
+  await page.getByRole('switch', { name: 'Practice mode' }).check();
+  const question = page.getByRole('article', { name: /What is a signal/ });
+  await expect(question.getByText('In one sentence')).toBeHidden();
+  await question.getByRole('button', { name: 'Show answer' }).click();
+  await expect(question.getByText('In one sentence')).toBeVisible();
+});
+
+test('rxjs: the scenario shows what each flattening operator does', async ({ page }) => {
+  await openPage(page, '/rxjs', 'RxJS in practice');
+  await page.getByRole('button', { name: /Play scenario/ }).click();
+  await expect(page.getByText(/time window over/)).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByTestId('summary-switchMap')).toContainText('#3 #5');
+  await expect(page.getByTestId('summary-exhaustMap')).toContainText('#2 #3 #5');
+});
+
+test('lifecycle: a signal refreshes only the view that reads it', async ({ page }) => {
+  await openPage(page, '/lifecycle', 'Lifecycle & change detection');
+  await page.getByRole('button', { name: 'Set a signal read only by A1' }).click();
+  await expect(page.getByTestId('tree-result')).toContainText('refreshed 1 of 6: Leaf A1');
+});
