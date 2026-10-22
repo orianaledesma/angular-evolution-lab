@@ -16,7 +16,7 @@
       @for (strategy of strategies; track strategy) {
         @let column = columns()[strategy];
         <section
-          class="strategy"
+          class="strategy-column"
           [class.dead]="!column.alive"
           [attr.aria-labelledby]="'strategy-' + strategy"
           [attr.data-testid]="'strategy-' + strategy"

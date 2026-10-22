@@ -286,7 +286,7 @@ kbd {
   }
 }
 
-.strategy {
+.strategy-column {
   @include mixins.stack(var(--space-2));
 
   padding: var(--space-3);
