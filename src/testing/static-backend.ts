@@ -6,9 +6,9 @@ import dealers from '../../public/mock-api/dealers.json';
 import vehicles from '../../public/mock-api/vehicles.json';
 
 const FILES: Record<string, unknown> = {
-  '/mock-api/vehicles.json': vehicles,
-  '/mock-api/countries.json': countries,
-  '/mock-api/dealers.json': dealers,
+  'mock-api/vehicles.json': vehicles,
+  'mock-api/countries.json': countries,
+  'mock-api/dealers.json': dealers,
 };
 
 /**

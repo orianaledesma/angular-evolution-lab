@@ -14,7 +14,7 @@ describe('provideI18n', () => {
       providers: [provideHttpClient(), provideHttpClientTesting(), ...provideI18n()],
     });
     const init = TestBed.inject(ApplicationInitStatus);
-    TestBed.inject(HttpTestingController).expectOne('/i18n/en.json').flush(en);
+    TestBed.inject(HttpTestingController).expectOne('i18n/en.json').flush(en);
     await init.donePromise;
     expect(TestBed.inject(TranslateService).instant('app.title')).toBe('Angular Evolution Lab');
   });

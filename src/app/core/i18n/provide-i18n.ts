@@ -14,7 +14,7 @@ export function provideI18n(): (Provider | EnvironmentProviders)[] {
     provideTranslateService({
       // HttpBackend bypasses the app interceptors: translations never toggle the loading bar.
       loader: provideTranslateHttpLoader({
-        prefix: '/i18n/',
+        prefix: 'i18n/',
         suffix: '.json',
         useHttpBackend: true,
       }),

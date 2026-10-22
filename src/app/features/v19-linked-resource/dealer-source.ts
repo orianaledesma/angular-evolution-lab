@@ -20,7 +20,7 @@ export const DEALER_FETCHER = new InjectionToken<DealerFetcher>('DEALER_FETCHER'
   providedIn: 'root',
   factory: () => async (cityId, signal) => {
     await abortableDelay(LATENCY_MS, signal);
-    const response = await fetch('/mock-api/dealers.json', { signal });
+    const response = await fetch('mock-api/dealers.json', { signal });
     const dealers = (await response.json()) as Dealer[];
     return dealers.filter((d) => d.cityId === cityId);
   },

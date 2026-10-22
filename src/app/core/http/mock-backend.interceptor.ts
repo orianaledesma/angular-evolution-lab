@@ -45,7 +45,7 @@ function serveJson<T>(
   next: (r: HttpRequest<unknown>) => Observable<unknown>,
 ): Observable<T> {
   return next(
-    req.clone({ url: `/mock-api/${file}.json`, method: 'GET', params: new HttpParams() }),
+    req.clone({ url: `mock-api/${file}.json`, method: 'GET', params: new HttpParams() }),
   ).pipe(mergeMap((event) => (event instanceof HttpResponse ? of(event.body as T) : [])));
 }
 

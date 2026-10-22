@@ -37,7 +37,7 @@ describe('mockBackendInterceptor (full interceptor chain)', () => {
     const result = firstValueFrom(
       http.get<Vehicle[]>('api/vehicles', { params: { q: 'bmw', fuel: 'electric' } }),
     );
-    ctrl.expectOne('/mock-api/vehicles.json').flush(vehicles);
+    ctrl.expectOne('mock-api/vehicles.json').flush(vehicles);
     expect((await result).map((v) => v.id)).toEqual(['bmw-i4']);
   });
 
@@ -46,7 +46,7 @@ describe('mockBackendInterceptor (full interceptor chain)', () => {
     const result = firstValueFrom(
       http.get<Vehicle[]>('api/vehicles', { params: { simulate: 'empty' } }),
     );
-    ctrl.expectOne('/mock-api/vehicles.json').flush(vehicles);
+    ctrl.expectOne('mock-api/vehicles.json').flush(vehicles);
     expect(await result).toEqual([]);
   });
 
@@ -62,26 +62,26 @@ describe('mockBackendInterceptor (full interceptor chain)', () => {
   it('returns a single vehicle or a 404', async () => {
     setup();
     const found = firstValueFrom(http.get<Vehicle>('api/vehicles/audi-q4'));
-    ctrl.expectOne('/mock-api/vehicles.json').flush(vehicles);
+    ctrl.expectOne('mock-api/vehicles.json').flush(vehicles);
     expect((await found).model).toBe('Q4 e-tron');
 
     const missing = firstValueFrom(http.get('api/vehicles/nope'));
-    ctrl.expectOne('/mock-api/vehicles.json').flush(vehicles);
+    ctrl.expectOne('mock-api/vehicles.json').flush(vehicles);
     await expectProblem(missing, 404);
   });
 
   it('serves countries and dealers filtered by city', async () => {
     setup();
     const c = firstValueFrom(http.get<unknown[]>('api/countries'));
-    ctrl.expectOne('/mock-api/countries.json').flush(countries);
+    ctrl.expectOne('mock-api/countries.json').flush(countries);
     expect(await c).toHaveLength(3);
 
     const d = firstValueFrom(http.get<Dealer[]>('api/dealers', { params: { cityId: 'vie' } }));
-    ctrl.expectOne('/mock-api/dealers.json').flush(dealers);
+    ctrl.expectOne('mock-api/dealers.json').flush(dealers);
     expect((await d).every((dealer) => dealer.cityId === 'vie')).toBe(true);
 
     const all = firstValueFrom(http.get<Dealer[]>('api/dealers'));
-    ctrl.expectOne('/mock-api/dealers.json').flush(dealers);
+    ctrl.expectOne('mock-api/dealers.json').flush(dealers);
     expect(await all).toHaveLength(dealers.length);
   });
 
