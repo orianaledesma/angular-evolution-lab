@@ -13,7 +13,8 @@
     "mainNav": "Hauptnavigation",
     "toggleNav": "Navigation ein- oder ausblenden",
     "changeLanguage": "Sprache ändern (aktuell: {{lang}})",
-    "footer": "Gebaut mit Angular 22 · zoneless · Signals · Angular Aria"
+    "footer": "Gebaut mit Angular 22 · zoneless · Signals · Angular Aria",
+    "backToQuestion": "Zurück zur Frage"
   },
   "nav": {
     "home": "Überblick",

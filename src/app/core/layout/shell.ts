@@ -5,12 +5,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter, map, pairwise, startWith } from 'rxjs';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LoadingService } from '../http/loading.service';
+import { AnchorFocus } from '../navigation/anchor-focus';
+import { sectionOf } from '../navigation/section';
 import { LanguageSwitcher } from './language-switcher';
 import { Sidenav } from './sidenav';
-
-export function sectionOf(url: string): string {
-  return url.split(/[?#]/)[0]?.split('/')[1] ?? '';
-}
 
 @Component({
   selector: 'app-shell',
@@ -22,6 +20,8 @@ export class Shell {
   private readonly router = inject(Router);
   private readonly document = inject(DOCUMENT);
   protected readonly loading = inject(LoadingService);
+  /** Also starts listening for `#fragment` jumps. */
+  protected readonly anchors = inject(AnchorFocus);
   protected readonly navOpen = signal(false);
   private readonly main = viewChild.required<ElementRef<HTMLElement>>('main');
 

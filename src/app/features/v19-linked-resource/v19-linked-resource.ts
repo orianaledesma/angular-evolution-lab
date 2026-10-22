@@ -22,9 +22,9 @@ import { RxResourceDemo } from './rx-resource-demo';
         <p>{{ 'v19.intro' | translate }}</p>
       </header>
       <div class="demo-list">
-        <app-linked-demo />
-        <app-resource-demo />
-        <app-rx-resource-demo />
+        <app-linked-demo id="linked-demo" />
+        <app-resource-demo id="resource-demo" />
+        <app-rx-resource-demo id="rx-resource-demo" />
       </div>
     </section>
   `,

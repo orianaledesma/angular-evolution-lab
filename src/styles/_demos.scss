@@ -3,6 +3,11 @@
 
 .demo-list {
   @include mixins.stack(var(--space-6));
+
+  // Demo hosts are jump targets (id="…-demo"): give them a box to scroll to and highlight.
+  > * {
+    display: block;
+  }
 }
 
 .demo-live {

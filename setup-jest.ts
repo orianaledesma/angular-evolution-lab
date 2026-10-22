@@ -42,3 +42,22 @@ if (!('IntersectionObserver' in window)) {
   }
   Object.assign(window, { IntersectionObserver: NoopIntersectionObserver });
 }
+
+// jsdom has no scrollIntoView / matchMedia (used by AnchorFocus and motion-aware demos).
+Element.prototype.scrollIntoView = function scrollIntoView() {
+  /* noop */
+};
+if (!('matchMedia' in window)) {
+  Object.assign(window, {
+    matchMedia: (query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+      addListener: () => undefined,
+      removeListener: () => undefined,
+      dispatchEvent: () => false,
+    }),
+  });
+}

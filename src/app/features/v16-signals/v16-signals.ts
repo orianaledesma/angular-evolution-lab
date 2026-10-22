@@ -29,11 +29,11 @@ import { SearchDemo } from './search-demo';
         <p>{{ 'v16.intro' | translate }}</p>
       </header>
       <div class="demo-list">
-        <app-cart-demo />
-        <app-search-demo />
-        <app-destroy-demo />
-        <app-required-input-demo />
-        <app-input-binding-demo [vehicleId]="vehicle()" />
+        <app-cart-demo id="cart-demo" />
+        <app-search-demo id="search-demo" />
+        <app-destroy-demo id="destroy-demo" />
+        <app-required-input-demo id="required-input-demo" />
+        <app-input-binding-demo id="input-binding-demo" [vehicleId]="vehicle()" />
       </div>
     </section>
   `,

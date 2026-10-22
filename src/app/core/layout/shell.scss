@@ -122,6 +122,24 @@
   }
 }
 
+.return-link {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-2));
+  z-index: 5;
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-weight: 600;
+  color: var(--color-on-accent);
+  text-decoration: none;
+  background: var(--color-accent-strong);
+  border-radius: 999px;
+  box-shadow: var(--shadow-card);
+}
+
 .footer {
   padding: var(--space-4);
   font-size: var(--font-size-sm);

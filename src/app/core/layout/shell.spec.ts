@@ -2,8 +2,11 @@ import { Component } from '@angular/core';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { provideTranslateTesting } from '../../../testing/translate-testing';
+import { Router } from '@angular/router';
 import { LoadingService } from '../http/loading.service';
-import { Shell, sectionOf } from './shell';
+import { returnTo } from '../navigation/anchor-focus';
+import { sectionOf } from '../navigation/section';
+import { Shell } from './shell';
 
 @Component({ selector: 'app-dummy', template: '<h1>Dummy page</h1>' })
 class DummyPage {}
@@ -46,6 +49,22 @@ describe('Shell', () => {
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
     await user.click(screen.getByRole('link', { name: /Signals arrive/ }));
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('offers a way back after a jump that carries a return target', async () => {
+    const { fixture } = await setup();
+    const router = fixture.debugElement.injector.get(Router);
+    expect(screen.queryByRole('link', { name: 'Back to the question' })).not.toBeInTheDocument();
+
+    await router.navigate(['/v22'], {
+      fragment: 'cd-strategy-demo',
+      state: returnTo('/interview', 'q-onpush', 'layout.backToQuestion'),
+    });
+    fixture.detectChanges();
+    expect(await screen.findByRole('link', { name: 'Back to the question' })).toHaveAttribute(
+      'href',
+      '/interview#q-onpush',
+    );
   });
 
   it('shows a global loading status while requests are in flight', async () => {

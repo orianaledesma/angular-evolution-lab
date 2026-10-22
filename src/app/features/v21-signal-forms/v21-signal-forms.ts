@@ -20,9 +20,9 @@ import { DealerContactForm } from './dealer-contact-form';
         <p>{{ 'v21.intro' | translate }}</p>
       </header>
       <div class="demo-list">
-        <app-dealer-contact-form />
-        <app-aria-demo />
-        <app-cleanup-demo />
+        <app-dealer-contact-form id="dealer-contact-form-demo" />
+        <app-aria-demo id="aria-demo" />
+        <app-cleanup-demo id="cleanup-demo" />
       </div>
     </section>
   `,

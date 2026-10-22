@@ -34,13 +34,13 @@ import { TestDriveDemo } from './test-drive-demo';
         <p>{{ 'v22.intro' | translate }}</p>
       </header>
       <div class="demo-list">
-        <app-cd-strategy-demo />
-        <app-test-drive-demo />
-        <app-resources-demo />
-        <app-lazy-service-demo />
-        <app-delivery-demo />
-        <app-defer-idle-demo />
-        <app-is-active-demo />
+        <app-cd-strategy-demo id="cd-strategy-demo" />
+        <app-test-drive-demo id="test-drive-demo" />
+        <app-resources-demo id="resources-demo" />
+        <app-lazy-service-demo id="lazy-service-demo" />
+        <app-delivery-demo id="delivery-demo" />
+        <app-defer-idle-demo id="defer-idle-demo" />
+        <app-is-active-demo id="is-active-demo" />
       </div>
     </section>
   `,

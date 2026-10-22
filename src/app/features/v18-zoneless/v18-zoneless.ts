@@ -29,11 +29,11 @@ import { ZonelessDemo } from './zoneless-demo';
         <p>{{ 'v18.intro' | translate }}</p>
       </header>
       <div class="demo-list">
-        <app-zoneless-demo />
-        <app-let-demo />
-        <app-fallback-demo />
-        <app-form-events-demo />
-        <app-redirect-demo [redirectedFrom]="redirectedFrom()" />
+        <app-zoneless-demo id="zoneless-demo" />
+        <app-let-demo id="let-demo" />
+        <app-fallback-demo id="fallback-demo" />
+        <app-form-events-demo id="form-events-demo" />
+        <app-redirect-demo id="redirect-demo" [redirectedFrom]="redirectedFrom()" />
       </div>
     </section>
   `,

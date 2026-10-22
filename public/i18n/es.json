@@ -13,7 +13,8 @@
     "mainNav": "Navegación principal",
     "toggleNav": "Mostrar u ocultar navegación",
     "changeLanguage": "Cambiar idioma (actual: {{lang}})",
-    "footer": "Hecho con Angular 22 · zoneless · signals · Angular Aria"
+    "footer": "Hecho con Angular 22 · zoneless · signals · Angular Aria",
+    "backToQuestion": "Volver a la pregunta"
   },
   "nav": {
     "home": "Resumen",

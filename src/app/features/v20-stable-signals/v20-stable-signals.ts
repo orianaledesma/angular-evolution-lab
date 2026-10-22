@@ -19,9 +19,9 @@ import { TemplateExpressionsDemo } from './template-expressions-demo';
         <p>{{ 'v20.intro' | translate }}</p>
       </header>
       <div class="demo-list">
-        <app-stability-demo />
-        <app-http-resource-demo />
-        <app-template-expressions-demo />
+        <app-stability-demo id="stability-demo" />
+        <app-http-resource-demo id="http-resource-demo" />
+        <app-template-expressions-demo id="template-expressions-demo" />
       </div>
     </section>
   `,

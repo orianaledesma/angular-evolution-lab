@@ -29,11 +29,11 @@ import { type Layout, ViewTransitionsDemo } from './view-transitions-demo';
         <p>{{ 'v17.intro' | translate }}</p>
       </header>
       <div class="demo-list">
-        <app-for-demo />
-        <app-signal-io-demo />
-        <app-queries-demo />
-        <app-view-transitions-demo [layout]="layout() ?? 'grid'" />
-        <app-defer-demo />
+        <app-for-demo id="for-demo" />
+        <app-signal-io-demo id="signal-io-demo" />
+        <app-queries-demo id="queries-demo" />
+        <app-view-transitions-demo id="view-transitions-demo" [layout]="layout() ?? 'grid'" />
+        <app-defer-demo id="defer-demo" />
       </div>
     </section>
   `,

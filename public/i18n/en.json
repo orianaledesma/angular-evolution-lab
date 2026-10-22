@@ -13,7 +13,8 @@
     "mainNav": "Main navigation",
     "toggleNav": "Toggle navigation",
     "changeLanguage": "Change language (current: {{lang}})",
-    "footer": "Built with Angular 22 · zoneless · signals · Angular Aria"
+    "footer": "Built with Angular 22 · zoneless · signals · Angular Aria",
+    "backToQuestion": "Back to the question"
   },
   "nav": {
     "home": "Overview",
