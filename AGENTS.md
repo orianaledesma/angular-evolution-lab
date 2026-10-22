@@ -23,8 +23,19 @@ Instructions for AI coding agents (and humans) changing this repo.
 - File names follow the v20+ style guide: `vehicle-list.ts`, not `vehicle-list.component.ts`.
 - SCSS with `@use` (never `@import`) and CSS custom properties from `src/styles/_tokens.scss` —
   no hard-coded colours in component styles.
-- Each demo lives in `src/app/features/vNN-*/`, shows a `<app-code-compare>` and has a spec. Code
-  shown as "before" goes in that feature's `snippets.ts` (excluded from `check:legacy`).
+- Each demo lives in a feature folder (`vNN-*`, `lifecycle`, `rxjs`), shows a `<app-code-compare>` and
+  has a spec. Code shown as "before" goes in that feature's `snippets.ts` (excluded from `check:legacy`).
+- Every demo host on a page gets a stable `id` ending in `-demo`: it is the target of in-app jumps
+  (`routerLink` + `fragment`, handled by `AnchorFocus`). Do not rename one without updating its links.
+- Explanatory text must describe measured behaviour: if a demo claims an order or a count, its spec
+  asserts it.
+
+## Interview questions
+
+Metadata lives in `features/interview/questions.ts`, text in i18n under `interview.q.<id>.{q,short,long}`
+and optional code in `features/interview/snippets.ts`. `short` is one sentence to say out loud; `long`
+is the reasoning. `interview.spec.ts` fails if a question has no text or links to a route or anchor that
+does not exist.
 
 ## i18n
 

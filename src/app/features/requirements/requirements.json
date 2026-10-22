@@ -13,12 +13,17 @@
       {
         "path": "/v22",
         "label": "v22.cd.title"
+      },
+      {
+        "path": "/lifecycle",
+        "label": "lifecycle.tree.title"
       }
     ],
     "tests": [
       "src/app/features/v16-signals/cart-demo.spec.ts",
       "src/app/features/v17-control-flow/for-demo.spec.ts",
-      "src/app/features/v22-maturity/cd-strategy-demo.spec.ts"
+      "src/app/features/v22-maturity/cd-strategy-demo.spec.ts",
+      "src/app/features/lifecycle/cd-tree-demo.spec.ts"
     ]
   },
   {
@@ -52,12 +57,23 @@
       {
         "path": "/v19",
         "label": "v19.rx.title"
+      },
+      {
+        "path": "/rxjs",
+        "label": "rxjs.flattening.title"
+      },
+      {
+        "path": "/rxjs",
+        "label": "rxjs.errors.title"
       }
     ],
     "tests": [
       "src/app/features/v16-signals/search-demo.spec.ts",
       "src/app/features/v16-signals/destroy-demo.spec.ts",
-      "src/app/features/v19-linked-resource/v19-linked-resource.spec.ts"
+      "src/app/features/v19-linked-resource/v19-linked-resource.spec.ts",
+      "src/app/features/rxjs/flattening-demo.spec.ts",
+      "src/app/features/rxjs/errors-demo.spec.ts",
+      "src/app/features/rxjs/leaks-demo.spec.ts"
     ]
   },
   {

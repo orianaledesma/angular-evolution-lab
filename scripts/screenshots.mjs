@@ -39,6 +39,21 @@ await shot('v21-signal-forms', '/v21', {}, async (page) => {
   await page.getByRole('textbox', { name: /E-mail/ }).fill('lena@');
   await page.getByRole('textbox', { name: /Postcode/ }).click();
 });
+await shot('lifecycle-tree', '/lifecycle#cd-tree-demo', {}, async (page) => {
+  await page.getByRole('button', { name: 'Click inside A2' }).click();
+  await page.getByRole('heading', { name: 'Change detection tree' }).scrollIntoViewIfNeeded();
+});
+await shot('rxjs-flattening', '/rxjs', {}, async (page) => {
+  await page.getByRole('button', { name: /Play scenario/ }).click();
+  await page.getByText(/time window over/).waitFor({ timeout: 10_000 });
+  await page.getByRole('heading', { name: /switchMap vs mergeMap/ }).scrollIntoViewIfNeeded();
+});
+await shot('interview', '/interview', { colorScheme: 'dark' }, async (page) => {
+  await page.getByRole('switch', { name: 'Practice mode' }).check();
+  const question = page.getByRole('article', { name: /switchMap a bad choice/ });
+  await question.getByRole('button', { name: 'Show answer' }).click();
+  await question.scrollIntoViewIfNeeded();
+});
 await shot('mobile-de', '/v19', { ...devices['Pixel 7'], locale: 'de-DE' });
 
 await browser.close();
