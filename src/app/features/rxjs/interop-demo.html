@@ -1,0 +1,65 @@
+<app-card [heading]="'rxjs.interop.title' | translate">
+  <p class="muted">{{ 'rxjs.interop.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <button app-button size="sm" type="button" (click)="burst()">
+        {{ 'rxjs.interop.burst' | translate }}
+      </button>
+      <button app-button variant="ghost" size="sm" type="button" (click)="clear()">
+        {{ 'common.clear' | translate }}
+      </button>
+      <span class="status">
+        speed() = {{ speed() }} · toSignal(speed$)() = {{ lastFromSubject() }}
+      </span>
+    </div>
+
+    <dl class="kv" aria-live="polite">
+      @for (channel of channels; track channel) {
+        <div [attr.data-testid]="'channel-' + channel">
+          <dt>{{ 'rxjs.interop.channels.' + channel | translate }}</dt>
+          <dd class="values">{{ seen()[channel].join(', ') || '—' }}</dd>
+        </div>
+      }
+    </dl>
+    <p class="explain">{{ 'rxjs.interop.explain' | translate }}</p>
+
+    <div
+      class="table-scroll"
+      tabindex="0"
+      role="region"
+      [attr.aria-label]="'rxjs.interop.choose' | translate"
+    >
+      <table class="data-table">
+        <caption>
+          {{
+            'rxjs.interop.choose' | translate
+          }}
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">{{ 'rxjs.interop.cols.need' | translate }}</th>
+            <th scope="col">{{ 'rxjs.interop.cols.use' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of ['state', 'derived', 'http', 'time', 'events', 'bridge']; track row) {
+            <tr>
+              <th scope="row">{{ 'rxjs.interop.rows.' + row + '.need' | translate }}</th>
+              <td>{{ 'rxjs.interop.rows.' + row + '.use' | translate }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3>{{ 'rxjs.takeaways' | translate }}</h3>
+  <ul class="takeaways">
+    <li>{{ 'rxjs.interop.t1' | translate }}</li>
+    <li>{{ 'rxjs.interop.t2' | translate }}</li>
+    <li>{{ 'rxjs.interop.t3' | translate }}</li>
+  </ul>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

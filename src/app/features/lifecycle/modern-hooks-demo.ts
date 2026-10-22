@@ -16,7 +16,7 @@ import { HOOK_MAPPINGS, RENDER_PHASES } from './snippets';
         role="region"
         [attr.aria-label]="'lifecycle.modern.title' | translate"
       >
-        <table class="mapping">
+        <table class="data-table">
           <thead>
             <tr>
               <th scope="col">{{ 'lifecycle.modern.classic' | translate }}</th>
@@ -53,32 +53,6 @@ import { HOOK_MAPPINGS, RENDER_PHASES } from './snippets';
     </app-card>
   `,
   styles: `
-    .table-scroll {
-      overflow-x: auto;
-    }
-
-    .mapping {
-      width: 100%;
-      font-size: var(--font-size-sm);
-      border-collapse: collapse;
-    }
-
-    th,
-    td {
-      padding: var(--space-2) var(--space-3);
-      text-align: start;
-      vertical-align: top;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    thead th {
-      color: var(--color-text-muted);
-    }
-
-    tbody th {
-      font-weight: 400;
-    }
-
     .phases {
       display: flex;
       flex-direction: column;

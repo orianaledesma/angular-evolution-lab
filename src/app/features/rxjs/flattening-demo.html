@@ -1,0 +1,127 @@
+<app-card [heading]="'rxjs.flattening.title' | translate">
+  <p class="muted">{{ 'rxjs.flattening.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <button app-button size="sm" type="button" [disabled]="finished()" (click)="sendRequest()">
+        {{ 'rxjs.flattening.send' | translate }}
+      </button>
+      <button app-button variant="secondary" size="sm" type="button" (click)="playScenario()">
+        {{ 'rxjs.flattening.scenario' | translate }}
+      </button>
+      <button app-button variant="ghost" size="sm" type="button" (click)="reset()">
+        {{ 'common.reset' | translate }}
+      </button>
+      <span class="status">
+        {{ 'rxjs.flattening.clock' | translate: { s: (now() / 1000).toFixed(1) } }}
+        @if (finished()) {
+          · {{ 'rxjs.flattening.finished' | translate }}
+        }
+      </span>
+    </div>
+
+    <div class="timeline" aria-hidden="true">
+      <div class="lane">
+        <span class="lane-name">clicks$</span>
+        <div class="track">
+          <span class="playhead" [style.left.%]="left(now())"></span>
+          @for (click of clicks(); track click.request) {
+            <span class="marble marble--in" [style.left.%]="left(click.at)">{{
+              click.request
+            }}</span>
+          }
+        </div>
+      </div>
+      @for (op of operators; track op) {
+        <div class="lane" [attr.data-testid]="'lane-' + op">
+          <span class="lane-name">{{ op }}</span>
+          <div class="track" [style.--rows]="rows()[op].count">
+            <span class="playhead" [style.left.%]="left(now())"></span>
+            @for (run of lanes()[op].runs; track run.request) {
+              <span
+                [class]="'bar bar--' + run.status"
+                [style.left.%]="left(run.start)"
+                [style.width.%]="width(run)"
+                [style.--row]="row(op, run.request)"
+                >{{ run.request }}</span
+              >
+            }
+            @for (out of lanes()[op].outputs; track out.request) {
+              <span
+                class="marble marble--out"
+                [style.left.%]="left(out.at)"
+                [style.--row]="row(op, out.request)"
+                >{{ out.request }}</span
+              >
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="legend status" aria-hidden="true">
+      <span
+        ><span class="swatch swatch--running"></span
+        >{{ 'rxjs.flattening.legend.running' | translate }}</span
+      >
+      <span
+        ><span class="swatch swatch--done"></span
+        >{{ 'rxjs.flattening.legend.done' | translate }}</span
+      >
+      <span
+        ><span class="swatch swatch--cancelled"></span
+        >{{ 'rxjs.flattening.legend.cancelled' | translate }}</span
+      >
+      <span
+        ><span class="marble-swatch"></span>{{ 'rxjs.flattening.legend.output' | translate }}</span
+      >
+    </div>
+
+    <!-- Text equivalent of the timeline, and the part worth saying out loud in an interview. -->
+    <div
+      class="table-scroll"
+      tabindex="0"
+      role="region"
+      [attr.aria-label]="'rxjs.flattening.summary' | translate"
+    >
+      <table class="data-table">
+        <caption>
+          {{
+            'rxjs.flattening.summary' | translate
+          }}
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">{{ 'rxjs.flattening.cols.operator' | translate }}</th>
+            <th scope="col">{{ 'rxjs.flattening.cols.emitted' | translate }}</th>
+            <th scope="col">{{ 'rxjs.flattening.cols.cancelled' | translate }}</th>
+            <th scope="col">{{ 'rxjs.flattening.cols.ignored' | translate }}</th>
+            <th scope="col">{{ 'rxjs.flattening.cols.useFor' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (op of operators; track op) {
+            <tr [attr.data-testid]="'summary-' + op">
+              <th scope="row">
+                <code>{{ op }}</code>
+              </th>
+              <td>{{ emitted(op) }}</td>
+              <td>{{ requestsWith(op, 'cancelled') }}</td>
+              <td>{{ op === 'exhaustMap' ? ignored(op) : '—' }}</td>
+              <td>{{ 'rxjs.flattening.use.' + op | translate }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3>{{ 'rxjs.takeaways' | translate }}</h3>
+  <ul class="takeaways">
+    <li>{{ 'rxjs.flattening.t1' | translate }}</li>
+    <li>{{ 'rxjs.flattening.t2' | translate }}</li>
+    <li>{{ 'rxjs.flattening.t3' | translate }}</li>
+  </ul>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

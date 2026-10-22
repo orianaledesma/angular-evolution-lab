@@ -43,6 +43,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/lifecycle/lifecycle'),
   },
   {
+    path: 'rxjs',
+    title: 'nav.rxjs',
+    loadComponent: () => import('./features/rxjs/rxjs'),
+  },
+  {
     path: 'requirements',
     title: 'nav.requirements',
     loadComponent: () => import('./features/requirements/requirements'),

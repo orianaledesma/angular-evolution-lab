@@ -1,0 +1,74 @@
+<app-card [heading]="'rxjs.subjects.title' | translate">
+  <p class="muted">{{ 'rxjs.subjects.description' | translate }}</p>
+
+  <div class="demo-live">
+    <fieldset class="options">
+      <legend>{{ 'rxjs.subjects.source' | translate }}</legend>
+      <div class="toolbar">
+        @for (k of kinds; track k) {
+          <label class="checkbox">
+            <input
+              type="radio"
+              name="subject-kind"
+              [value]="k"
+              [checked]="kind() === k"
+              (change)="select(k)"
+            />
+            <code>{{ 'rxjs.subjects.kinds.' + k + '.name' | translate }}</code>
+          </label>
+        }
+      </div>
+    </fieldset>
+    <p class="explain">{{ 'rxjs.subjects.kinds.' + kind() + '.explain' | translate }}</p>
+
+    <div class="toolbar">
+      @for (name of names; track name) {
+        <button
+          app-button
+          variant="secondary"
+          size="sm"
+          type="button"
+          [disabled]="isSubscribed(name)"
+          (click)="subscribe(name)"
+        >
+          {{ 'rxjs.subjects.subscribe' | translate: { name } }}
+        </button>
+      }
+      @if (isPush()) {
+        <button app-button size="sm" type="button" (click)="emit()">
+          {{ 'rxjs.subjects.emit' | translate }}
+        </button>
+      }
+    </div>
+
+    <dl class="kv">
+      @if (!isPush()) {
+        <div class="emphasis">
+          <dt>{{ 'rxjs.subjects.executions' | translate }}</dt>
+          <dd data-testid="executions">{{ executions() }}</dd>
+        </div>
+      }
+      @for (name of names; track name) {
+        <div [attr.data-testid]="'subscriber-' + name">
+          <dt>{{ 'rxjs.subjects.subscriber' | translate: { name } }}</dt>
+          <dd class="values">
+            @if (isSubscribed(name)) {
+              {{ received()[name]?.join(', ') || '…' }}
+            } @else {
+              —
+            }
+          </dd>
+        </div>
+      }
+    </dl>
+  </div>
+
+  <h3>{{ 'rxjs.takeaways' | translate }}</h3>
+  <ul class="takeaways">
+    <li>{{ 'rxjs.subjects.t1' | translate }}</li>
+    <li>{{ 'rxjs.subjects.t2' | translate }}</li>
+    <li>{{ 'rxjs.subjects.t3' | translate }}</li>
+  </ul>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

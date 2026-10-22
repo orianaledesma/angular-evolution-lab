@@ -1,0 +1,57 @@
+<app-card [heading]="'rxjs.errors.title' | translate">
+  <p class="muted">{{ 'rxjs.errors.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <button app-button size="sm" type="button" (click)="load()">
+        {{ 'rxjs.errors.load' | translate }}
+      </button>
+      <button app-button variant="ghost" size="sm" type="button" (click)="reset()">
+        {{ 'common.reset' | translate }}
+      </button>
+      <span class="status">{{ 'rxjs.errors.server' | translate: { n: 2 } }}</span>
+    </div>
+
+    <div class="demo-grid strategies">
+      @for (strategy of strategies; track strategy) {
+        @let column = columns()[strategy];
+        <section
+          class="strategy"
+          [class.dead]="!column.alive"
+          [attr.aria-labelledby]="'strategy-' + strategy"
+          [attr.data-testid]="'strategy-' + strategy"
+        >
+          <h3 [id]="'strategy-' + strategy">
+            {{ 'rxjs.errors.strategies.' + strategy | translate }}
+          </h3>
+          <p class="status">
+            @if (column.alive) {
+              <span class="pill pill--ok">{{ 'rxjs.errors.alive' | translate }}</span>
+            } @else {
+              <span class="pill pill--dead">{{ 'rxjs.errors.closed' | translate }}</span>
+            }
+            · {{ 'rxjs.errors.calls' | translate: { n: column.calls } }}
+          </p>
+          <div class="log">
+            <ol aria-live="polite">
+              @for (entry of column.log; track entry.id) {
+                <li>{{ entry.text | translate: entry.params }}</li>
+              } @empty {
+                <li>—</li>
+              }
+            </ol>
+          </div>
+        </section>
+      }
+    </div>
+  </div>
+
+  <h3>{{ 'rxjs.takeaways' | translate }}</h3>
+  <ul class="takeaways">
+    <li>{{ 'rxjs.errors.t1' | translate }}</li>
+    <li>{{ 'rxjs.errors.t2' | translate }}</li>
+    <li>{{ 'rxjs.errors.t3' | translate }}</li>
+  </ul>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

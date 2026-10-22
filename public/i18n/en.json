@@ -31,7 +31,8 @@
       "versions": "Angular versions",
       "fundamentals": "Fundamentals",
       "project": "Project"
-    }
+    },
+    "rxjs": "RxJS in practice"
   },
   "common": {
     "loading": "Loading…",
@@ -611,6 +612,159 @@
       "t1": "Resolution starts at the component's element injector, walks up its ancestors and then the environment injectors (route → root). The first provider found wins.",
       "t2": "providedIn: 'root' or @Service() gives one tree-shakable singleton. providers: [] on a component gives one instance per component instance — ideal for state that belongs to a single widget.",
       "t3": "inject() works only in an injection context: field initializers, the constructor, factory functions or runInInjectionContext(). Anywhere else it throws NG0203."
+    }
+  },
+  "rxjs": {
+    "title": "RxJS in practice",
+    "intro": "Signals now hold most component state, but events over time, cancellation and retries are still RxJS territory. Each demo runs the real operators; the tables beside them are what you would explain in a review.",
+    "takeaways": "Key points",
+    "flattening": {
+      "title": "switchMap vs mergeMap vs concatMap vs exhaustMap",
+      "description": "Every click starts a fake request that takes 1.2 s. The same clicks go through all four operators at once, so you can compare what each one does with overlapping requests.",
+      "send": "Send a request",
+      "scenario": "Play scenario (3 quick clicks, pause, 2 more)",
+      "clock": "t = {{s}} s",
+      "finished": "time window over — reset to try again",
+      "legend": {
+        "running": "running",
+        "done": "completed",
+        "cancelled": "cancelled",
+        "output": "value emitted"
+      },
+      "summary": "What each operator did",
+      "cols": {
+        "operator": "Operator",
+        "emitted": "Emitted",
+        "cancelled": "Cancelled",
+        "ignored": "Ignored clicks",
+        "useFor": "Use it for"
+      },
+      "use": {
+        "switchMap": "search-as-you-type, route params: only the latest request matters.",
+        "mergeMap": "independent work in parallel (uploads, deletes); pass a concurrency limit.",
+        "concatMap": "writes that must keep their order (save, queue of commands).",
+        "exhaustMap": "submit and login buttons: ignore clicks while a request is in flight."
+      },
+      "t1": "All four subscribe to an inner observable per value; they only differ in what happens when a new value arrives while an inner one is still running.",
+      "t2": "switchMap cancels by unsubscribing — with HttpClient that aborts the HTTP request. Do not use it for writes: a cancelled POST may still have reached the server.",
+      "t3": "mergeMap has no ordering guarantee; concatMap queues and can build up a backlog; exhaustMap drops values silently, so give the user feedback (disable the button)."
+    },
+    "subjects": {
+      "title": "Cold, hot and Subjects",
+      "description": "Pick a source and subscribe A, B and C at different moments. Watch who receives what — and how often the producer runs.",
+      "source": "Source",
+      "subscribe": "Subscribe {{name}}",
+      "subscriber": "Subscriber {{name}}",
+      "emit": "Emit next value",
+      "executions": "Producer executions",
+      "kinds": {
+        "cold": {
+          "name": "cold (defer)",
+          "explain": "Cold: the producer runs once per subscriber. Every subscribe is a new request — that is HttpClient's default."
+        },
+        "shareReplay": {
+          "name": "shareReplay(1)",
+          "explain": "Multicast and cached: the first subscriber triggers one execution, later subscribers get the cached last value."
+        },
+        "subject": {
+          "name": "Subject",
+          "explain": "Hot, no memory: subscribers only get values emitted after they subscribed. Late subscribers miss everything before."
+        },
+        "behavior": {
+          "name": "BehaviorSubject",
+          "explain": "Hot with a current value: it needs an initial value and gives the latest one immediately on subscribe."
+        },
+        "replay": {
+          "name": "ReplaySubject(2)",
+          "explain": "Hot with a buffer: late subscribers get the last two values replayed, then the live ones."
+        }
+      },
+      "t1": "Cold observables create their producer on subscribe (HTTP, timers, defer); hot ones share a producer that runs regardless of subscribers (DOM events, Subjects).",
+      "t2": "Use shareReplay({ bufferSize: 1, refCount: true }) to share a request between consumers; without refCount the source stays subscribed after everyone leaves.",
+      "t3": "Expose Subjects as asObservable() so consumers cannot call next(). For component state prefer a signal: same semantics as a BehaviorSubject, synchronous and glitch-free."
+    },
+    "interop": {
+      "title": "Signals vs RxJS",
+      "description": "One click writes three values synchronously, both to a signal and to a Subject. See how each consumer observes the burst.",
+      "burst": "Write 3 values synchronously",
+      "channels": {
+        "subject": "Subject subscriber",
+        "toObservable": "toObservable(signal)",
+        "effect": "effect()"
+      },
+      "explain": "A Subject delivers every value immediately. A signal only holds the current value: effect() and toObservable() run once afterwards and see the last write. Signals model state; observables model events.",
+      "choose": "Which one to reach for",
+      "cols": {
+        "need": "You need…",
+        "use": "Use"
+      },
+      "rows": {
+        "state": {
+          "need": "component or service state",
+          "use": "signal() / linkedSignal()"
+        },
+        "derived": {
+          "need": "a value derived from state",
+          "use": "computed()"
+        },
+        "http": {
+          "need": "data that depends on state",
+          "use": "httpResource() / resource() / rxResource()"
+        },
+        "time": {
+          "need": "debounce, throttle, intervals, retries",
+          "use": "RxJS operators (or debounced() in v22)"
+        },
+        "events": {
+          "need": "every occurrence of an event, cancellation",
+          "use": "Observable + flattening operators"
+        },
+        "bridge": {
+          "need": "to cross the boundary",
+          "use": "toSignal() / toObservable() / outputFromObservable()"
+        }
+      },
+      "t1": "toSignal() subscribes immediately and unsubscribes with the injection context; give it an initialValue or handle undefined. It throws if the observable errors.",
+      "t2": "toObservable() emits asynchronously, once per change, with the latest value — intermediate synchronous writes are never seen.",
+      "t3": "Signals are glitch-free: consumers never see an inconsistent mix of old and new values. That makes them a poor fit for event streams where every value counts."
+    },
+    "errors": {
+      "title": "Errors, retry and a stream that dies",
+      "description": "One click triggers the same failing server through three pipelines. The server fails twice, then recovers.",
+      "load": "Load data",
+      "server": "Server: fails the first {{n}} calls in each column",
+      "alive": "stream alive",
+      "closed": "stream closed",
+      "calls": "calls: {{n}}",
+      "strategies": {
+        "none": "No error handling",
+        "catch": "catchError inside switchMap",
+        "retry": "retry with backoff + catchError"
+      },
+      "log": {
+        "click": "▶ click",
+        "fail": "✕ call #{{n}} → 503",
+        "ok": "✓ call #{{n}} → 200",
+        "wait": "↻ retry in {{ms}} ms",
+        "result": "→ value: {{result}}",
+        "dead": "✕ error reached subscribe(): stream closed, later clicks are ignored"
+      },
+      "t1": "An error terminates the observable it reaches. If it reaches the outer click stream, the feature is dead until the component is recreated.",
+      "t2": "Put catchError (and retry) inside the flattening operator, on the inner request, so only that request fails.",
+      "t3": "retry({ count, delay }) resubscribes to the source; with a cold HTTP observable that means a new request. Back off exponentially and only retry idempotent calls."
+    },
+    "leaks": {
+      "title": "Subscription leaks",
+      "description": "Both widgets subscribe to the same telemetry feed. Mount and unmount them a few times and watch the counters.",
+      "mount": "Mount {{name}} widget",
+      "unmount": "Unmount {{name}} widget",
+      "fix": "Complete all subscriptions",
+      "active": "Active subscriptions",
+      "ghost": "Updates delivered to destroyed widgets",
+      "explain": "Unmounting the leaky widget does not stop its subscription: the interval keeps running and keeps calling a destroyed component. The safe widget's subscription ends with its DestroyRef.",
+      "t1": "Angular does not unsubscribe for you: subscriptions to long-lived sources (intervals, stores, router events, WebSockets) outlive the component unless something ends them.",
+      "t2": "Prefer no manual subscription at all: toSignal() or the async pipe. When you must subscribe, use takeUntilDestroyed() in an injection context (or pass a DestroyRef).",
+      "t3": "HttpClient requests complete after one response, so they rarely leak — but an unfinished one keeps its callback alive. Sources that never complete are the dangerous ones."
     }
   }
 }

@@ -31,7 +31,8 @@
       "versions": "Angular-Versionen",
       "fundamentals": "Grundlagen",
       "project": "Projekt"
-    }
+    },
+    "rxjs": "RxJS in der Praxis"
   },
   "common": {
     "loading": "Wird geladen…",
@@ -611,6 +612,159 @@
       "t1": "Die Auflösung beginnt beim Element Injector der Komponente, geht über ihre Vorfahren nach oben und dann über die Environment Injectors (Route → Root). Der erste gefundene Provider gewinnt.",
       "t2": "providedIn: 'root' oder @Service() ergibt ein tree-shakable Singleton. providers: [] an einer Komponente ergibt eine Instanz pro Komponenteninstanz – ideal für Zustand, der zu einem einzelnen Widget gehört.",
       "t3": "inject() funktioniert nur in einem Injection Context: Feld-Initialisierer, Konstruktor, Factory-Funktionen oder runInInjectionContext(). Überall sonst wirft es NG0203."
+    }
+  },
+  "rxjs": {
+    "title": "RxJS in der Praxis",
+    "intro": "Signals halten inzwischen den Großteil des Komponentenzustands, aber Ereignisse über die Zeit, Abbruch und Wiederholungen bleiben RxJS-Terrain. Jede Demo nutzt die echten Operatoren; die Tabellen daneben sind das, was man in einem Review erklären würde.",
+    "takeaways": "Das Wichtigste",
+    "flattening": {
+      "title": "switchMap vs. mergeMap vs. concatMap vs. exhaustMap",
+      "description": "Jeder Klick startet einen simulierten Request, der 1,2 s dauert. Dieselben Klicks laufen gleichzeitig durch alle vier Operatoren – so lässt sich vergleichen, was jeder bei überlappenden Requests tut.",
+      "send": "Request senden",
+      "scenario": "Szenario abspielen (3 schnelle Klicks, Pause, 2 weitere)",
+      "clock": "t = {{s}} s",
+      "finished": "Zeitfenster vorbei – zum Wiederholen zurücksetzen",
+      "legend": {
+        "running": "läuft",
+        "done": "abgeschlossen",
+        "cancelled": "abgebrochen",
+        "output": "ausgegebener Wert"
+      },
+      "summary": "Was jeder Operator getan hat",
+      "cols": {
+        "operator": "Operator",
+        "emitted": "Ausgegeben",
+        "cancelled": "Abgebrochen",
+        "ignored": "Ignorierte Klicks",
+        "useFor": "Einsetzen für"
+      },
+      "use": {
+        "switchMap": "Suche beim Tippen, Routenparameter: nur der neueste Request zählt.",
+        "mergeMap": "unabhängige Arbeit parallel (Uploads, Löschen); mit Concurrency-Limit.",
+        "concatMap": "Schreibzugriffe, deren Reihenfolge erhalten bleiben muss (Speichern, Befehlswarteschlange).",
+        "exhaustMap": "Absende- und Login-Buttons: Klicks ignorieren, solange ein Request läuft."
+      },
+      "t1": "Alle vier abonnieren pro Wert ein inneres Observable; sie unterscheiden sich nur darin, was passiert, wenn ein neuer Wert kommt, während das innere noch läuft.",
+      "t2": "switchMap bricht durch Abbestellen ab – bei HttpClient wird der HTTP-Request abgebrochen. Nicht für Schreibzugriffe verwenden: Ein abgebrochener POST kann den Server trotzdem erreicht haben.",
+      "t3": "mergeMap garantiert keine Reihenfolge; concatMap reiht ein und kann einen Rückstau aufbauen; exhaustMap verwirft Werte stillschweigend – also Feedback geben (Button deaktivieren)."
+    },
+    "subjects": {
+      "title": "Cold, Hot und Subjects",
+      "description": "Eine Quelle wählen und A, B und C zu verschiedenen Zeitpunkten abonnieren. Beobachten, wer was bekommt – und wie oft der Producer läuft.",
+      "source": "Quelle",
+      "subscribe": "{{name}} abonnieren",
+      "subscriber": "Abonnent {{name}}",
+      "emit": "Nächsten Wert senden",
+      "executions": "Producer-Ausführungen",
+      "kinds": {
+        "cold": {
+          "name": "cold (defer)",
+          "explain": "Cold: Der Producer läuft einmal pro Abonnent. Jedes subscribe ist ein neuer Request – das Standardverhalten von HttpClient."
+        },
+        "shareReplay": {
+          "name": "shareReplay(1)",
+          "explain": "Multicast mit Cache: Der erste Abonnent löst eine Ausführung aus, spätere bekommen den zwischengespeicherten letzten Wert."
+        },
+        "subject": {
+          "name": "Subject",
+          "explain": "Hot, ohne Gedächtnis: Abonnenten bekommen nur Werte, die nach dem Abonnieren gesendet werden. Späte Abonnenten verpassen alles davor."
+        },
+        "behavior": {
+          "name": "BehaviorSubject",
+          "explain": "Hot mit aktuellem Wert: braucht einen Startwert und liefert beim Abonnieren sofort den neuesten."
+        },
+        "replay": {
+          "name": "ReplaySubject(2)",
+          "explain": "Hot mit Puffer: Späte Abonnenten bekommen die letzten zwei Werte erneut, danach die neuen."
+        }
+      },
+      "t1": "Cold Observables erzeugen ihren Producer beim Abonnieren (HTTP, Timer, defer); Hot Observables teilen einen Producer, der unabhängig von Abonnenten läuft (DOM-Events, Subjects).",
+      "t2": "Mit shareReplay({ bufferSize: 1, refCount: true }) einen Request zwischen Konsumenten teilen; ohne refCount bleibt die Quelle abonniert, auch wenn alle weg sind.",
+      "t3": "Subjects als asObservable() herausgeben, damit niemand next() aufrufen kann. Für Komponentenzustand lieber ein Signal: dieselbe Semantik wie ein BehaviorSubject, synchron und glitch-frei."
+    },
+    "interop": {
+      "title": "Signals vs. RxJS",
+      "description": "Ein Klick schreibt drei Werte synchron – in ein Signal und in ein Subject. Sehen, wie jeder Konsument diesen Schwall wahrnimmt.",
+      "burst": "3 Werte synchron schreiben",
+      "channels": {
+        "subject": "Subject-Abonnent",
+        "toObservable": "toObservable(signal)",
+        "effect": "effect()"
+      },
+      "explain": "Ein Subject liefert jeden Wert sofort. Ein Signal hält nur den aktuellen Wert: effect() und toObservable() laufen danach einmal und sehen den letzten Schreibvorgang. Signals modellieren Zustand, Observables Ereignisse.",
+      "choose": "Was wann",
+      "cols": {
+        "need": "Du brauchst …",
+        "use": "Verwende"
+      },
+      "rows": {
+        "state": {
+          "need": "Zustand einer Komponente oder eines Service",
+          "use": "signal() / linkedSignal()"
+        },
+        "derived": {
+          "need": "einen aus dem Zustand abgeleiteten Wert",
+          "use": "computed()"
+        },
+        "http": {
+          "need": "Daten, die vom Zustand abhängen",
+          "use": "httpResource() / resource() / rxResource()"
+        },
+        "time": {
+          "need": "Debounce, Throttle, Intervalle, Wiederholungen",
+          "use": "RxJS-Operatoren (oder debounced() in v22)"
+        },
+        "events": {
+          "need": "jedes Auftreten eines Ereignisses, Abbruch",
+          "use": "Observable + Flattening-Operatoren"
+        },
+        "bridge": {
+          "need": "den Übergang zwischen beiden Welten",
+          "use": "toSignal() / toObservable() / outputFromObservable()"
+        }
+      },
+      "t1": "toSignal() abonniert sofort und beendet das Abo mit dem Injection Context; einen initialValue angeben oder undefined behandeln. Es wirft, wenn das Observable einen Fehler liefert.",
+      "t2": "toObservable() sendet asynchron, einmal pro Änderung, mit dem neuesten Wert – synchrone Zwischenwerte sieht es nie.",
+      "t3": "Signals sind glitch-frei: Konsumenten sehen nie eine inkonsistente Mischung aus alten und neuen Werten. Deshalb passen sie nicht zu Ereignisströmen, in denen jeder Wert zählt."
+    },
+    "errors": {
+      "title": "Fehler, retry und ein Stream, der stirbt",
+      "description": "Ein Klick schickt denselben fehlerhaften Server durch drei Pipelines. Der Server scheitert zweimal und erholt sich dann.",
+      "load": "Daten laden",
+      "server": "Server: scheitert bei den ersten {{n}} Aufrufen jeder Spalte",
+      "alive": "Stream aktiv",
+      "closed": "Stream geschlossen",
+      "calls": "Aufrufe: {{n}}",
+      "strategies": {
+        "none": "Keine Fehlerbehandlung",
+        "catch": "catchError innerhalb von switchMap",
+        "retry": "retry mit Backoff + catchError"
+      },
+      "log": {
+        "click": "▶ Klick",
+        "fail": "✕ Aufruf #{{n}} → 503",
+        "ok": "✓ Aufruf #{{n}} → 200",
+        "wait": "↻ neuer Versuch in {{ms}} ms",
+        "result": "→ Wert: {{result}}",
+        "dead": "✕ Fehler hat subscribe() erreicht: Stream geschlossen, weitere Klicks werden ignoriert"
+      },
+      "t1": "Ein Fehler beendet das Observable, das er erreicht. Erreicht er den äußeren Klick-Stream, ist die Funktion tot, bis die Komponente neu erstellt wird.",
+      "t2": "catchError (und retry) in den Flattening-Operator legen, an den inneren Request – so scheitert nur dieser Request.",
+      "t3": "retry({ count, delay }) abonniert die Quelle erneut; bei einem Cold-HTTP-Observable bedeutet das einen neuen Request. Exponentiell zurückweichen und nur idempotente Aufrufe wiederholen."
+    },
+    "leaks": {
+      "title": "Subscription-Leaks",
+      "description": "Beide Widgets abonnieren denselben Telemetrie-Feed. Ein paar Mal ein- und aushängen und die Zähler beobachten.",
+      "mount": "Widget {{name}} einhängen",
+      "unmount": "Widget {{name}} aushängen",
+      "fix": "Alle Subscriptions beenden",
+      "active": "Aktive Subscriptions",
+      "ghost": "Updates an zerstörte Widgets",
+      "explain": "Das Aushängen des Leaky-Widgets beendet sein Abo nicht: Das Intervall läuft weiter und ruft eine zerstörte Komponente auf. Das Abo des sicheren Widgets endet mit seinem DestroyRef.",
+      "t1": "Angular beendet Abos nicht automatisch: Subscriptions auf langlebige Quellen (Intervalle, Stores, Router-Events, WebSockets) überleben die Komponente, wenn nichts sie beendet.",
+      "t2": "Am besten gar nicht manuell abonnieren: toSignal() oder die async-Pipe. Wenn es sein muss, takeUntilDestroyed() in einem Injection Context verwenden (oder einen DestroyRef übergeben).",
+      "t3": "HttpClient-Requests sind nach einer Antwort abgeschlossen und leaken daher selten – ein unfertiger hält aber seinen Callback am Leben. Gefährlich sind Quellen, die nie abschließen."
     }
   }
 }

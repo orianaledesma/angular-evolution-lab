@@ -1,0 +1,47 @@
+<app-card [heading]="'rxjs.leaks.title' | translate">
+  <p class="muted">{{ 'rxjs.leaks.description' | translate }}</p>
+
+  <div class="demo-live">
+    <div class="toolbar">
+      <button app-button variant="secondary" size="sm" type="button" (click)="toggle('leaky')">
+        {{ (leaky() ? 'rxjs.leaks.unmount' : 'rxjs.leaks.mount') | translate: { name: 'leaky' } }}
+      </button>
+      <button app-button variant="secondary" size="sm" type="button" (click)="toggle('safe')">
+        {{ (safe() ? 'rxjs.leaks.unmount' : 'rxjs.leaks.mount') | translate: { name: 'safe' } }}
+      </button>
+      <button app-button variant="danger" size="sm" type="button" (click)="fixLeaks()">
+        {{ 'rxjs.leaks.fix' | translate }}
+      </button>
+    </div>
+
+    <div class="demo-grid">
+      @if (leaky()) {
+        <app-leaky-widget />
+      }
+      @if (safe()) {
+        <app-safe-widget />
+      }
+    </div>
+
+    <dl class="kv">
+      <div class="emphasis">
+        <dt>{{ 'rxjs.leaks.active' | translate }}</dt>
+        <dd data-testid="active-subscriptions">{{ feed.active() }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'rxjs.leaks.ghost' | translate }}</dt>
+        <dd data-testid="ghost-updates">{{ feed.ghostUpdates() }}</dd>
+      </div>
+    </dl>
+    <p class="explain">{{ 'rxjs.leaks.explain' | translate }}</p>
+  </div>
+
+  <h3>{{ 'rxjs.takeaways' | translate }}</h3>
+  <ul class="takeaways">
+    <li>{{ 'rxjs.leaks.t1' | translate }}</li>
+    <li>{{ 'rxjs.leaks.t2' | translate }}</li>
+    <li>{{ 'rxjs.leaks.t3' | translate }}</li>
+  </ul>
+
+  <app-code-compare [before]="snippets.before" [after]="snippets.after" />
+</app-card>

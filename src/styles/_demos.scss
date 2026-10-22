@@ -220,3 +220,99 @@ kbd {
   padding-inline-start: var(--space-5);
   margin: 0;
 }
+
+// Data tables in demos (mapping tables, summaries). Wrap in .table-scroll for narrow screens.
+.table-scroll {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  font-size: var(--font-size-sm);
+  border-collapse: collapse;
+
+  caption {
+    margin-bottom: var(--space-2);
+    font-weight: 600;
+    text-align: start;
+  }
+
+  th,
+  td {
+    padding: var(--space-2) var(--space-3);
+    text-align: start;
+    vertical-align: top;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  thead th {
+    color: var(--color-text-muted);
+  }
+
+  tbody th {
+    font-weight: 400;
+  }
+}
+
+.kv dd.values {
+  font-size: var(--font-size-sm);
+  overflow-wrap: anywhere;
+}
+
+.widget {
+  padding: var(--space-2) var(--space-3);
+  margin: 0;
+  font-family: var(--font-mono);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.pill {
+  display: inline-block;
+  padding: 0 var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  border-radius: 999px;
+
+  &--ok {
+    color: var(--color-success);
+    background: var(--color-success-bg);
+  }
+
+  &--dead {
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+  }
+}
+
+.strategy {
+  @include mixins.stack(var(--space-2));
+
+  padding: var(--space-3);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  &.dead {
+    border-color: var(--color-danger);
+  }
+
+  h3 {
+    margin: 0;
+    font-size: var(--font-size-md);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .log ol {
+    max-height: 18rem;
+  }
+}
+
+.demo-grid.strategies {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--space-3);
+}
