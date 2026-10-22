@@ -45,30 +45,6 @@
       }
     </fieldset>
 
-    <fieldset class="chips">
-      <legend>{{ 'interview.level' | translate }}</legend>
-      <label class="chip">
-        <input
-          type="radio"
-          name="interview-level"
-          [checked]="level() === 'all'"
-          (change)="level.set('all')"
-        />
-        <span>{{ 'interview.all' | translate }}</span>
-      </label>
-      @for (l of levels; track l) {
-        <label class="chip">
-          <input
-            type="radio"
-            name="interview-level"
-            [checked]="level() === l"
-            (change)="level.set(l)"
-          />
-          <span>{{ 'interview.levels.' + l | translate }}</span>
-        </label>
-      }
-    </fieldset>
-
     <div class="practice">
       <label class="checkbox">
         <input
@@ -114,9 +90,6 @@
                 <app-badge tone="info">{{
                   'interview.categories.' + q.category | translate
                 }}</app-badge>
-                <app-badge [tone]="q.level === 'senior' ? 'warning' : 'neutral'">
-                  {{ 'interview.levels.' + q.level | translate }}
-                </app-badge>
               </div>
               <h2 [id]="'q-' + q.id + '-title'">{{ base + '.q' | translate }}</h2>
             </header>

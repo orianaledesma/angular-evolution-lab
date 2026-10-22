@@ -69,7 +69,7 @@ test('interview: "See it live" jumps to the demo and the back link returns to th
   page,
 }) => {
   await openPage(page, '/interview', 'Interview questions');
-  const question = page.getByRole('article', { name: /What does OnPush do/ });
+  const question = page.getByRole('article', { name: /makes OnPush the default/ });
   await question.getByRole('link', { name: /See it live: OnPush by default/ }).click();
 
   await expect(page).toHaveURL(/\/v22#cd-strategy-demo$/);
@@ -85,7 +85,7 @@ test('interview: "See it live" jumps to the demo and the back link returns to th
 test('interview practice mode hides answers until revealed', async ({ page }) => {
   await openPage(page, '/interview', 'Interview questions');
   await page.getByRole('switch', { name: 'Practice mode' }).check();
-  const question = page.getByRole('article', { name: /What is a signal/ });
+  const question = page.getByRole('article', { name: /How do signals work under the hood/ });
   await expect(question.getByText('In one sentence')).toBeHidden();
   await question.getByRole('button', { name: 'Show answer' }).click();
   await expect(question.getByText('In one sentence')).toBeVisible();

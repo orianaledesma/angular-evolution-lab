@@ -33,8 +33,9 @@ Instructions for AI coding agents (and humans) changing this repo.
 ## Interview questions
 
 Metadata lives in `features/interview/questions.ts`, text in i18n under `interview.q.<id>.{q,short,long}`
-and optional code in `features/interview/snippets.ts`. `short` is one sentence to say out loud; `long`
-is the reasoning. `interview.spec.ts` fails if a question has no text or links to a route or anchor that
+and optional code in `features/interview/snippets.ts`. Every question targets a senior role: ask
+for a decision, trade-off, internal mechanism or failure mode, never a definition ("What is X?").
+`short` is one sentence to say out loud; `long` is the reasoning. `interview.spec.ts` fails if a question has no text or links to a route or anchor that
 does not exist.
 
 ## i18n

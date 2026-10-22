@@ -1,16 +1,15 @@
 /** Code shown under an answer, by question id. May contain legacy code on purpose (contrast). */
 export const ANSWER_SNIPPETS: Readonly<Record<string, string>> = {
-  signals: `const speed = signal(0);            // value now, sync read: speed()
-const kmh = computed(() => speed() * 3.6);
-speed.set(120);                       // kmh() === 432, lazily
+  signals: `speed = signal(0);                 // producer, version 1
+kmh = computed(() => this.speed() * 3.6); // consumer, not computed yet
 
-const speed$ = new BehaviorSubject(0); // stream: values over time,
-speed$.pipe(map(s => s * 3.6))         // needs subscribe/unsubscribe`,
-  computedEffect: `total = computed(() =>                  // derive values: pure, cached
-  this.items().reduce((s, i) => s + i.price * i.qty, 0));
-
-saveDraft = effect(() =>                // side effects only:
-  localStorage.setItem('cart', JSON.stringify(this.items())));`,
+this.speed.set(30);   // push: marks kmh (and views reading it) dirty
+this.speed.set(60);   // nothing recomputes yet
+this.kmh();           // pull: recomputes once → 216, glitch-free`,
+  computedEffect: `total   = computed(() => sum(this.items()));          // derived, read-only
+city    = linkedSignal(() => cities(this.country())[0]); // derived, writable
+dealers = httpResource(() => \`/api/dealers?city=\${this.city()}\`); // async
+persist = effect(() => storage.set('cart', this.items())); // outside world`,
   linkedSignal: `country = signal<Country>('AT');
 city = linkedSignal(() => CITIES[this.country()][0]); // derived…
 
@@ -21,15 +20,19 @@ this.city.set('Graz');   // …but writable; resets when country changes`,
 count.set(1);                    // signal read by a template
 (click)="…"                      // template/host listener
 input change · markForCheck() · AsyncPipe`,
-  onPush: `@Component({ … })   // v22: OnPush unless you say otherwise
+  onPush: `// What a Default → OnPush migration typically breaks:
+this.items.push(item);                 // in-place mutation
+setTimeout(() => (this.status = 'ok')); // plain field, no notification
+chart.on('click', () => (this.sel = x)); // third-party callback
 
-@Component({
-  changeDetection: ChangeDetectionStrategy.Eager, // the old Default
-})`,
-  lifecycleOrder: `constructor → ngOnChanges → ngOnInit → ngDoCheck
-→ ngAfterContentInit → ngAfterContentChecked
-→ ngAfterViewInit → ngAfterViewChecked
-→ afterNextRender / afterRenderEffect   …   ngOnDestroy → DestroyRef`,
+// Temporary escape hatch while fixing a component:
+changeDetection: ChangeDetectionStrategy.Eager`,
+  lifecycleOrder: `ngOnInit() { this.form.patchValue(this.initial()); } // ✓ once, needs inputs
+
+ngDoCheck() { … }            // ✗ runs on every parent check,
+ngAfterViewChecked() { … }   //   even when this OnPush view is skipped
+
+ready = afterNextRender(() => this.chart = new Chart(this.canvas()));`,
   afterRender: `focusFirst = afterNextRender(() => this.input().nativeElement.focus());
 
 resize = afterRenderEffect({
@@ -44,28 +47,36 @@ export class TripPanel {
   clock = inject(FleetClock);      // not here → … → route → root
   maybe = inject(Logger, { optional: true });
 }`,
-  injectionContext: `export class Gauge {
-  api = inject(Api);                         // ✓ field initializer
-  load() {
-    inject(Api);                             // ✗ NG0203
-    runInInjectionContext(this.injector, () => inject(Api)); // ✓
-  }
-}`,
-  standalone: `// Before: declarations + imports in an NgModule
-@NgModule({ declarations: [Gauge], imports: [CommonModule] })
+  injectionContext: `export function injectVehicle(id: () => string) {
+  assertInInjectionContext(injectVehicle);
+  const api = inject(VehicleApi);
+  const destroyRef = inject(DestroyRef);           // cleanup with the caller
+  return httpResource<Vehicle>(() => api.url(id()));
+}
 
-// Now: the component declares its own dependencies
-@Component({ selector: 'app-gauge', imports: [DecimalPipe] })
-bootstrapApplication(App, appConfig);`,
-  signalInputs: `plate = input.required<string>();             // was @Input({ required })
-price = input(0, { transform: numberAttribute });
-changed = output<string>();                   // was @Output() + EventEmitter
-rating = model(0);                            // two-way: [(rating)]`,
-  controlFlow: `@for (car of cars(); track car.vin) {
-  <app-car [car]="car" />
-} @empty {
-  <p>No cars in stock.</p>
-}`,
+// test: TestBed.runInInjectionContext(() => injectVehicle(() => 'id3'))`,
+  migration: `ng generate @angular/core:standalone          // NgModules → standalone
+ng generate @angular/core:control-flow        // *ngIf/*ngFor → @if/@for
+ng generate @angular/core:inject              // constructor → inject()
+ng generate @angular/core:signal-input-migration
+ng generate @angular/core:signal-queries-migration
+
+// then: OnPush per feature, fix mutations, remove zone.js last`,
+  signalInputs: `// Presentational: one-way in, events out
+vehicle = input.required<Vehicle>();
+selected = output<string>();
+
+// Form-like control: two-way is the contract
+value = model<number>(0);       // <app-slider [(value)]="speed" />
+
+// Avoid: model() just to save an output — it hides who owns the state`,
+  controlFlow: `<cdk-virtual-scroll-viewport itemSize="48" class="list">
+  <app-vehicle-row
+    *cdkVirtualFor="let v of vehicles(); trackBy: byVin"
+    [vehicle]="v" />
+</cdk-virtual-scroll-viewport>
+// ~20 rows in the DOM instead of 10,000; rows are OnPush, no
+// function calls in bindings, derived values in computed()`,
   deferBlocks: `@defer (on viewport; prefetch on idle) {
   <app-power-chart />            <!-- own lazy chunk -->
 } @placeholder (minimum 300ms) {
@@ -83,11 +94,12 @@ f = form(this.model, (p) => {
   email(p.email);
 });
 <input [formField]="f.email" />   @if (f.email().invalid()) { … }`,
-  routeParams: `provideRouter(routes, withComponentInputBinding());
+  routeData: `// Resolver: navigation waits, the page never renders without data
+{ path: ':id', resolve: { vehicle: vehicleResolver }, loadComponent: … }
 
-export class VehiclePage {
-  id = input.required<string>();   // from :id, ?id= or route data
-}`,
+// Resource: navigate instantly, show a skeleton, cancel on param change
+id = input.required<string>();                  // withComponentInputBinding
+vehicle = httpResource<Vehicle>(() => \`/api/vehicles/\${this.id()}\`);`,
   flattening: `search$.pipe(switchMap(q => api.search(q)))   // latest wins
 uploads$.pipe(mergeMap(f => api.upload(f), 3)) // parallel
 saves$.pipe(concatMap(d => api.save(d)))      // ordered
@@ -96,23 +108,26 @@ submit$.pipe(exhaustMap(() => api.pay()))      // ignore re-clicks`,
 const shared$ = cold$.pipe(
   shareReplay({ bufferSize: 1, refCount: true }), // 1 request, cached
 );`,
-  subjects: `new Subject<T>()          // no initial value, late subscribers miss values
-new BehaviorSubject(init) // current value, given on subscribe
-new ReplaySubject<T>(n)   // replays the last n values
+  subjects: `@Service()
+export class Notifications {           // events, not state:
+  private readonly events = new Subject<Toast>();
+  readonly events$ = this.events.asObservable(); // read-only
+  show(t: Toast) { this.events.next(t); }
+}
 
-private state$ = new BehaviorSubject(0);
-readonly value$ = this.state$.asObservable(); // no next() for consumers`,
+// State instead: unread = signal(0) — no Subject needed`,
   rxjsErrors: `clicks$.pipe(
   switchMap(() => api.load().pipe(
     retry({ count: 3, delay: (_, i) => timer(400 * 2 ** (i - 1)) }),
     catchError(() => of(FALLBACK)),  // inside: the outer stream survives
   )),
 )`,
-  unsubscribe: `ticks = this.feed.ticks$
-  .pipe(takeUntilDestroyed())          // in an injection context
-  .subscribe(v => this.value.set(v));
+  unsubscribe: `// eslint (eslint-plugin-rxjs-x / angular-eslint):
+'rxjs-x/no-ignored-subscription': 'error',
+'rxjs-x/no-unsafe-takeuntil': 'error',
 
-value = toSignal(this.feed.ticks$, { initialValue: 0 }); // or this`,
+// conventions: toSignal / async pipe first, takeUntilDestroyed otherwise
+value = toSignal(this.feed.ticks$, { initialValue: 0 });`,
   stillRxjs: `query = signal('');
 results = toSignal(toObservable(this.query).pipe(
   debounceTime(300),
@@ -130,12 +145,12 @@ export class Session { user = signal<User | null>(null); }
 @Component({ providers: [Wizard] }) // state of one widget instance
 cart = signal<Item[]>([]);          // local UI state
 // NgRx Signal Store when many features share complex flows`,
-  httpErrors: `export const errorInterceptor: HttpInterceptorFn = (req, next) =>
-  next(req).pipe(
-    catchError((e: HttpErrorResponse) => throwError(() => toProblemDetails(e))),
-  );
-
-provideHttpClient(withInterceptors([authInterceptor, errorInterceptor]));`,
+  httpErrors: `provideHttpClient(withInterceptors([
+  authInterceptor,      // 401 → refresh once, then logout
+  retryInterceptor,     // idempotent GETs only, backoff
+  errorInterceptor,     // → ProblemDetails, one typed shape
+]));
+{ provide: ErrorHandler, useClass: ObservabilityErrorHandler } // Sentry etc.`,
   testing: `it('shows the price per km', async () => {
   await render(PriceTag, { inputs: { amount: 100, km: 4 } });
   expect(screen.getByRole('status')).toHaveTextContent('25 €/km');
@@ -155,11 +170,13 @@ loadComponent: () => import('./page')       // lazy routes
 private exporter = injectAsync(() => import('./csv-export.service'), {
   prefetch: () => onIdle({ timeout: 2000 }),
 });`,
-  i18n: `// Runtime (ngx-translate): one build, switch language live
-{{ 'cart.total' | translate: { amount } }}
+  i18n: `// Runtime: one build, live switch, translations from a CMS/TMS
+{{ 'checkout.total' | translate: { amount } }}
 
-// Build-time (@angular/localize): one build per locale, $localize\`…\`
-// fastest at runtime, but a reload to switch language`,
+// Build-time: one build per locale, zero runtime cost
+<span i18n>{count, plural, =1 {1 vehicle} other {{{count}} vehicles}}</span>
+
+// Either way: LOCALE_ID per market (de-DE ≠ de-AT ≠ de-CH)`,
   effectSync: `// ✗ effect to copy state: extra render, possible loops
 effect(() => this.city.set(CITIES[this.country()][0]));
 

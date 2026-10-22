@@ -82,31 +82,36 @@ describe('Interview page', () => {
     expect(count()).toBe(`Showing ${QUESTIONS.length} of ${QUESTIONS.length} questions`);
 
     const article = screen.getByRole('article', {
-      name: 'switchMap, mergeMap, concatMap, exhaustMap: what is the difference?',
+      name: 'How do you choose a flattening operator, and what is the failure mode of each?',
     });
-    expect(within(article).getByText(/switch cancels, merge runs in parallel/)).toBeInTheDocument();
+    expect(within(article).getByText(/switch drops responses, merge races/)).toBeInTheDocument();
     expect(
       within(article).getByRole('link', { name: /See it live: RxJS in practice/ }),
     ).toHaveAttribute('href', '/rxjs#flattening-demo');
   });
 
-  it('filters by topic, level and accent-insensitive text', async () => {
+  it('targets a senior role: no level filter, and no definition-style questions', async () => {
+    await setup();
+    expect(screen.queryByRole('group', { name: 'Level' })).not.toBeInTheDocument();
+    const texts = en.interview.q as Record<string, { q: string }>;
+    for (const q of QUESTIONS) {
+      expect(texts[q.id]?.q).not.toMatch(/^What (is|are|does|problem) /);
+    }
+  });
+
+  it('filters by topic and accent-insensitive text', async () => {
     const { user, count } = await setup();
     await user.click(screen.getByRole('radio', { name: /^RxJS/ }));
     expect(count()).toBe(`Showing 6 of ${QUESTIONS.length} questions`);
 
-    await user.click(screen.getByRole('radio', { name: 'Senior' }));
-    expect(count()).toBe(`Showing 3 of ${QUESTIONS.length} questions`);
-
     await user.click(screen.getByRole('radio', { name: /^All \(/ }));
-    await user.click(screen.getByRole('radio', { name: 'All' }));
     await user.type(
       screen.getByRole('searchbox', { name: 'Search questions and answers' }),
       'NG0203',
     );
     expect(screen.getAllByRole('article')).toHaveLength(1);
     expect(
-      screen.getByRole('heading', { level: 2, name: /injection context/ }),
+      screen.getByRole('heading', { level: 2, name: /reusable inject\(\)-based functions/ }),
     ).toBeInTheDocument();
 
     await user.clear(screen.getByRole('searchbox'));
@@ -121,7 +126,7 @@ describe('Interview page', () => {
     await user.click(screen.getByRole('switch', { name: 'Practice mode' }));
     expect(screen.queryByText('In one sentence')).not.toBeInTheDocument();
 
-    const article = screen.getByRole('article', { name: /What is a signal/ });
+    const article = screen.getByRole('article', { name: /How do signals work under the hood/ });
     const toggle = within(article).getByRole('button', { name: 'Show answer' });
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await user.click(toggle);
@@ -143,7 +148,7 @@ describe('Interview page', () => {
 
     await TestBed.inject(Router).navigate(['/interview'], { fragment: 'q-onPush' });
     await fixture.whenStable();
-    const article = screen.getByRole('article', { name: /What does OnPush do/ });
+    const article = screen.getByRole('article', { name: /makes OnPush the default/ });
     expect(within(article).getByText('In one sentence')).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /^All \(/ })).toBeChecked();
   });

@@ -8,14 +8,7 @@ import { type AnchorState, returnTo } from '@core/navigation/anchor-focus';
 import { DEMO_NAV } from '@core/navigation/demo-nav';
 import { Badge } from '@shared/ui/badge/badge';
 import { Button } from '@shared/ui/button/button';
-import {
-  CATEGORIES,
-  type Category,
-  LEVELS,
-  type Level,
-  QUESTIONS,
-  type Question,
-} from './questions';
+import { CATEGORIES, type Category, QUESTIONS, type Question } from './questions';
 import { ANSWER_SNIPPETS } from './snippets';
 
 const PRACTICE_KEY = 'ael.interview.practice';
@@ -40,13 +33,11 @@ export default class Interview {
   private readonly route = inject(ActivatedRoute);
 
   protected readonly categories = CATEGORIES;
-  protected readonly levels = LEVELS;
   protected readonly total = QUESTIONS.length;
   protected readonly snippets = ANSWER_SNIPPETS;
 
   readonly query = signal('');
   readonly category = signal<Category | 'all'>('all');
-  readonly level = signal<Level | 'all'>('all');
   readonly practice = signal(this.readPractice());
   readonly revealed = signal<ReadonlySet<string>>(new Set());
 
@@ -70,12 +61,8 @@ export default class Interview {
     this.lang();
     const terms = normalize(this.query().trim()).split(/\s+/).filter(Boolean);
     const category = this.category();
-    const level = this.level();
     return QUESTIONS.filter((q) => {
-      if (
-        (category !== 'all' && q.category !== category) ||
-        (level !== 'all' && q.level !== level)
-      ) {
+      if (category !== 'all' && q.category !== category) {
         return false;
       }
       if (!terms.length) {
@@ -133,7 +120,6 @@ export default class Interview {
   clearFilters(): void {
     this.query.set('');
     this.category.set('all');
-    this.level.set('all');
   }
 
   protected onSearch(event: Event): void {

@@ -778,21 +778,16 @@
   },
   "interview": {
     "title": "Interview questions",
-    "badge": "{{count}} questions",
-    "intro": "Questions that come up in senior Angular interviews, each with a one-sentence answer to say out loud, the reasoning behind it and, where it helps, a live example in this app. Practice mode hides the answers until you have tried to answer yourself.",
+    "badge": "{{count}} senior questions",
+    "intro": "Questions asked in senior Angular interviews: they are about decisions, trade-offs, internals and failure modes, not definitions. Each one has a one-sentence answer to say out loud, the reasoning behind it and, where it helps, a live example in this app. Practice mode hides the answers until you have tried to answer yourself.",
     "search": "Search questions and answers",
     "category": "Topic",
-    "level": "Level",
     "all": "All",
     "categories": {
       "core": "Angular core",
       "rxjs": "RxJS",
       "architecture": "Architecture & quality",
       "tricky": "Senior trick questions"
-    },
-    "levels": {
-      "mid": "Mid",
-      "senior": "Senior"
     },
     "practice": "Practice mode",
     "practiceHint": "Answers stay hidden until you reveal them, one by one.",
@@ -808,17 +803,17 @@
     "clearFilters": "Clear filters",
     "q": {
       "signals": {
-        "q": "What is a signal, and how is it different from an Observable?",
-        "short": "A signal is a reactive value you can always read synchronously; an Observable is a stream of values over time that you subscribe to.",
-        "long": "A signal always has a current value, tracks who reads it and notifies only those consumers when it changes — no subscription, no teardown. Observables can emit zero, one or many values, can complete or error, and are lazy until subscribed. Signals model state; Observables model events and asynchronous work like debounced input, WebSockets or cancellable requests. Angular bridges both with toSignal() and toObservable()."
+        "q": "How do signals work under the hood, and how does that shape the way you design state?",
+        "short": "Writes push a dirty notification through the dependency graph, reads pull values lazily — so computed() is glitch-free, memoized and only recalculated when someone reads it.",
+        "long": "Each signal has a version; consumers record which producers and versions they read. set() only marks dependants as possibly stale; nothing recomputes until a consumer — a computed(), an effect or a template — pulls. That is why three synchronous writes cause one recomputation and why no consumer ever sees a half-updated state. Design consequences: keep state in a few writable signals and derive the rest, give objects a custom equal or treat them as immutable, use untracked() for reads that must not create dependencies, and keep event streams in RxJS because a signal only ever holds the latest value."
       },
       "computedEffect": {
-        "q": "computed() vs effect(): when do you use each?",
-        "short": "computed() derives a value from other signals; effect() runs a side effect when signals change — use computed() whenever you can.",
-        "long": "computed() is pure, lazy and memoized: it recalculates only when a dependency changed and someone reads it. effect() is for synchronising with the outside world — logging, localStorage, a chart library, analytics. Using an effect to set another signal is a smell: it causes an extra render and can create loops; that value should be a computed() or a linkedSignal(). Since v19, component effects run during change detection, after the inputs are set."
+        "q": "computed(), linkedSignal(), resource() or effect(): how do you decide for a piece of state?",
+        "short": "Derive whenever you can: computed() for read-only values, linkedSignal() for derived-but-writable, resource() for async; effect() only to push state out of Angular.",
+        "long": "The question to ask is who owns the value. If it is a pure function of other signals, it is a computed(). If it follows a source but the user may override it until the source changes, it is a linkedSignal(). If it comes from an async call keyed on signals, it is a resource()/httpResource(), which also gives you loading, error and cancellation. An effect() is the escape hatch for synchronising with something that is not a signal — storage, a chart library, analytics. A codebase with many effects that set other signals is usually missing derivations, and pays for it with extra renders and ordering bugs."
       },
       "linkedSignal": {
-        "q": "What problem does linkedSignal() solve?",
+        "q": "When do you reach for linkedSignal() instead of computed() or an effect, and what does its previous-value form give you?",
         "short": "It is a writable signal whose value resets from a source signal — derived state that the user can still override.",
         "long": "Classic example: the selected city depends on the selected country, but the user can pick another city. computed() would not be writable, and an effect() copying the value would run one render too late. linkedSignal(() => cities(country())[0]) gives you the default, lets you set() it, and recomputes when the country changes. The long form receives the previous value, so you can keep the selection if it is still valid."
       },
@@ -828,14 +823,14 @@
         "long": "zone.js patched every async API and triggered a full app check after each callback. Zoneless Angular (stable in v20.2, default in v21) drops that: nothing happens unless a notification marks a view dirty. Signals are the finest notification — only the views that read them refresh, their ancestors are just traversed. The benefits are smaller bundles, no patched APIs, clearer stack traces and fewer useless checks; the cost is that mutating a plain field from a setTimeout or a third-party callback no longer updates the view."
       },
       "onPush": {
-        "q": "What does OnPush do, and what changed in Angular 22?",
-        "short": "OnPush skips a component unless it gets a new input reference, handles an event, reads a changed signal or is marked for check; in v22 it is the default.",
-        "long": "Before v22 every component was checked whenever its parent was (Default) unless you opted into OnPush. Angular 22 flipped that: components are OnPush unless you write ChangeDetectionStrategy.Eager, the new name for Default. With signals this is natural, because signal reads notify precisely. What still breaks OnPush is in-place mutation: pushing into an array keeps the same reference, so neither the input check nor a signal sees a change."
+        "q": "Angular 22 makes OnPush the default. What breaks when you upgrade an older codebase, and how do you find it?",
+        "short": "Anything that relied on being checked without notifying Angular: in-place mutations, plain fields changed in async callbacks and third-party callbacks.",
+        "long": "Typical breakages are arrays and objects mutated in place, fields assigned inside setTimeout, promises or library callbacks, and services that expose plain mutable properties to templates. To find them: run the existing component and E2E tests, profile with Angular DevTools, and migrate feature by feature, temporarily marking a component ChangeDetectionStrategy.Eager while you fix it. The fixes are the same each time — immutable updates, signals for state read by templates, and markForCheck() only at the boundary with code you do not own."
       },
       "lifecycleOrder": {
-        "q": "In which order do lifecycle hooks run?",
-        "short": "constructor, ngOnChanges, ngOnInit, ngDoCheck, ngAfterContentInit/Checked, ngAfterViewInit/Checked, then render hooks; ngOnDestroy at the end.",
-        "long": "ngOnChanges runs before ngOnInit and on every input change; ngOnInit runs once, when inputs are set. ngDoCheck and the two *Checked hooks run on every check of the parent — even when an OnPush child itself is skipped — so they must be cheap. Content hooks come before view hooks because projected content is resolved first. afterNextRender/afterRenderEffect run after the DOM is updated, and on destroy ngOnDestroy runs before DestroyRef callbacks. The live log in this app shows all of it."
+        "q": "Which lifecycle hooks still earn their place in a signal-based codebase, and why do ngDoCheck and the *Checked hooks matter for performance?",
+        "short": "ngOnInit for one-off work that needs inputs and ngOnDestroy or DestroyRef for cleanup; the rest is mostly replaced — and ngDoCheck and the *Checked hooks run on every parent check, even for skipped OnPush views.",
+        "long": "With input() and computed() there is no need for ngOnChanges; viewChild()/contentChild() signals replace most AfterView/AfterContent hooks, and afterNextRender() is the right place for DOM work. ngDoCheck, ngAfterContentChecked and ngAfterViewChecked are called by the parent's refresh, so in a large list they run thousands of times per interaction regardless of OnPush. Any work there multiplies; it is a common hidden cost when profiling. The live log in this app shows them firing for a parent-only change while the child itself is not re-rendered."
       },
       "afterRender": {
         "q": "afterNextRender vs afterRenderEffect vs ngAfterViewInit?",
@@ -848,29 +843,24 @@
         "long": "providedIn: 'root' (or @Service() in v22) gives one tree-shakable singleton. providers on a component create one instance per component instance, shared by its children and destroyed with it — ideal for widget-level state. Route providers create an environment injector per route, destroyed on leave with withAutoCleanupInjectors(). Resolution modifiers like optional, self, skipSelf and host control where the search starts and stops."
       },
       "injectionContext": {
-        "q": "What is an injection context, and why do you get NG0203?",
-        "short": "inject() only works while Angular is creating something: field initializers, constructors, factory functions or runInInjectionContext(); elsewhere it throws NG0203.",
-        "long": "inject() needs to know which injector to ask, and Angular only knows that during creation. In a click handler, a setTimeout or after an await the context is gone. Inject what you need in a field and use it later, or capture the Injector and call runInInjectionContext(). The same rule applies to functions built on inject(), such as takeUntilDestroyed() or toSignal(), unless you pass them an injector or DestroyRef explicitly."
-      },
-      "standalone": {
-        "q": "Why standalone components, and what replaced NgModules?",
-        "short": "Each component declares its own dependencies in imports, so the component is the unit of compilation, lazy loading and tree-shaking.",
-        "long": "NgModules added an indirection: to know what a template could use you had to find the module that declared it. Standalone components (default since v19) import exactly what they use, routes lazy-load a component with loadComponent, and the app starts with bootstrapApplication() and provider functions like provideRouter() and provideHttpClient(). The result is less boilerplate, clearer dependencies and better tree-shaking."
+        "q": "How do you design reusable inject()-based functions, and what are the pitfalls?",
+        "short": "Write them like composables: call inject() at the top, assert the injection context, return signals or resources, and register cleanup on the caller's DestroyRef.",
+        "long": "A function such as injectVehicle(id) can combine inject(), httpResource() and DestroyRef, so components stay thin and logic is reusable without inheritance. Pitfalls: it only works in an injection context, so calling it in a handler or after an await throws NG0203 — use assertInInjectionContext() to fail with a clear message. Its lifetime is the caller's injector, which is right for components but means a root-level call never cleans up. Accept signals rather than values so it stays reactive, and test it with TestBed.runInInjectionContext()."
       },
       "signalInputs": {
-        "q": "input(), output() and model() vs @Input and @Output?",
-        "short": "input() is a read-only signal, output() a lightweight event emitter and model() a two-way bindable signal — all type-safe and usable in computed().",
-        "long": "Because input() is a signal, derived values are a computed() instead of ngOnChanges or setters, and input.required() is enforced at compile time. Transforms like numberAttribute replace manual parsing. output() no longer depends on RxJS's EventEmitter, and outputFromObservable() bridges streams. model() replaces the @Input/@Output pair for [(value)]. They also work with OnPush and zoneless without extra wiring."
+        "q": "How do input(), model() and output() change the way you design component APIs?",
+        "short": "Inputs become read-only signals you derive from, outputs are plain events, and model() is reserved for components whose contract really is two-way, like form controls.",
+        "long": "Because inputs are signals, derived values are a computed() and data loading can key a resource on them, so components no longer need setters or ngOnChanges. input.required() and transforms make the contract explicit and checked at compile time. model() is convenient but blurs ownership: a parent and a child both writing the same value makes data flow hard to follow, so use it for genuine controls and keep one-way input plus output elsewhere. Inputs should be treated as immutable; a component that needs to edit a copy uses linkedSignal() on the input."
       },
       "controlFlow": {
-        "q": "Why is track mandatory in @for, and what changed from *ngFor?",
-        "short": "track tells Angular how to recognise the same item between renders so it can move DOM nodes instead of recreating them.",
-        "long": "@if, @for and @switch are built into the template compiler: no CommonModule import, better type narrowing and faster diffing. *ngFor had an optional trackBy and most code forgot it; @for makes track required, so you must think about identity. Track by a stable id; track by $index only for static lists. @empty handles the empty case without an extra @if."
+        "q": "How do you render a list of 10,000 items without the page freezing?",
+        "short": "Render only what is visible with virtual scrolling or pagination, track by a stable id, and keep each row OnPush with no work in its bindings.",
+        "long": "The DOM is the bottleneck: 10,000 rows with a few bindings each is tens of thousands of nodes to create, style and check. CDK virtual scrolling keeps about a screenful in the DOM; server-side pagination or infinite loading reduces the data itself. track by a stable id lets Angular move rows instead of recreating them when data refreshes. Rows should be OnPush, avoid function calls and pipes that allocate in bindings, and get derived values from computed(). Measure with the DevTools profiler and the browser's performance panel before and after."
       },
       "deferBlocks": {
-        "q": "What does @defer do, and when would you use it?",
+        "q": "Which parts of a page would you put behind @defer, with which triggers, and what can go wrong?",
         "short": "It moves a part of a template and its dependencies into a separate lazy chunk that loads on a trigger such as viewport, idle, interaction or timer.",
-        "long": "Use it for heavy widgets below the fold — charts, maps, editors — or content that only some users need. Triggers decide when the chunk is fetched; prefetch can download it earlier, for example on idle. @placeholder, @loading and @error cover the states, with minimum and after timings to avoid flicker. Only standalone dependencies used exclusively inside the block are split out; anything also imported elsewhere stays in the main bundle."
+        "long": "Use it for heavy widgets below the fold — charts, maps, editors — or content that only some users need. Triggers decide when the chunk is fetched; prefetch can download it earlier, for example on idle. @placeholder, @loading and @error cover the states, with minimum and after timings to avoid flicker. Only standalone dependencies used exclusively inside the block are split out; anything also imported elsewhere stays in the main bundle. A placeholder that does not reserve the final size causes layout shift (CLS), and content that matters for SEO or the first screen should never be deferred."
       },
       "resourceApi": {
         "q": "How do you load data with the Resource API?",
@@ -882,25 +872,20 @@
         "short": "Signal Forms build the form from a signal model with a schema of validators; field state is signals, so there are no valueChanges subscriptions.",
         "long": "In Reactive Forms the FormGroup owns the value and you sync it to your model; in Signal Forms form(model, schema) wraps your signal, and [formField] binds a control. Validation, disabled and hidden logic live in the schema and can be reactive. Submission handling maps server errors to fields. Signal Forms are stable in v22; Reactive Forms remain fully supported, and a large existing codebase does not need a rewrite."
       },
-      "routeParams": {
-        "q": "How do you read route parameters in a component?",
-        "short": "With withComponentInputBinding(), path params, query params and route data are bound to inputs with the same name.",
-        "long": "Instead of injecting ActivatedRoute and subscribing to paramMap, declare id = input.required<string>() and the router sets it, also when navigating between the same route with different params. Because it is a signal input, you can feed it straight into httpResource() or computed(). ActivatedRoute is still useful for fragments or when one component needs the whole snapshot."
-      },
       "flattening": {
-        "q": "switchMap, mergeMap, concatMap, exhaustMap: what is the difference?",
-        "short": "They differ in what happens when a new value arrives while the previous inner observable is still running: switch cancels, merge runs in parallel, concat queues, exhaust ignores.",
-        "long": "switchMap fits search-as-you-type and route changes, where only the latest result matters. mergeMap fits independent parallel work, ideally with a concurrency limit. concatMap fits writes that must keep their order. exhaustMap fits submit and login buttons, where repeated clicks should be ignored while a request is in flight. Picking one is a business decision about concurrency, and it should be visible in code review."
+        "q": "How do you choose a flattening operator, and what is the failure mode of each?",
+        "short": "Choose by what should happen to the running request when a new value arrives — and know the risk: switch drops responses, merge races, concat backs up, exhaust ignores silently.",
+        "long": "switchMap is right for reads where only the latest result matters, but it cancels on the client while the server may still process the request. mergeMap runs everything in parallel, so responses can arrive out of order and overwrite each other; limit concurrency. concatMap preserves order but builds a queue if the user is faster than the server. exhaustMap drops values while busy, so the user must see that the button is disabled. The choice is a product decision about concurrency, and it should be explicit in code review."
       },
       "hotCold": {
-        "q": "What is the difference between a hot and a cold Observable?",
+        "q": "The same request fires three times because three components use the same Observable. Why, and how do you fix it?",
         "short": "A cold Observable starts a new producer for each subscriber; a hot one shares a producer that runs independently of subscribers.",
         "long": "HttpClient requests are cold: three subscribers mean three requests. DOM events and Subjects are hot: late subscribers miss what was emitted before. shareReplay({ bufferSize: 1, refCount: true }) turns a cold request into a shared, cached one; refCount: true unsubscribes from the source when the last subscriber leaves. Knowing which one you have explains duplicate requests and missing values."
       },
       "subjects": {
-        "q": "Subject, BehaviorSubject or ReplaySubject: which one when?",
-        "short": "Subject for pure events, BehaviorSubject for a current value with an initial state, ReplaySubject when late subscribers need the last n values.",
-        "long": "A Subject has no memory. A BehaviorSubject requires an initial value and gives its current value on subscribe, which made it the classic state container. ReplaySubject(n) buffers the last n values. Expose them with asObservable() so only the owner can call next(). For component and service state today, a signal is simpler: same current-value semantics, synchronous reads, no subscriptions."
+        "q": "When is a Subject-based service still the right design, and how do you expose it safely?",
+        "short": "For events — notifications, commands, messages from a WebSocket — not for state; expose them with asObservable() so only the owner can emit.",
+        "long": "State has a current value and fits a signal: synchronous reads, no subscriptions, derived with computed(). Events are occurrences where every one matters and late listeners should not replay them, which is what a plain Subject models. BehaviorSubject and ReplaySubject replay values and are mostly legacy state containers today. Keep the Subject private, expose a read-only Observable, complete it when the owning scope is destroyed, and do not let components call next() on shared services — that turns a service into an untyped event bus."
       },
       "rxjsErrors": {
         "q": "How do you handle errors in an RxJS stream without killing it?",
@@ -908,9 +893,9 @@
         "long": "An error terminates the observable it reaches. A catchError at the end of clicks$.pipe(switchMap(...)) replaces the whole stream after the first error, and later clicks are silently ignored. Put retry({ count, delay }) and catchError on the inner observable instead. Use exponential backoff, only retry idempotent requests, and map errors into a typed state such as ProblemDetails for the UI."
       },
       "unsubscribe": {
-        "q": "When and how do you unsubscribe?",
-        "short": "Avoid manual subscriptions with toSignal() or the async pipe; when you must subscribe, end it with takeUntilDestroyed().",
-        "long": "Sources that never complete — intervals, router events, stores, WebSockets — keep their subscription and callbacks alive after the component is destroyed. takeUntilDestroyed() ties the subscription to DestroyRef and works in services and directives too; outside an injection context, pass a DestroyRef. HttpClient requests complete after one response, so they rarely leak, but an unfinished request still holds its callback until it completes."
+        "q": "How do you prevent subscription leaks across a large codebase, not just in one component?",
+        "short": "Make the safe path the default: toSignal() and the async pipe first, takeUntilDestroyed() otherwise, enforced by lint rules and code review.",
+        "long": "One careful developer is not a strategy. Agree on conventions — no manual subscribe() in components unless justified, never subscribe inside subscribe, ownership of long-lived streams in services — and enforce them with lint rules such as no-ignored-subscription. Prefer APIs that clean up automatically: toSignal(), the async pipe, the Resource API and takeUntilDestroyed(). Watch long-lived sources in particular: router events, stores, intervals and WebSockets. Memory profiling with heap snapshots after navigating back and forth confirms that destroyed components are actually collected."
       },
       "stillRxjs": {
         "q": "With signals, do we still need RxJS?",
@@ -928,14 +913,14 @@
         "long": "UI state such as an open panel belongs in the component. State shared by a widget's children fits a service provided on that component. Session data or the cart fit a root service with signals and computed() selectors. NgRx — today often the Signal Store — pays off when many features share state, you need devtools and time travel, or many people must follow the same conventions. Server data is cached state, so the Resource API often removes the need for a store."
       },
       "httpErrors": {
-        "q": "How do you handle HTTP errors across the application?",
-        "short": "With functional interceptors that normalise errors into one typed shape, plus a UI state per request that shows them.",
-        "long": "An error interceptor maps HttpErrorResponse to a typed model such as RFC 9457 ProblemDetails, so components never parse raw responses. Other interceptors add auth, retries for idempotent calls and a global loading indicator. Each screen still decides how to render loading, empty and error states — httpResource exposes them directly. Validation errors (422) are mapped onto form fields; unexpected ones go to logging."
+        "q": "How do you design an error-handling strategy for HTTP across a large application?",
+        "short": "In layers: interceptors normalise and retry, each feature decides how to show errors, and a global ErrorHandler reports what nobody handled.",
+        "long": "One interceptor maps every failure to a typed model such as RFC 9457 ProblemDetails; another handles 401 with a single token refresh; retries apply only to idempotent requests, with backoff. Features own the user experience: inline field errors for 422, retry buttons, empty and offline states — httpResource exposes the states directly. A custom ErrorHandler sends unexpected errors with context to observability tooling, and correlation ids connect frontend and backend logs. The aim is that no component parses raw HttpErrorResponse and no error disappears silently."
       },
       "testing": {
-        "q": "What is your testing strategy for an Angular app?",
+        "q": "How would you set up the testing strategy for a large Angular product, and what do you deliberately not test?",
         "short": "Many fast component tests that use the DOM like a user, a few E2E tests for critical flows, and accessibility checks in CI.",
-        "long": "Component tests with Testing Library query by role and label, so they test behaviour and accessibility instead of implementation details. Services and pure functions get plain unit tests. Playwright covers the critical flows across browsers, and axe runs on every route. Coverage is a floor, not the goal. Tests must be deterministic: fake timers, a mock backend and no shared state."
+        "long": "Component tests with Testing Library query by role and label, so they test behaviour and accessibility instead of implementation details. Services and pure functions get plain unit tests. Playwright covers the critical flows across browsers, and axe runs on every route. Coverage is a floor, not the goal. Tests must be deterministic: fake timers, a mock backend and no shared state. What I deliberately do not test: framework behaviour, private methods and exact markup — those tests break on every refactor without catching bugs."
       },
       "accessibility": {
         "q": "How do you make an Angular application accessible?",
@@ -953,9 +938,9 @@
         "long": "Lazy routes and @defer split code by need. injectAsync() (v22) loads a service only when it is first used, optionally prefetched on idle. Remove zone.js, avoid large libraries for small tasks, import specific entry points and check the build stats for duplicates. Budgets make the build warn or fail on regressions. Remember that shared code used by several lazy chunks may be hoisted into the initial bundle."
       },
       "i18n": {
-        "q": "How do you handle internationalisation?",
-        "short": "Runtime translation (e.g. ngx-translate) when users switch language live; build-time @angular/localize when performance matters most and a reload is fine.",
-        "long": "@angular/localize compiles one build per locale: zero runtime cost, but switching language means loading another build. Runtime libraries load JSON files and switch instantly, at the cost of a small overhead and keys checked by tests rather than the compiler. Either way: update the lang attribute, format dates and numbers with the locale, plan for longer German text and right-to-left layouts, and test that every language has every key."
+        "q": "How do you choose between build-time and runtime i18n for a product sold in several markets?",
+        "short": "Build-time @angular/localize when performance and static content dominate; runtime translation when content comes from a CMS, the language switches live or translators work independently of releases.",
+        "long": "@angular/localize produces one build per locale with zero runtime cost and compile-time extraction, but every text change needs a release and switching language reloads the app. Runtime libraries load translations on demand, so a translation management system or CMS can update them without deploying, at the cost of a small overhead and keys validated by tests. Beyond text: LOCALE_ID per market (de-DE, de-AT and de-CH format differently), ICU plurals, legally required wording per country, longer German strings in layouts and an hreflang strategy for SEO."
       },
       "effectSync": {
         "q": "Why shouldn't you use effect() to keep two signals in sync?",
@@ -988,9 +973,19 @@
         "long": "With track $index, item 0 is always row 0. Sort or filter the list and Angular updates bindings instead of moving rows, so local component state — an expanded panel, an input's text, focus, an animation — stays in the wrong row. It is also slower, because more bindings change. Track by a stable identity such as the id or VIN; $index is only safe for static lists."
       },
       "ng0100": {
-        "q": "What is ExpressionChangedAfterItHasBeenCheckedError (NG0100)?",
+        "q": "NG0100 (ExpressionChangedAfterItHasBeenChecked) appears after a change in ngAfterViewInit. What is it telling you, and how do you fix it properly?",
         "short": "In development mode Angular checks bindings twice; if a value changed between the two checks — usually set in a lifecycle hook during the same pass — it throws NG0100.",
         "long": "It points to a one-directional data flow being broken: a child or a hook changes state its parent already rendered, for example in ngAfterViewInit. Wrapping the change in setTimeout only hides it. Fix the flow instead: derive the value with computed(), set it before the view is checked, or move one-time DOM-driven updates to afterNextRender() and write a signal, which schedules a new render. The error never appears in production builds, but the stale UI does."
+      },
+      "migration": {
+        "q": "How would you migrate a large NgModule and zone.js application to standalone, signals and zoneless without a big-bang rewrite?",
+        "short": "Incrementally and with the official schematics: standalone, control flow and inject() first, then signal inputs and queries, then OnPush per feature, and remove zone.js last.",
+        "long": "Start with a green test suite and budgets so regressions are visible. The Angular schematics convert NgModules to standalone, *ngIf/*ngFor to @if/@for, constructor DI to inject() and @Input/@ViewChild to signals; each runs per path and lands as a small PR. Then move features to OnPush and fix mutations and plain async fields — those are exactly what will break without zone.js. Only when the app works with OnPush and signals do you switch to zoneless and drop the polyfill. Third-party libraries that rely on zone.js are the usual blocker, so audit them early."
+      },
+      "routeData": {
+        "q": "How do you design data loading for a route: resolvers, component input binding or the Resource API?",
+        "short": "Resolvers when the page must never render without its data; otherwise navigate immediately and load with a resource keyed on route inputs, showing a skeleton.",
+        "long": "A resolver blocks navigation: the URL changes only when data is there, which suits pages that cannot be shown partially, but it makes navigation feel slow and needs its own error path. With withComponentInputBinding(), route params arrive as signal inputs; an httpResource() keyed on them starts loading instantly, cancels when the param changes and exposes loading and error states for the template. For perceived performance, prefetch on hover or with @defer, and cache shared data in a service so returning to a page does not refetch."
       }
     }
   }
